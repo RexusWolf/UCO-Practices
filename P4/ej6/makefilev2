@@ -1,0 +1,25 @@
+#Fichero: makefile
+
+CC = gcc
+OBJS_MAIN=main.c ficheros.c crucigrama.c
+CFLAGS=-g -Wall
+
+OBJS_LIB=reservaMemoria.o liberaMemoria.o
+
+all: crucigrama.x clean
+
+crucigrama.x: $(OBJS_MAIN) libMemoria.a
+	@echo Generando ejecutable...
+	gcc -o crucigrama.x main.o ficheros.o crucigrama.o libMemoria.a
+	gcc -o $@ $^
+
+libMemoria.a: $(OBJS_LIB)
+	@echo Creando biblioteca...
+	ar rvs $@ $^
+
+%.o : %.c
+	$(CC) -c $< -o $@ $(CFLAGS)
+
+clean:
+	@echo Borrando ficheros objeto...
+	rm *.o
