@@ -4,51 +4,73 @@
 #include "funciones.h"
 
 
-Ficha * reservaMemoria (int nJug){
-Ficha *jugadores;
-  if(jugadores=(Ficha *) malloc (nJug*sizeof(Ficha))==NULL){
+ficha* reservaMemoria (int nJug){
+ficha *jugadores;
+jugadores = malloc (nJug*sizeof(ficha));
+  if(jugadores==NULL){
     printf("Error en la reserva de memoria.");
     exit(-1);
   }
-  else{return jugadores;}
+  else {
+    return jugadores;
+  }
 }
 
-Ficha leerJugador(Ficha *jugador){
-    printf("Introduce nombre del jugador:\n");
-    scanf("%s", jugador -> nombre);
+ficha leerJugador(ficha *jugador){
+  char nombre[50];
+	int dorsal,estatura;
+  float peso;
+    printf("Introduce el nombre del jugador\n");
+      setbuf(stdin,NULL);
+      gets(nombre);
+        strcpy(jugador->nombre,nombre);
     printf("Introduce dorsal del jugador:\n");
-    scanf("%i", jugador -> dorsal);
+    scanf("%i", &dorsal );
+      jugador -> dorsal = dorsal;
     printf("Introduce peso del jugador:\n");
-    scanf("%f", jugador -> peso);
+    scanf("%f", &peso);
+      jugador -> peso = peso;
     printf("Introduce estatura del jugador:\n");
-    scanf("%i", jugador -> estatura);
+    scanf("%i", &estatura);
+      jugador -> estatura = estatura;
+  }
+
+
+void rellenarVectorJugadores (ficha *jugadores, int nJug) {
+  for (int i = 0; i < nJug; i++) {
+    leerJugador (jugadores+i);
+  }
+}
+void imprimirJugadores (ficha *jugadores, int nJug) {
+  for (int i = 0;i<nJug;i++){
+    imprimirJugador((jugadores+i));
+    printf("\n");
   }
 }
 
-void rellenarVectorJugadores (Ficha *jugadores, int nJug) {
-  for (int i = 0; i < nJug; i++) {
-    jugadores[i] = leerJugador (jugadores[i]);
-  }
+void imprimirJugador (ficha *jugador) {
+    printf("Nombre Jugador: %s\n", jugador -> nombre);
+    printf("Dorsal: %d\n", jugador -> dorsal);
+    printf("Peso: %f\n", jugador -> peso);
+    printf("Estatura: %d\n", jugador -> estatura);
+
 }
 
-void imprimirJugadores (Ficha *jugadores, int nJug) {
-  for (int i = 0; i < nJug; i++) {
-    printf("Nombre Jugador: %s\n", jugador[i] -> nombre);
-    printf("Dorsal: %s\n", jugador[i] -> dorsal);
-    printf("Peso: %s\n", jugador[i] -> peso);
-    printf("Estatura: %s\n", jugador[i] -> estatura);
-  }
-}
-
-int borrarJugadores (Ficha *jugadores, int nJug, char letra) {
-  for (int i = 0; i < nJug; i++) {
-    for (int j = 0; j < 50; j++) {
-      if (letra == jugador[i] -> nombre[j]) {
-        printf("Caracter encontrado\n");
-        nJug--;
-        jugador[i] = jugador[nJug]
+int borrarJugadores (ficha *jugadores, int nJug, char letra) {
+  for (int i = 0;i<nJug;i++){
+    if (strchr(((jugadores+i)->nombre),letra)){
+      printf("Caracter found\n");
+      printf("%s\n",(jugadores+i)->nombre );
+      jugadores = jugadores - 1;
+      for (int j = i; j<nJug;j++){
+        *(jugadores+j) = *(jugadores+1);
       }
+      i = i-1;
     }
+
+    printf("\n");
   }
-  jugadores = (Ficha *) realloc (nJug, sizeof(ficha))
+  jugadores = (ficha *)realloc(jugadores,nJug);
+
+  return (nJug);
 }

@@ -1,22 +1,18 @@
 #ifndef FUNCIONES_H
 #define FUNCIONES_H
 
-typedef struct Ficha_jugador {
+typedef struct Ficha_jugador{
   char nombre[50];
   int dorsal;
   float peso;
   int estatura;
-}Ficha;
+}ficha;
 
-Ficha * reservaMemoria (int nJug);
-
-Ficha leerJugador(Ficha *jugador);
-
-void rellenarVectorJugadores (Ficha *jugadores, int nJug);
-
-void imprimirJugadores (Ficha *jugadores, int nJug) ;
-
-int borrarJugadores (Ficha *jugadores, int nJug, char letra) ;
-
+ficha * reservaMemoria (int nJug);
+ficha leerJugador(ficha *jugador);
+void rellenarVectorJugadores (ficha *jugadores, int nJug);
+void imprimirJugadores (ficha *jugadores, int nJug) ;
+void imprimirJugador (ficha *jugador);
+int borrarJugadores (ficha *jugadores, int nJug, char letra) ;
 
 #endif
