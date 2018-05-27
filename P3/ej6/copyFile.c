@@ -1,7 +1,16 @@
 #include "ej6.h"
 
+int upper(int c){
+  if((c>96)&&(c<123)){
+    return (c-32);
+  }
+  else{
+    return c;
+  }
+}
+
 void copyFile (char *file){
-char c;
+int c;
 FILE * f1;
 FILE * f2;
   if((f1 = fopen(file,"r"))==NULL){
@@ -13,9 +22,10 @@ FILE * f2;
     printf("Error en la apertura del archivo de texto.");
   }
   else printf("El fichero f2 ha sido creado correctamente.\n");
-
-  while ((c = fgetc (f1) != EOF)){
-    fputc (toupper(c), f2);
+  c = fgetc (f1);
+  while (c  != EOF){
+    fputc(upper(c),f2);
+    c = fgetc (f1);
   }
   fclose(f1);
   fclose(f2);
