@@ -6,6 +6,9 @@
     #include <string.h>
     #include <math.h>
     void fx (float N);
+    void gx (float N);
+    void zx (float N);
+
     /*--------------------------------------------------------------------------
     1.  Queremos evaluar las funciones f(x), g(x) y z(x) en todos los valores de
         x en el intervalo 0≤x< N con incremento de 0.2
@@ -18,6 +21,5 @@
         c) Muestre la evaluación de la función elegida en el intervalo indicado.
         ◦ Utiliza un puntero a función para hacer la llamada a la función.
      -------------------------------------------------------------------------*/
-
 
 #endif
