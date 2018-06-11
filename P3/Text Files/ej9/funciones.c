@@ -28,11 +28,11 @@ int stockLibro(char* namefile, char *titulo){
   char aux0[MAX_LINE];
   float aux1;
   int aux2;
+  char *i;
+  i = fgets(aux0, MAX_LINE, f);
 
-  fgets(aux0, MAX_LINE, f);
 
-
-	while(aux0!=NULL){
+	while(i!=NULL){
     cambiabarra(aux0);
 		if(strcmp(titulo,aux0)==0){
       fclose(f);
@@ -40,7 +40,7 @@ int stockLibro(char* namefile, char *titulo){
     }
     fgets(aux0, MAX_LINE, f);
     fscanf(f, "%f %d\n", &aux1, &aux2);
-    fgets(aux0, MAX_LINE, f);
+    i = fgets(aux0, MAX_LINE, f);
 	}
   fclose(f);
   return 1;
