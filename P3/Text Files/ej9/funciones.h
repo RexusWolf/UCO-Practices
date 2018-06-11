@@ -3,6 +3,8 @@
 
       #include <stdio.h>
       #include <stdlib.h>
-      int contarLibros (FILE * f);
-      
+      #include <string.h>
+      FILE * openread(char * namefile);
+      int stockLibro(char* namefile, char *titulo);
+      char* cambiabarra (char* nombre);
 #endif

@@ -2,12 +2,20 @@
 
 int main(int argc, char const *argv[])
 {
-	FILE* libros;
-	if ((libros=fopen("Libros.txt", "r"))==NULL){
-		printf("Error al abrir el archivo de libros\n");
-		exit(-1);
-	}
-  	printf("Hay %i libros diferentes\n", contarLibros(libros));
-	fclose(libros);
-	return 0;
+		char namefile[50] = "Libros.txt";
+
+
+		char titulo[50];
+		char titulo2[50];
+		printf("Introduce libro a buscar:");
+		fgets(titulo, 50, stdin);
+		strcpy(titulo,cambiabarra(titulo));
+		printf("%d\n", stockLibro(namefile, titulo) );
+
+		printf("Introduce libro a buscar:");
+		fgets(titulo2, 50, stdin);
+		strcpy(titulo2,cambiabarra(titulo2));
+		printf("%d\n", stockLibro(namefile, titulo2) );
+
+		return 0;
 }
