@@ -26,15 +26,16 @@ char* rline(char* dst, FILE* stream){
 //FUNCIÓN CREADORA DE UN NUEVO LIBRO, LLAMADA POR ADDBOOK.
 Libro newBook(){
   Libro aux;
+
   printf("Title:\n");
   rline(aux.title, stdin);
   printf("Author:\n");
   rline(aux.author, stdin);
   printf("Cost:\n");
-  scanf("%f", &aux.cost);
+  scanf("%f", &(aux.cost));
   printf("Stock:\n");
-  scanf("%d", &aux.stock);
-
+  scanf("%d", &(aux.stock));
+  getchar();
   return aux;
 }
 
@@ -45,7 +46,9 @@ void addBook(char *namefile){
   if((f = fopen(namefile, "ab")) == NULL ){
     printf("Error en la apertura del archivo.");
   }
+
   fwrite(&aux, sizeof(aux), 1, f);
+
   fclose(f);
 }
 
@@ -89,9 +92,8 @@ Libro* libraryArray(char* namefile, int size){
     exit(-1);
   }
   FILE* f=openread(namefile);
-  for(int i=0; i<size; i++){
-    fread(aux, sizeof(Libro), 1, f);
-  }
+    fread(aux, sizeof(Libro), size, f);
+  
   fclose(f);
   return aux;
 }

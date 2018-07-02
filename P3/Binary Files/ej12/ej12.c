@@ -5,6 +5,7 @@ int main(int argc, char const *argv[])
 	char* namefile=argv[1];
 	char title[50];
 	int option;
+while(option!=0){
 	printf("Introduce opción:\n");
 	printf("1. Add Book.\n");
 	printf("2. Check Book.\n");
@@ -44,7 +45,7 @@ int main(int argc, char const *argv[])
 
 		case 0: exit(-1);
 		break;
+		}
 	}
-
 		return 0;
 }
