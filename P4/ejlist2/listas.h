@@ -2,7 +2,7 @@
 #define LISTAS_H
 
   #include <stdlib.h>
- typedef struct lista{
+ typedef struct Nodo{
 
    int dato;
    struct Nodo *sgte;
@@ -12,6 +12,7 @@
 
      Nodo * reservaNodo();
      void nuevoNodo (Nodo *nodo);
-     void liberaNodo (Nodo *nodo);
+     void liberaNodo ();
+     void imprimeNodo();
 
 #endif
