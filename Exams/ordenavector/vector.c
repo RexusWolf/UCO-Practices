@@ -15,11 +15,10 @@ int main(int argc, char const *argv[]) {
   printf("Elige la ordenacion deseada:\n");
     printf("1. Ascendente.\n");
     printf("2. Descendente\n");
-  scanf("%d\n", &opcion );
-  //if(opcion == 1){ comparacion = &esmenor;}
-  //if(opcion == 2){ comparacion = &esmayor;}
-  //ordenavector(vector, N, comparacion);
-  if(opcion == 1){ ordenavector(vector, 0, N-1, &esmenor);}
+  scanf("%d", &opcion );
+  if(opcion == 1){ comparacion = &esmayor;}
+  if(opcion == 2){ comparacion = &esmenor;}
+  ordenavector(vector, N , comparacion);
   imprimevector(vector,N);
   free(vector);
 

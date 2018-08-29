@@ -20,7 +20,7 @@ void imprimevector(Fraccion *vector, int size){
   }
 }
 
-/*
+
 void ordenavector(Fraccion *vector, int size, int(*comparacion)(Fraccion, Fraccion)  ){
   int i, j;
   Fraccion aux;
@@ -34,7 +34,7 @@ void ordenavector(Fraccion *vector, int size, int(*comparacion)(Fraccion, Fracci
     } //Llave for j
   } //Llave for i
 } //Llave fin de función.
-*/
+
 
 int esmayor(Fraccion a, Fraccion b){
   float valora;
@@ -53,13 +53,13 @@ int esmenor( Fraccion a, Fraccion b){
   if (valora<valorb) return 1;
   return 0;
 }
-
+/*
 void ordenavector(Fraccion *vector, int izda, int dcha, int(*comparacion)(Fraccion, Fraccion)  ){
   int i, j;
   Fraccion aux;
   for(i = izda + 1; i <= dcha; i++) {
     for(j = dcha; j >= i; j--) {
-      if( (*comparacion)(vector[j-1], vector[j]) ){
+      if( (*comparacion)(vector[j], vector[j-1]) ){
         aux = vector[j];
         vector[j] = vector[j-1];
         vector[j-1] = aux;
@@ -67,3 +67,4 @@ void ordenavector(Fraccion *vector, int izda, int dcha, int(*comparacion)(Fracci
     } //Llave for j
   } //Llave for i
 } //Llave fin de función.
+*/
