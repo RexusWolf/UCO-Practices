@@ -93,7 +93,7 @@ Libro* libraryArray(char* namefile, int size){
   }
   FILE* f=openread(namefile);
     fread(aux, sizeof(Libro), size, f);
-  
+
   fclose(f);
   return aux;
 }
