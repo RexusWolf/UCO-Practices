@@ -1,0 +1,19 @@
+CODE_STARTER 1.0
+out_file_extension: cxx
+build:  g++   %d/%s.%e -o %d/%s -Wall -g3 -std=c++11
+exec: konsole --workdir %d -e %d/%s
+host: rabinf24.uco.es
+port: 9999
+
+#############################################
+# %p full path to the file
+# %d dir to the file
+# %s file base name. Eg, if file is "/tmp/archive.tar.gz", then basename is "archive" QFileInfo(%p).baseName()
+# %a Code_Starter applicationDirPath
+# %e : file extension for the output file
+
+# Examples: for opened file test_file.eje in dir /home/me/project
+# %p: /home/me/project/test_file.eje
+# %d: /home/me/project
+# %s: test_file
+# %a: <path to the installed location of this app>
