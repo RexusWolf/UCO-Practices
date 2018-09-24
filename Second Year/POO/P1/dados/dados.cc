@@ -25,7 +25,7 @@
   }
 
   bool Dados::setDado1(int n1){
-      if(1<=n1<=6){
+      if(1<=n1 && n1<=6){
         d1_ = n1;
         return true;
       }
@@ -33,7 +33,7 @@
   }
 
   bool Dados::setDado2(int n2){
-      if(1<=n2<=6){
+      if(1<=n2 && n2<=6){
         d2_ = n2;
         return true;
       }
