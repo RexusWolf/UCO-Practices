@@ -14,6 +14,7 @@ class Dados{
         bool setDado1(int n1);
         bool setDado2(int n2);
         int getSuma();
+        int getDiferencia();
         Dados(); //Constructor
 };
 

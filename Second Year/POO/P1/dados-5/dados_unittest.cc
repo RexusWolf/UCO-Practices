@@ -17,11 +17,11 @@
 // Tests the c'tor.
 TEST(Dados, Constructor) {
   Dados d;
-  
+
   EXPECT_EQ(1, d.getDado1());
   EXPECT_EQ(1, d.getDado2());
   EXPECT_EQ(2, d.getSuma());
-  
+
 }
 
 // Tests operación lanzamiento
@@ -40,14 +40,14 @@ TEST(Dados, Lanzamiento) {
 // Tests operación suma
 TEST(Dados, Suma) {
   Dados d;
-  
+
   EXPECT_EQ(d.getDado1()+d.getDado2(), d.getSuma());
 }
 
 // Tests modificadores
 TEST(Dados, Modificadores) {
   Dados d;
-  
+
   EXPECT_FALSE(d.setDado1(9));
   EXPECT_FALSE(d.setDado1(-9));
   EXPECT_FALSE(d.setDado2(9));
@@ -58,3 +58,41 @@ TEST(Dados, Modificadores) {
   EXPECT_EQ(2, d.getDado2());
   EXPECT_EQ(5, d.getSuma());
 }
+
+//Test diferencia
+ TEST(Dados, Diferencia) {
+   Dados d;
+
+   d.setDado1(4);
+   d.setDado2(1);
+   EXPECT_EQ(3, d.getDiferencia());
+
+ }
+
+ TEST(Dados, Lanzamientos){
+   Dados d;
+   EXPECT_EQ(0, d.getLanzamientos1());
+   EXPECT_EQ(0, d.getLanzamientos2());
+   d.setDado1(3);
+   d.setDado2(5);
+   EXPECT_EQ(1, d.getLanzamientos1());
+   EXPECT_EQ(1, d.getLanzamientos2());
+   d.setDado2(5);
+   EXPECT_EQ(1, d.getLanzamientos1());
+   EXPECT_EQ(2, d.getLanzamientos2());
+ }
+
+ TEST(Dados, Media){
+   Dados d;
+   EXPECT_EQ(0, d.getMedia1());
+   EXPECT_EQ(0, d.getMedia2());
+   d.setDado1(2);
+   d.setDado2(4);
+   EXPECT_EQ(2, d.getMedia1());
+   EXPECT_EQ(4, d.getMedia2());
+   d.setDado1(1);
+   d.setDado2(3);
+   EXPECT_EQ(1.5, d.getMedia1());
+   EXPECT_EQ(3.5, d.getMedia2());
+
+ }
