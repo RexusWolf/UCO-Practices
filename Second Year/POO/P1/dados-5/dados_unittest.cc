@@ -96,3 +96,28 @@ TEST(Dados, Modificadores) {
    EXPECT_EQ(3.5, d.getMedia2());
 
  }
+
+ TEST(Dados, Vector){
+   Dados d;
+   int vector1[5];
+   int vector2[5];
+   int v1[5] = {1,1,1,1,1};
+   int v2[5] = {1,1,1,1,1};
+   d.lanzamiento();
+   v1[2] = d.getDado1();
+   v2[2] = d.getDado2();
+   d.lanzamiento();
+   v1[1] = d.getDado1();
+   v2[1] = d.getDado2();
+   d.lanzamiento();
+   v1[0] = d.getDado1();
+   v2[0] = d.getDado2();
+   d.getUltimos1(vector1);
+   d.getUltimos2(vector2);
+     for(int i = 0; i<5; i++){
+     EXPECT_EQ(vector1[i], v1[i] );
+     }
+     for(int i = 0; i<5; i++){
+     EXPECT_EQ(vector2[i], v2[i] );
+     }
+ }

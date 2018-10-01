@@ -11,6 +11,8 @@ class Dados{
         int l2_;
         float m1_;
         float m2_;
+        int vectordado1_[5];
+        int vectordado2_[5];
   public:
         void lanzamiento();
         int getDado1();
@@ -23,6 +25,8 @@ class Dados{
         int getLanzamientos2();
         float getMedia1();
         float getMedia2();
+        void getUltimos1(int vector[5]);
+        void getUltimos2(int vector[5]);
         Dados(); //Constructor
 };
 

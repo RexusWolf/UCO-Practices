@@ -13,6 +13,10 @@
       l2_ = 0; // lanzamientos d2
       m1_ = 0;
       m2_ = 0;
+        for(int i=0; i<5; i++){
+          vectordado1_[i] = 1;
+          vectordado2_[i] = 1;
+        }
       }
 
   void Dados::lanzamiento(){
@@ -20,6 +24,13 @@
     d2_ = (rand()%6)+1;
     l1_++;
     l2_++;
+
+    for(int i = 4; i>0; i--){
+      vectordado1_[i] = vectordado1_[i-1];
+      vectordado2_[i] = vectordado2_[i-1];
+    }
+    vectordado1_[0] = d1_;
+    vectordado2_[0] = d2_;
   }
 
   int Dados::getDado1(){
@@ -34,6 +45,10 @@
       if(1<=n1 && n1<=6){
         d1_ = n1;
         l1_++;
+        for(int i = 4; i>0; i--){
+          vectordado1_[i] = vectordado1_[i-1];
+        }
+        vectordado1_[0] = d1_;
         return true;
       }
     return false;
@@ -43,6 +58,10 @@
       if(1<=n2 && n2<=6){
         d2_ = n2;
         l2_++;
+        for(int i = 4; i>0; i--){
+          vectordado2_[i] = vectordado2_[i-1];
+        }
+        vectordado2_[0] = d2_;
         return true;
       }
     return false;
@@ -82,4 +101,18 @@
       m2_ = (m2_*(Dados::getLanzamientos1()-1)+d2_)/Dados::getLanzamientos1();
     }
     return m2_;
+  }
+
+  void Dados::getUltimos1(int vector[5]){
+      int i;
+      for(i = 0; i<5; i++){
+        vector[i] = vectordado1_[i];
+      }
+  }
+
+  void Dados::getUltimos2(int vector[5]){
+    int i;
+    for(i = 0; i<5; i++){
+      vector[i] = vectordado2_[i];
+    }
   }
