@@ -47,7 +47,6 @@ void functions(int id, int* memoria ){
 
 int main(int argc, char const *argv[]) {
 
-
   key_t memoryKey;
   int memoryID,status;
   int* memorySpace;
@@ -58,7 +57,7 @@ int main(int argc, char const *argv[]) {
     printf("Fallo al obtener la clave de memoria\n");
     exit(-1);
   }
-  //Creamos memoria compartida
+  // Creamos memoria compartida
   memoryID =shmget(memoryKey,sizeof(int)*100, 0777 | IPC_CREAT);
   if (memoryID == -1){
     printf("Fallo al obtener la clave de memoria\n" );
@@ -70,6 +69,11 @@ int main(int argc, char const *argv[]) {
     printf("Fallo en la obtención de la memoria compartida\n");
     exit(-1);
   }
+ // Rellenamos el vector con valores aleatorios.
+  srand(time(NULL));
+ for(int i = 0; i < 100; i++){
+   memorySpace[i] = rand()%1000;
+ }
 
   //Creamos los procesos hijos
   for (int i = 0; i<CHILDREN;i++){
