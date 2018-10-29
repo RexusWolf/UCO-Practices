@@ -1,5 +1,5 @@
 # A sample Makefile for building Google Test and using it in user
-# tests.  Please tweak it to suit your environment and project.  You
+# tests.  Please tweak it to suit your environment and project. You
 # may want to move it to your project's root directory.
 #
 # SYNOPSIS:
@@ -14,7 +14,7 @@
 
 # Points to the root of Google Test, relative to where this file is.
 # Remember to tweak this if you move this file.
-GTEST_DIR = E:\Otros\Development\UCO Practices\Second Year\POO\googletest
+GTEST_DIR = /home/i72moprf/googletest
 
 # Where to find user code.
 # USER_DIR = ../samples
