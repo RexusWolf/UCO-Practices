@@ -6,7 +6,7 @@
 
 int main(int argc, char const *argv[]) {
 
-  key_t key;
+
   int status;
 
     if (! fork()){

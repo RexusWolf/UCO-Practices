@@ -1,12 +1,15 @@
+#include <stdlib.h>
+#include <sys/wait.h>
+#include <math.h>
+#include <time.h>
 #include <sys/ipc.h>
 #include <sys/shm.h>
 #include <sys/types.h>
 #include <stdio.h>
 #include <unistd.h>
-#include <stdlib.h>
-#include <sys/wait.h>
-#include <math.h>
-#include <time.h>
+
+// Es una copia del ejercicio 2 añadiendo la función para rellenar el vector con números aleatorios..
+
 
 #define CHILDREN 3
 

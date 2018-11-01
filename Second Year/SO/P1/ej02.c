@@ -1,12 +1,13 @@
+#include <stdlib.h>
+#include <sys/wait.h>
+#include <math.h>
+#include <time.h>
 #include <sys/ipc.h>
 #include <sys/shm.h>
 #include <sys/types.h>
 #include <stdio.h>
 #include <unistd.h>
-#include <stdlib.h>
-#include <sys/wait.h>
-#include <math.h>
-#include <time.h>
+
 
 #define CHILDREN 3
 
