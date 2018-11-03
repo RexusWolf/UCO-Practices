@@ -1,22 +1,6 @@
 #include "jugador.h"
 
-void Jugador::setApuestas(){
 
-  string namefile = getDNI() + ".txt"; // Obtenemos el nombre del fichero de texto.
-  Apuesta aux;
-  std::ifstream file(namefile); /* No es necesario realizar la función open, se abre
-                           directamente en modo lectura si definimos el fichero
-                           con ifstream. */
-
-  apuesta_.clear(); // Borramos las apuestas existentes en la lista.
-
-  file >> aux; // Añade la primera apuesta a la lista.
-    while (!file.eof()){
-      apuesta_.push_back(aux); // Añade una nueva apuesta a la lista apuesta_
-      file >> aux; // Lee una apuesta.
-    }
-  file.close();
-}
 
 // Función para escribir apuestas en el fichero con el formato específico.
 std::ostream &operator<<(std::ostream &stream, const Apuesta &a){
@@ -30,7 +14,7 @@ std::istream &operator>>(std::istream &stream, Apuesta &a){
   a.tipo = atoi(aux.c_str()); // Transformamos la string en int, quitando el /0.
   getline(stream, aux, ',');
   a.valor = aux;
-  getline(stream, aux, ',');
+  getline(stream, aux, '\n');
   a.cantidad = atoi(aux.c_str());
 }
 
@@ -41,3 +25,29 @@ Persona( dni, nombre, apellidos, edad, direccion, localidad, provincia, pais){
   codigo_ = codigo;
   dinero_ = 1000; // El dinero inicial será 1000.
 }
+
+Jugador::Jugador(const Jugador& j)
+:Persona(j.getDNI(), j.getNombre(), j.getApellidos(), j.getEdad(), j.getDireccion(),
+j.getLocalidad(), j.getProvincia(), j.getPais())
+                  {
+                    codigo_ = j.getCodigo();
+                    dinero_ = j.getDinero();
+                  }
+
+  void Jugador::setApuestas(){
+
+      string namefile = getDNI() + ".txt"; // Obtenemos el nombre del fichero de texto.
+      Apuesta aux;
+      std::ifstream file(namefile); /* No es necesario realizar la función open, se abre
+                                     directamente en modo lectura si definimos el fichero
+                                             con ifstream. */
+
+      apuesta_.clear(); // Borramos las apuestas existentes en la lista.
+
+      file >> aux; // Añade la primera apuesta a la lista.
+        while (!file.eof()){
+              apuesta_.push_back(aux); // Añade una nueva apuesta a la lista apuesta_
+              file >> aux; // Lee una apuesta.
+        }
+      file.close();
+  }

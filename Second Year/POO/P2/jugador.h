@@ -8,15 +8,15 @@
 #include <string>
 #include "persona.h"
 using std::string;
-using std::list;
+
 class Apuesta {
 
     public:
-      int tipo_;
-      string valor_;
-      int cantidad_;
+      int tipo;
+      string valor;
+      int cantidad;
       friend std::ostream &operator<<(std::ostream &stream, const Apuesta &a);
-      friend std::ostream &operator>>(std::ostream &stream, const Apuesta &a);
+      friend std::istream &operator>>(std::istream &stream, Apuesta &a);
 
 };
 
@@ -24,19 +24,19 @@ class Jugador : public Persona{
     private:
       int dinero_;
       string codigo_;
-      list<Apuesta> apuesta_;
+      std::list<Apuesta> apuesta_;
 
     public:
       string getCodigo() const {return codigo_;}
-      void setCodigo(const string codigo) const {codigo_ = codigo;}
-      list<Apuesta> getApuestas() const {return apuesta_;}
+      void setCodigo(const string codigo){codigo_ = codigo;}
+      std::list<Apuesta> getApuestas() const {return apuesta_;}
       void setApuestas();
       int getDinero() const {return dinero_;}
       void setDinero(const int dinero){dinero_ = dinero;}
       Jugador(const string &dni, const string &codigo, const string &nombre = "",
       const string &apellidos = "", const int edad = 0, const string &direccion = "",
       const string &localidad = "", const string &provincia = "", const string &pais= ""); // Constructor
-      Jugador(const Jugador& j);
+      Jugador(const Jugador &j);
       bool operator==(const Jugador &j){return (this->getDNI() == j.getDNI());}
 };
 
