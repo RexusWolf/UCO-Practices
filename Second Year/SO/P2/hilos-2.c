@@ -101,12 +101,3 @@ void *adder(void *p)
 
     pthread_exit((void *) to_return);
 }
-
-
-  /* La suma total (counter) no es correcta, ya que son dos o más hilos los que
-  entren simultáneamente a la sección crítica, por lo que la variable global counter
-  es tomada por los hilos con un valor inicial distinto al esperado por el usuario,
-  es decir, al ejecutarse un hilo comienza a aumentar el valor de counter pero puede
-  darse el caso de que este hilo se bloquee y comience a ejecutarse otro, cuya
-  variable counter tendrá el valor que el hilo anteriormente ejecutado asignó a esta.
-  */
