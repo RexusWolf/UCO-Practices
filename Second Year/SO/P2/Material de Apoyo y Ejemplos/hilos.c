@@ -1,3 +1,8 @@
+/*
+Francisco Javier Molina Prieto
+P2 Ejercicio 1.
+*/
+
 #include <pthread.h>
 #include <stdio.h>
 #include <unistd.h>

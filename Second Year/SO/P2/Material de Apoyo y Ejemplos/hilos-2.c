@@ -1,13 +1,20 @@
+/*
+Francisco Javier Molina Prieto
+P2 Ejercicio 2.
+Algoritmo de Lamport
+*/
+
 #include <pthread.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
-#include <stdbool.h>
-
-double counter = 0;
 
 #define ITER	1000 // Define un interador a 1000
 #define NHILOS	4  // Define el número de hilos que crearemos.
+
+double counter = 0;
+int eligiendo[NHILOS];
+int numero[NHILOS];
 
 int main()
 {
@@ -18,12 +25,14 @@ int main()
 
     // Variables globales compartidas
     extern double counter; // Declara counter, una variable global de tipo double.
-    extern bool eligiendo[NHILOS];
-    int numero[NHILOS];
+    extern int eligiendo[NHILOS];
+    extern int numero[NHILOS];
 
-    // Inicialización de variables
-    bool eligiendo[NHILOS] = {false, false, false, false};
-    int numero[NHILOS] = {0, 0 , 0 , 0};
+    for(int i = 0; i<NHILOS; i++){
+      eligiendo[i] = 0;
+      numero[i] = 0;
+    }
+
 
     // Create NHILOS threads
     for (i = 0; i < NHILOS; i++) {
@@ -45,6 +54,16 @@ int main()
     return 0;
 }
 
+int mayorVector(int *numero){
+  int mayor = 0;
+  for(int i = 0; i < NHILOS; i++){
+    if (numero[i] > mayor){
+      mayor = numero[i];
+    }
+  }
+  return mayor;
+}
+
 void *adder(void *p)
 {
     double l, *to_return; // Declara l, tipo double, y to_return, puntero a double.
@@ -52,28 +71,28 @@ void *adder(void *p)
     int *id, i; // Declara un puntero a entero id e i.
     id = (int *) p; // Asigna al puntero id el puntero de enteros pasado como arg.
 
-    extern bool eligiendo[NHILOS];
+    extern int eligiendo[NHILOS];
     extern int numero[NHILOS];
     int j;
 
-    while(true){
-      eligiendo[p[i]] = true;
-      numero[p[i]] = max(numero[0], numero[1], numero[2], numero[3]) + 1;
-      eligiendo[p[i]] = false;
-      for (j=0; j<N; j++){
-        while (eligiendo[j]);
-        while ((numero[j] != 0)  (numero[j], j) < (numero[p[i]], p[i]))
+    for(i = 0; i < ITER; i++){
+      eligiendo[*id] = 1;
+      numero[*id] = mayorVector(numero) + 1;
+      eligiendo[*id] = 0;
+      for(j = 0; j < NHILOS; j++){
+        while(eligiendo[j]);
+        while((numero[j] != 0) && ((numero[j] < numero[*id]) || ((numero[j] == numero[*id]) && ((j < *id)))));
       }
 
 
-        for (i = 0; i < ITER; i++) { // Comienza el bucle.
+        // Comienza la SECCIÓN CRÍTICA.
         	l = counter; // Asigna el valor de counter a l.
         	fprintf(stdout, "Hilo %d: %f\n", *id, counter); // Imprime la id del hilo y el counter.
         	l++; // Aumenta el valor de l.
         	counter = l; // Asigna l, cuyo valor es el de counter al inicio + 1000 iteraciones.
-        }
+        // Termina la SECCIÓN CRÍTICA
 
-        numero[p[i]] = 0;
+        numero[*id] = 0;
     }
 
     to_return = malloc(sizeof(double)); // Reserva memoria para un puntero a double.
