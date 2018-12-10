@@ -43,7 +43,7 @@ int main()
 
 void *adder(void *p)
 {
-    double l, *to_return; // Declara l, tipo double, y to_return, puntero a double.
+    double l, *to_return; // Declara l (contador), tipo double, y to_return, puntero a double.
     extern double counter; // Declara la variable global counter.
     int *id, i; // Declara un puntero a entero id e i.
 
