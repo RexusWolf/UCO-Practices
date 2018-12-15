@@ -16,12 +16,13 @@ P2 Ejercicio 3.
 
 int buffer[TAMBUFFER], producer_addition = 0, consumer_addition = 0;
 sem_t mutex, full, empty;
+int consumer_id = 0;
+int producer_id = 0;
 
 void * Producer();
 void * Consumer();
+int ConsumerDistribution(int thread_id);
 
-int consumer_addition;
-int producer_addition;
 
 int main(int argc, char const *argv[]) {
 
@@ -36,9 +37,9 @@ int main(int argc, char const *argv[]) {
   pthread_t producer[P];
   int thread_status;
 
-  int *consumer_return = 0;
-  int *producer_return = 0;
+  int *return_value = 0;
 
+  int consumer_id[C];
   for(int i = 0; i < C; i++){
     consumer_id[i] =  i;
     if((thread_status = pthread_create(&consumer[i], NULL, Consumer, (void *) &consumer_id[i]))) {
@@ -46,6 +47,8 @@ int main(int argc, char const *argv[]) {
       exit(thread_status);
     }
   }
+
+  int producer_id[P];
   for(int i = 0; i < P; i++){
     producer_id[i] =  i;
     if((thread_status = pthread_create(&producer[i], NULL, Producer, (void *) &producer_id[i]))) {
@@ -55,33 +58,29 @@ int main(int argc, char const *argv[]) {
   }
 
   for(int i = 0; i < P; i++){
-    if(pthread_join(producer[i], (void *) &producer_return)) fprintf(stderr, "Error in producer pthread_join\n");
-    if(*producer_return == producer_addition){
-      printf("Producer addition has been: %d\n", *producer_return);
-    }
+    if(pthread_join(producer[i], (void *) &return_value)) fprintf(stderr, "Error in producer pthread_join\n");
+      printf("Producer addition has been: %d\n", *return_value);
   }
 
   for(int i = 0; i < P; i++){
-  if(pthread_join(consumer[i], (void *) &consumer_return)) fprintf(stderr, "Error in consumer pthread_join\n");
-    if(*consumer_return == consumer_addition){
-      printf("Consumer addition has been: %d\n", *consumer_return);
-    }
+  if(pthread_join(consumer[i], (void *) &return_value)) fprintf(stderr, "Error in consumer pthread_join\n");
+      printf("Consumer %d addition has been: %d\n",i, *return_value);
   }
 
   printf("Total producers addition = %d\n", producer_addition);
-  printf("Totall consumers addition = %d\n", consumer_addition);
+  printf("Total consumers addition = %d\n", consumer_addition);
 
   return 0;
 }
 
 // Proceso o hilo productor.
-void * Producer(){
+void * Producer(void * arg){
   extern sem_t mutex, full, empty;
   extern int buffer[TAMBUFFER], producer_addition, producer_id;
   int number;
   int *to_return, *thread_id = (int *) arg;
 
-  printf("Productor %d\n", *thread_id);
+  // Nuestro hilo productor producirá PPP productos (no todos acabarán en el hilo).
     for(int i = 0; i< PPP; i++){
       number = ((rand() % 100) +1);
       sem_wait(&empty);
@@ -98,13 +97,12 @@ void * Producer(){
   }
 
 // Proceso o hilo consumidor.
-void * Consumer(){
+void * Consumer(void * arg){
   extern sem_t mutex, full, empty;
   extern int buffer[TAMBUFFER], consumer_addition, consumer_id;
   int *to_return, *thread_id = (int *) arg;
 
-	printf("Consumidor %d\n", *thread_id);
-  for(int i = 0; i < ConsumeProduct(*thread_id); i++){
+  for(int i = 0; i < ConsumerDistribution(*thread_id); i++){
     sem_wait(&full);
     sem_wait(&mutex);
     consumer_id++;
@@ -119,8 +117,9 @@ void * Consumer(){
   pthread_exit((void *)to_return);
 }
 
-int ConsumeProduct(int thread_id) {
-	int products_per_consumer;
-	products_per_consumer = PPP * P / C
-	if(thread_id == (C - 1) return;
+int ConsumerDistribution(int thread_id) {
+	int PPC;
+  // El número máx de productos que pueden ser consumidos por un hilo consumer.
+	PPC = PPP * P / C;
+	return PPC;
 }
