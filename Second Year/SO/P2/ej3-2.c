@@ -9,13 +9,13 @@ P2 Ejercicio 3.
 #include <stdlib.h>
 #include <semaphore.h>
 
-#define TAMBUFFER 20
+#define TAMBUFFER 10
 #define P 10
 #define C 10
-#define PPP 50
+#define NPROD 100
 
 int buffer[TAMBUFFER], producer_addition = 0, consumer_addition = 0;
-sem_t mutex, full, empty;
+sem_t mutex, full, empty,global;
 int consumer_id = 0;
 int producer_id = 0;
 
@@ -26,12 +26,13 @@ int ConsumerDistribution(int thread_id);
 
 int main(int argc, char const *argv[]) {
 
-  extern sem_t mutex, full, empty;
+  extern sem_t mutex, full, empty, global;
   srand(time(NULL));
 
   if((sem_init(&mutex, 0, 1)) == -1) perror("Error: Couldn't initialize mutex.");
-  if((sem_init(&full, 0, 0)) == -1) perror("Error: Couldn't initialize full.");;
-  if((sem_init(&empty, 0, TAMBUFFER)) == -1) perror("Error: Couldn't initialize empty.");;
+  if((sem_init(&full, 0, 0)) == -1) perror("Error: Couldn't initialize full.");
+  if((sem_init(&empty, 0, TAMBUFFER)) == -1) perror("Error: Couldn't initialize empty.");
+  if((sem_init(&global, 0, 1)) == -1) perror("Error: Couldn't initialize global.");
 
   pthread_t consumer[C];
   pthread_t producer[P];
@@ -51,7 +52,7 @@ int main(int argc, char const *argv[]) {
   int producer_id[P];
   for(int i = 0; i < P; i++){
     producer_id[i] =  i;
-    if((thread_status = pthread_create(&producer[i], NULL, Producer, (void *) &producer_id[i]))) {
+    if((thread_status = pthread_create(&producer[i], NULL, Producer, NULL))) {
       fprintf(stderr, "Failed to create producer thread.\n");
       exit(thread_status);
     }
@@ -74,15 +75,15 @@ int main(int argc, char const *argv[]) {
 }
 
 // Proceso o hilo productor.
-void * Producer(void * arg){
+void * Producer(){
   extern sem_t mutex, full, empty;
   extern int buffer[TAMBUFFER], producer_addition, producer_id;
   int number;
-  int *to_return, *thread_id = (int *) arg;
+  int *to_return;
 
   // Nuestro hilo productor producirá PPP productos (no todos acabarán en el hilo).
-    for(int i = 0; i< PPP; i++){
-      number = ((rand() % 100) +1);
+    for(int i = 0; i< NPROD; i++){
+      number = ((rand() % 1000) +1);
       sem_wait(&empty);
       sem_wait(&mutex);
       producer_id++;
@@ -100,26 +101,20 @@ void * Producer(void * arg){
 void * Consumer(void * arg){
   extern sem_t mutex, full, empty;
   extern int buffer[TAMBUFFER], consumer_addition, consumer_id;
-  int *to_return, *thread_id = (int *) arg;
+  int *to_return;
 
-  for(int i = 0; i < ConsumerDistribution(*thread_id); i++){
+
+  for(int i = 0; i < NPROD; i++){
     sem_wait(&full);
     sem_wait(&mutex);
     consumer_id++;
     consumer_addition += buffer[consumer_id % TAMBUFFER];
-    //Sets to 0 for easier debugging (if necessary)
     buffer[consumer_id % TAMBUFFER] = 0;
     sem_post(&mutex);
     sem_post(&empty);
   }
+
   to_return = malloc(sizeof(int));
   *to_return = consumer_addition;
   pthread_exit((void *)to_return);
-}
-
-int ConsumerDistribution(int thread_id) {
-	int PPC;
-  // El número máx de productos que pueden ser consumidos por un hilo consumer.
-	PPC = PPP * P / C;
-	return PPC;
 }

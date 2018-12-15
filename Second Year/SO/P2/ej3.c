@@ -10,6 +10,7 @@ P2 Ejercicio 3.
 #include <semaphore.h>
 
 #define TAMBUFFER 20
+#define NPROD 100
 
 int buffer[TAMBUFFER], producer_addition = 0, consumer_addition = 0;
 sem_t mutex, full, empty;
@@ -24,7 +25,7 @@ int main(int argc, char const *argv[]) {
 
   extern sem_t mutex, full, empty;
   srand(time(NULL));
-  
+
   if((sem_init(&mutex, 0, 1)) == -1) perror("Error: Couldn't initialize mutex.");
   if((sem_init(&full, 0, 0)) == -1) perror("Error: Couldn't initialize full.");;
   if((sem_init(&empty, 0, TAMBUFFER)) == -1) perror("Error: Couldn't initialize empty.");;
@@ -66,8 +67,8 @@ void * Producer(){
   int number;
   int *to_return;
 
-    for(int i = 0; i<50; i++){
-      number = ((rand() % 100) +1);
+    for(int i = 0; i<NPROD; i++){
+      number = ((rand() % 1000) +1);
       sem_wait(&empty);
       sem_wait(&mutex);
       buffer[i % TAMBUFFER] = number;
@@ -86,7 +87,7 @@ void * Consumer(){
   extern int buffer[TAMBUFFER], consumer_addition;
   int *to_return;
 
-  for(int i = 0; i < 50; i++){
+  for(int i = 0; i < NPROD; i++){
     sem_wait(&full);
     sem_wait(&mutex);
     consumer_addition += buffer[i % TAMBUFFER];
