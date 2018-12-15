@@ -15,7 +15,7 @@ P2 Ejercicio 3.
 #define NPROD 100
 
 int buffer[TAMBUFFER], producer_addition = 0, consumer_addition = 0;
-sem_t mutex, full, empty,global;
+sem_t mutex, full, empty;
 int consumer_id = 0;
 int producer_id = 0;
 
@@ -32,7 +32,6 @@ int main(int argc, char const *argv[]) {
   if((sem_init(&mutex, 0, 1)) == -1) perror("Error: Couldn't initialize mutex.");
   if((sem_init(&full, 0, 0)) == -1) perror("Error: Couldn't initialize full.");
   if((sem_init(&empty, 0, TAMBUFFER)) == -1) perror("Error: Couldn't initialize empty.");
-  if((sem_init(&global, 0, 1)) == -1) perror("Error: Couldn't initialize global.");
 
   pthread_t consumer[C];
   pthread_t producer[P];
@@ -80,7 +79,7 @@ void * Producer(){
   extern int buffer[TAMBUFFER], producer_addition, producer_id;
   int number;
   int *to_return;
-
+consumer_i
   // Nuestro hilo productor producirá PPP productos (no todos acabarán en el hilo).
     for(int i = 0; i< NPROD; i++){
       number = ((rand() % 1000) +1);
