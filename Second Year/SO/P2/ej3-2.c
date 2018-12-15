@@ -62,7 +62,7 @@ int main(int argc, char const *argv[]) {
       printf("Producer addition has been: %d\n", *return_value);
   }
 
-  for(int i = 0; i < P; i++){
+  for(int i = 0; i < C; i++){
   if(pthread_join(consumer[i], (void *) &return_value)) fprintf(stderr, "Error in consumer pthread_join\n");
       printf("Consumer %d addition has been: %d\n",i, *return_value);
   }
@@ -76,16 +76,17 @@ int main(int argc, char const *argv[]) {
 // Proceso o hilo productor.
 void * Producer(){
   extern sem_t mutex, full, empty;
+  // Necesitaremos un iterador global para productores (producer_id).
   extern int buffer[TAMBUFFER], producer_addition, producer_id;
   int number;
   int *to_return;
-consumer_i
+
   // Nuestro hilo productor producirá PPP productos (no todos acabarán en el hilo).
     for(int i = 0; i< NPROD; i++){
       number = ((rand() % 1000) +1);
       sem_wait(&empty);
       sem_wait(&mutex);
-      producer_id++;
+      producer_id++; // Aumentamos el iterador.
       buffer[producer_id % TAMBUFFER] = number;
       producer_addition += number;
       sem_post(&mutex);
@@ -99,6 +100,7 @@ consumer_i
 // Proceso o hilo consumidor.
 void * Consumer(void * arg){
   extern sem_t mutex, full, empty;
+  // Necesitaremos un iterador global para consumidores (consumer_id).
   extern int buffer[TAMBUFFER], consumer_addition, consumer_id;
   int *to_return;
 
@@ -106,7 +108,7 @@ void * Consumer(void * arg){
   for(int i = 0; i < NPROD; i++){
     sem_wait(&full);
     sem_wait(&mutex);
-    consumer_id++;
+    consumer_id++; // Aumentamos el iterador.
     consumer_addition += buffer[consumer_id % TAMBUFFER];
     buffer[consumer_id % TAMBUFFER] = 0;
     sem_post(&mutex);
