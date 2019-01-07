@@ -80,7 +80,7 @@ int main()
     int n = sizeof proc / sizeof proc[0];
 
     // sorting processes by burst time.
-    sort(proc, proc + n, comparison);
+    sort(proc+1, proc + n, comparison);
 
     cout << "Order in which process gets executed\n";
     for (int i = 0 ; i < n; i++)
