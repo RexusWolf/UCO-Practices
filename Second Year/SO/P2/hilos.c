@@ -23,16 +23,16 @@ int main()
 
     // Create NHILOS threads
     for (i = 0; i < NHILOS; i++) {
-	v[i] = i; // Asigna al vector de enteros los índices del hilo.
-	if ((status = pthread_create(&hilos[i], NULL, adder, (void *) &v[i])))
-	    exit(status); // Se crea el hilo, que ejecutará la función adder.
-                   // Esta función recibe un casting del vector de enteros.
+	         v[i] = i; // Asigna al vector de enteros los índices del hilo.
+	         if ((status = pthread_create(&hilos[i], NULL, adder, (void *) &v[i])))
+             exit(status); // Se crea el hilo, que ejecutará la función adder.
+                          // Esta función recibe un casting del vector de enteros.
     }
 
     // Wait threads
     for (i = 0; i < NHILOS; i++) {
-	pthread_join(hilos[i], (void **) &r_value);
-	printf("Value returned by %lu thread: %lf\n", hilos[i], *r_value);
+          pthread_join(hilos[i], (void **) &r_value);
+          printf("Value returned by %lu thread: %lf\n", hilos[i], *r_value);
     }
 
     // Final result
@@ -50,10 +50,10 @@ void *adder(void *p)
     id = (int *) p; // Asigna al puntero id el puntero de enteros pasado como arg.
 
     for (i = 0; i < ITER; i++) { // Comienza el bucle.
-	l = counter; // Asigna el valor de counter a l.
-	fprintf(stdout, "Hilo %d: %f\n", *id, counter); // Imprime la id del hilo y el counter.
-	l++; // Aumenta el valor de l.
-	counter = l; // Asigna l, cuyo valor es el de counter al inicio + 1000 iteraciones.
+        	l = counter; // Asigna el valor de counter a l.
+        	fprintf(stdout, "Hilo %d: %f\n", *id, counter); // Imprime la id del hilo y el counter.
+        	l++; // Aumenta el valor de l.
+        	counter = l; // Asigna l, cuyo valor es el de counter al inicio + 1000 iteraciones.
     }
 
     to_return = malloc(sizeof(double)); // Reserva memoria para un puntero a double.
