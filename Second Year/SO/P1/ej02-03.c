@@ -3,7 +3,7 @@ Exercise_2-3.c
 Pablo Rodríguez Guillén
 This program is done as the answer to the first practice of 'Operative Systems'.
 It consists on the creation of 3 child processes that make different operations
-with a 100 positions integer array that they share im memory. The terminal
+with a 100 positions integer array that they share in memory. The terminal
 output shows how they affect to each other by changing and printing the results
 of different operations.
 ------------------------------------------------------------------------------*/
@@ -72,11 +72,11 @@ int main () {
   int shared_memory_id, status; //status stores value returned by exit()
   int *array;
   key_t key;
-  struct shmid_ds buf; //used as paremeter in shmctl()
+  struct shmid_ds buf; //used as parameter in shmctl()
 
   //Assignment of shared shmemory
 
-    key = ftok ("Exercise_2-3.c", 1); //Obtaining memory key
+    key = ftok ("ej02-03.c", 1); //Obtaining memory key
 
     //Create shared memory space
     shared_memory_id = shmget(key, sizeof(int) * 100, IPC_CREAT | 0777);
@@ -97,20 +97,20 @@ int main () {
   arrayFilling(array); //Only executed by parent process
 
   //Creation of child processes
-    if (! fork()) {
-      printf("PID Child 1 = %d\n", getpid());
+    if (! fork()) { // Same as if (fork () == 0)
+      printf("\nPID Child 1 = %d\n", getpid());
       for (int i = 0; i < 10; i++) askUser(array);
       exit(0);
     }
 
-    if (! fork()) {
-      printf("PID Child 2 = %d\n", getpid());
+    if (! fork()) { // Same as if (fork () == 0)
+      printf("\nPID Child 2 = %d\n", getpid());
       for (int i = 0; i < 100; i++) changeValues(array);
       exit(0);
     }
 
-    if (! fork()) {
-      printf("PID Child 3 = %d\n", getpid());
+    if (! fork()) { // Same as if (fork () == 0)
+      printf("\nPID Child 3 = %d\n", getpid());
       for (int i = 0; i < 5; i++) addValuesAndPrint(array);
       exit(0);
     }
