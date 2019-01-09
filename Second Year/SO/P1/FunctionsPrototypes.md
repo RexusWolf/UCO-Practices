@@ -3,7 +3,7 @@
 * pid_t fork(void);
   * Creates a process that's a copy of the calling process.
   * System returns Child PID if the calling process is the father.
-  * System return 0 if the calling process is the child.
+  * System returns 0 if the calling process is the child.
 * pid_t getpid(void);
   * Returns the Process ID (PID) of the calling process.
 * key_t ftok(const char **pathname*, int *id*);
