@@ -195,18 +195,20 @@ ed::Monomio & ed::Monomio::operator/=(double const &x)
 	}
 
 	void ed::Monomio::escribirMonomio(){
-		if( this->getCoeficiente() != 1 ){
-				cout<<this->getCoeficiente();
+		double coeficiente = this->getCoeficiente();
+		int grado = this->getGrado();
+		if( coeficiente != 1 ){
+				cout<<coeficiente;
 		}
-			else if(not (this->getCoeficiente() -1 < COTA_ERROR)){
+			else if(not (coeficiente +1 < COTA_ERROR)){
 				cout<<"-";
 			}
 
-		if(not(this->getGrado() < COTA_ERROR)	){ 
+		if(not( grado < COTA_ERROR)	){
 			cout<<"X";
 		}
-			else if( not (this->getGrado() -1 < COTA_ERROR) ){
-				cout<<"^"<<this->getGrado()<<endl;
+			else if( not (grado -1 < COTA_ERROR) ){
+				cout<<"^"<<grado<<endl;
 			}
 	}
 ///////////////////////////////////////////////////////////////////////
