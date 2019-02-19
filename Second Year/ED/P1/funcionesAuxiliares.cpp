@@ -66,7 +66,7 @@ void ed::testMonomio()
 	std::cout << RESET;
 	std::cout << "Quitar el comentario de bloque cuando se haya codificado la clase Monomio " << std::endl << std::endl;
 
-/*
+
 
 	double x;
 
@@ -301,18 +301,18 @@ void ed::testMonomio()
 	m1.escribirMonomio();
 	std::cout << std::endl;
 	std::cout<< "m1(" << x << ") = " << m1.calcularValor(x) << std::endl << std::endl;
+  std::cout << std::endl;
+  std::cout<< "m2(" << x << ") = " << m2.calcularValor(x) << std::endl << std::endl;
 
 	std::cout<< "m2 = ";
 	m1.escribirMonomio();
-	std::cout << std::endl;
-	std::cout<< "m2(" << x << ") = " << m2.calcularValor(x) << std::endl << std::endl;
 
 	std::cout<< "m3 = ";
 	m3.escribirMonomio();
 	std::cout << std::endl;
 	std::cout<< "m3(" << x << ") = " << m3.calcularValor(x) << std::endl << std::endl;
 
-*/
+
 
 	// Fin
 	return;

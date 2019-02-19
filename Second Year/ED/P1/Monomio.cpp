@@ -9,6 +9,8 @@
 
 #include "Monomio.hpp"
 
+using namespace std;
+
 // Operadores de asignación
 
 // COMPLETAR
@@ -139,14 +141,15 @@ ed::Monomio & ed::Monomio::operator*=(double const &x)
 			double auxcoef = this->getCoeficiente();
 			int auxgrado = this->getGrado();
 			this->setCoeficiente(this->getCoeficiente() * x);
-			this->setGrado(this->getGrado() + m.getGrado());
 	#ifndef NDEBUG
 			assert(std::abs(this->getCoeficiente() - (auxcoef * x)) < COTA_ERROR);
 			assert(std::abs(this->getGrado() - auxgrado) == 0);
 
 	#endif
 
-	// Se devuelve el objeto actual
+	// Se devuelve el objeto actuif(this->getCoeficiente()==1){
+			cout<<this->getCoeficiente()<<"X^"<<this->getGrado()<<endl;
+
 	return *this;
 }
 
@@ -176,10 +179,43 @@ ed::Monomio & ed::Monomio::operator/=(double const &x)
 // Funciones lectura y escritura de la clase Monomio
 
 // COMPLETAR
+	void ed::Monomio::leerMonomio(){
+		double coeficiente;
+		int grado;
+		cout<<"Introduce coeficiente:"<<endl;
+		cin>>coeficiente;
+		cout<<"Introducir grado:"<<endl;
+		cin>>grado;
+		while(grado<0){
+		cout<<"ERROR: Grado no válido."<<endl;
+		cout<<"Introducir nuevo grado:"<<endl;
+		cin>>grado;
+		}
+		Monomio(coeficiente,grado);
+	}
 
+	void ed::Monomio::escribirMonomio(){
+		if( this->getCoeficiente() != 1 ){
+				cout<<this->getCoeficiente();
+		}
+			else if(not (this->getCoeficiente() -1 < COTA_ERROR)){
+				cout<<"-";
+			}
 
+		if(not(this->getGrado() < COTA_ERROR)	){ 
+			cout<<"X";
+		}
+			else if( not (this->getGrado() -1 < COTA_ERROR) ){
+				cout<<"^"<<this->getGrado()<<endl;
+			}
+	}
 ///////////////////////////////////////////////////////////////////////
 
 // Funciones auxiliares de la clase Monomio
 
 // COMPLETAR
+ 	double ed::Monomio::calcularValor(double const &x){
+		double valor;
+		valor = this->getCoeficiente()*pow(x,this->getGrado());
+		return valor;
+	}
