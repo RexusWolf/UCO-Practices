@@ -191,25 +191,32 @@ ed::Monomio & ed::Monomio::operator/=(double const &x)
 		cout<<"Introducir nuevo grado:"<<endl;
 		cin>>grado;
 		}
-		Monomio(coeficiente,grado);
+		this->setCoeficiente(coeficiente);
+		this->setGrado(grado);
+
+		#ifndef NDEBUG
+				assert (this->getGrado() >= 0);
+		#endif
 	}
 
-	void ed::Monomio::escribirMonomio(){
-		double coeficiente = this->getCoeficiente();
-		int grado = this->getGrado();
-		if( coeficiente != 1 ){
-				cout<<coeficiente;
-		}
-			else if(not (coeficiente +1 < COTA_ERROR)){
-				cout<<"-";
+	void ed::Monomio::escribirMonomio() {
+			double coeficiente = this->getCoeficiente();
+			int grado = this->getGrado();
+
+			if (coeficiente != 1){
+						cout<<coeficiente;
+			}
+			else if(coeficiente == 1){
+						cout<<"-";
 			}
 
-		if(not( grado < COTA_ERROR)	){
-			cout<<"X";
-		}
-			else if( not (grado -1 < COTA_ERROR) ){
-				cout<<"^"<<grado<<endl;
+			if (grado > 0){
+					cout<<"X";
+					if(grado != 1){
+						cout<<"^"<<grado;
+					}
 			}
+			cout<<endl;
 	}
 ///////////////////////////////////////////////////////////////////////
 

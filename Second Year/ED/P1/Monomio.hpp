@@ -1,6 +1,7 @@
 /*!
 	\file Monomio.hpp
 	\brief Definición de la clase Monomio
+	\author Francisco Javier Molina Prieto
 */
 
 #ifndef _MONOMIO_HPP_
