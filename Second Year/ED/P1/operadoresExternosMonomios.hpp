@@ -24,20 +24,20 @@ namespace ed
 	//! \name Operadores de igualdad
 
 	// COMPLETAR LOS COMENTARIOS DE DOXYGEN
-	bool operator==(ed::Monomio const & m1, ed::Monomio const & m2);
+		ed::Monomio bool operator==(ed::Monomio const & m1, ed::Monomio const & m2);
 
 
 	// COMPLETAR LOS OTROS OPERADORES DE IGUALDAD
-	bool operator==(ed::Monomio const & m, double const & x);
-	bool operator==(double const & x, ed::Monomio const & m);
+		ed::Monomio bool operator==(ed::Monomio const & m, double const & x);
+		ed::Monomio bool operator==(double const & x, ed::Monomio const & m);
 	//! \name Operadores de desigualdad
 
 	// COMPLETAR LOS COMENTARIOS DE DOXYGEN
-	bool operator!=(ed::Monomio const & m1, ed::Monomio const & m2);
+		ed::Monomio bool operator!=(ed::Monomio const & m1, ed::Monomio const & m2);
 
 	// COMPLETAR LOS OTROS OPERADORES DE DESIGUALDAD
-	bool operator==(ed::Monomio const & m, double const & x);
-	bool operator==(double const & x, ed::Monomio const & m);
+		ed::Monomio bool operator==(ed::Monomio const & m, double const & x);
+		ed::Monomio bool operator==(double const & x, ed::Monomio const & m);
 
 	///////////////////////////////////////////////////
 
