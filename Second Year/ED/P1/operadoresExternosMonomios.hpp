@@ -1,4 +1,4 @@
-/*! 
+/*!
 	\file operadoresExternosMonomios.hpp
 	\brief Ficheros con los prototipos de los operadores externos de la clase Monomio
 */
@@ -21,21 +21,23 @@ namespace ed
 //////////////////////////////////////////////////////////////////////////////////////
 	// Operadores externos que no pertenecen a la clase Monomio
 
-	//! \name Operadores de igualdad  
+	//! \name Operadores de igualdad
 
 	// COMPLETAR LOS COMENTARIOS DE DOXYGEN
 	bool operator==(ed::Monomio const & m1, ed::Monomio const & m2);
 
 
 	// COMPLETAR LOS OTROS OPERADORES DE IGUALDAD
-
-
-	//! \name Operadores de desigualdad 
+	bool operator==(ed::Monomio const & m, double const & x);
+	bool operator==(double const & x, ed::Monomio const & m);
+	//! \name Operadores de desigualdad
 
 	// COMPLETAR LOS COMENTARIOS DE DOXYGEN
 	bool operator!=(ed::Monomio const & m1, ed::Monomio const & m2);
 
 	// COMPLETAR LOS OTROS OPERADORES DE DESIGUALDAD
+	bool operator==(ed::Monomio const & m, double const & x);
+	bool operator==(double const & x, ed::Monomio const & m);
 
 	///////////////////////////////////////////////////
 
@@ -47,36 +49,40 @@ namespace ed
 
 	// COMPLETAR EL OTRO OPERADOR UNARIO PREFIJO: resta
 
+	ed::Monomio & operator-(ed::Monomio const & m);
 
 	//////////////////////////////////////////////////////////
 
-	//! \name Operador binario de la suma 
+	//! \name Operador binario de la suma
 
 	// COMPLETAR LOS COMENTARIOS DE DOXYGEN
 	 ed::Monomio & operator+ (ed::Monomio const &m1, ed::Monomio const &m2);
 
 
 	//////////////////////////////////////////////////////////
-	//! \name Operador binario de la resta 
-
+	//! \name Operador binario de la resta
+	 ed::Monomio & operator- (ed::Monomio const &m1, ed::Monomio const &m2);
 	// COMPLETAR
 
 
 	///////////////////////////////////////////////////////////////////////////
-	//! \name Operadores binarios de la multiplicación 
-
+	//! \name Operadores binarios de la multiplicación
+	 ed::Monomio & operator*(ed::Monomio const &m1, ed::Monomio const &m2);
 	// COMPLETAR
+	 ed::Monomio & operator*(ed::Monomio const &m, double const &x);
+	 ed::Monomio & operator*(double const &x, ed::Monomio const &m);
 
 	///////////////////////////////////////////////////////////////////////////
 
-	//! \name Operadores binarios de la división 
-
+	//! \name Operadores binarios de la división
+	 ed::Monomio & operator/(ed::Monomio const &m1, ed::Monomio const &m2);
 	// COMPLETAR
-
+	 ed::Monomio & operator/(ed::Monomio const &m, double const &x);
+	 ed::Monomio & operator/(double const &x, ed::Monomio const &m);
 
 	/////////////////////////////////////////////////////////////////////////////
 
-	//! \name Sobrecarga de los operadores de entrada y salida 
+	//! \name Sobrecarga de los operadores de entrada y salida
 
 	// COMPLETAR LOS COMENTARIOS DE DOXYGEN
 	 istream &operator>>(istream &stream, ed::Monomio &m);
@@ -87,5 +93,3 @@ namespace ed
 }  // Fin de namespace ed.
 
 #endif // _OperadoresExternosMonomios_HPP_
-
-
