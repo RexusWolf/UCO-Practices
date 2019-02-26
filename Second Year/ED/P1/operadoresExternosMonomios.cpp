@@ -79,16 +79,8 @@ namespace ed
 			#ifndef NDEBUG
 				assert(m1.getGrado() == m2.getGrado());
 			#endif
-			double auxcoef = m1.getCoeficiente();
-			int auxgrado = m1.getGrado();
 			// Se crea un nuevo objeto
-			ed::Monomio *nuevo = new ed::Monomio(m1);
-			*nuevo += m2;
-			#ifndef NDEBUG
-				assert(std::abs(m1.getCoeficiente() - (auxcoef + m2.getCoeficiente())) < COTA_ERROR);
-				assert(m1.getGrado() == m2.getGrado());
-				assert(nuevo->getGrado() == auxgrado);
-			#endif
+			ed::Monomio *nuevo = new ed::Monomio(m1.getCoeficiente() + m2.getCoeficiente(), m1.getGrado());
 			// Se devuelve el resultado
 			return *nuevo;
 	}
@@ -97,25 +89,13 @@ namespace ed
 	////////////
 	// Resta
 	ed::Monomio & operator- (ed::Monomio const &m1, ed::Monomio const &m2){
-
-
-			#ifndef NDEBUG
-					assert(m1.getGrado() == m2.getGrado());
-			#endif
-			double auxcoef = m1.getCoeficiente();
-			int auxgrado = m1.getGrado();
-			// Se crea un nuevo objeto
-			ed::Monomio *nuevo = new ed::Monomio(m1);
-			*nuevo -= m2;
-
-			#ifndef NDEBUG
-				assert(std::abs(m1.getCoeficiente() - (auxcoef - m2.getCoeficiente())) < COTA_ERROR);
-				assert(m1.getGrado() == m2.getGrado());
-				assert(m1.getGrado() == auxgrado);
-			#endif
-
-			// Se devuelve el resultado
-			return *nuevo;
+		#ifndef NDEBUG
+			assert(m1.getGrado() == m2.getGrado());
+		#endif
+		// Se crea un nuevo objeto
+		ed::Monomio *nuevo = new ed::Monomio(m1.getCoeficiente() - m2.getCoeficiente(), m1.getGrado());
+		// Se devuelve el resultado
+		return *nuevo;
 	}
 
 	// Multiplicación
