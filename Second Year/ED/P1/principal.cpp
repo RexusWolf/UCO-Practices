@@ -1,6 +1,6 @@
 /*!
  \mainpage Implementación de un monomio
- \brief		Esta práctica consiste en, como bien dice su título
+ \brief		Esta práctica consiste en, como bien dice su título,
 					la implementación de un monomio en C, usanado el formato: \f$ coeficiente X^{grado}\f$
  \author   Francisco Javier Molina Prieto
  \date     26/02/2019
