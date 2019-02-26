@@ -1,6 +1,7 @@
 /*!
-   \file  operadoresExternosMonomios.cpp
-	\brief Ficheros con el código de los operadores externos de la clase Monomio
+  @file  operadoresExternosMonomios.cpp
+	@brief Ficheros con el código de los operadores externos de la clase Monomio
+	@author Francisco Javier Molina Prieto
 */
 
 

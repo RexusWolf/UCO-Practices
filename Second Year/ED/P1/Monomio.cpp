@@ -1,6 +1,7 @@
 /*!
-   \file  Monomio.cpp
-   \brief Fichero que contiene el código de las funciones de la clase Monomio
+ 	@file  Monomio.cpp
+ 	@brief Fichero que contiene el código de las funciones de la clase Monomio
+ 	@author Francisco Javier Molina Prieto
 */
 
 

@@ -1,6 +1,7 @@
 /*!
-	\file operadoresExternosMonomios.hpp
-	\brief Ficheros con los prototipos de los operadores externos de la clase Monomio
+	@file operadoresExternosMonomios.hpp
+	@brief Ficheros con los prototipos de los operadores externos de la clase Monomio
+	@author Francisco Javier Molina Prieto
 */
 
 #ifndef _OperadoresExternosMonomios_HPP_
