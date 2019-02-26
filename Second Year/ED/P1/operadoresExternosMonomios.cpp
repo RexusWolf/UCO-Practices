@@ -160,7 +160,7 @@ namespace ed
 
 	ed::Monomio & operator/(ed::Monomio const &m, double const &x){
 			#ifndef NDEBUG
-					assert(abs(numero_real - 0.0) > 0);
+					assert(abs(x - 0.0) > 0);
 			#endif
 			//Se crea un nuevo objeto
 			Monomio *nuevo = new Monomio(m.getCoeficiente() / x, m.getGrado());
