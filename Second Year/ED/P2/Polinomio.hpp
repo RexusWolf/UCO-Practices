@@ -17,6 +17,7 @@
 
 #include "PolinomioInterfaz.hpp"
 #include "Monomio.hpp"
+#include <list>
 
 
 // Se incluye la clase Polinomio dentro del espacio de nombre de la asigantura: ed
@@ -27,20 +28,63 @@ class Polinomio: public ed::PolinomioInterfaz
 {
 
   //! \name Atributos privados de la clase Polinomio
-   private:
 
-  // COMPLETAR
+   private:
+     std::list<Monomio> polinomio_;
 
    //! \name Funciones o métodos públicos de la clase Polinomio
    public:
 
 	//! \name Constructores de la clase Polinomio
 
-  // COMPLETAR
+  inline Polinomio(){
+    double coeficiente = 0.0;
+    int grado = 0;
+    Monomio(coeficiente, grado);
+
+    #ifndef NDEBUG
+      assert(std::abs(this->getCoeficiente()-coeficiente) < COTA_ERROR);
+      assert(if(this->getGrado() == 0));
+    #endif
+  }
+
+  inline Polimonio(const Polinomio &p){
+    double coeficiente = p.getCoeficiente();
+    int grado = p.getGrado();
+    Monomio(coeficiente, grado);
+
+    #ifndef NDEBUG
+      assert(std::abs(this->getCoeficiente()-coeficiente) < COTA_ERROR);
+      assert(if(this->getGrado() == 0));
+    #endif
+  }
 
   //! \name Observadores: funciones de consulta de la clase Polinomio
 
-	// COMPLETAR
+	inline bool esNulo(){
+    if(this->getGrado() == 0 && this->getCoeficiente() < COTA_ERROR)
+    return true;
+    else return false;
+  }
+
+  inline int getGrado(){return grado_;}
+
+  inline int getNumeroMonomios(){
+    return polinomio_.size();
+  }
+
+  bool existeMonomio(int ngrado){
+    std::list<Monomio>::iterator begin;
+    std::list<Monomio>::iterator end;
+
+    if(polinomio_.empty()) return false;
+
+    for(begin = polinomio_.begin(); begin != end; begin++){
+      if(begin.getGrado() == ngrado) return true;
+    }
+
+    return false;
+  }
 
 
 	//! \name Funciones de modificación de la clase Polinomio

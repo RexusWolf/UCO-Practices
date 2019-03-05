@@ -207,7 +207,7 @@ ed::Monomio & ed::Monomio::operator/=(double const &x)
 			if (coeficiente != 1){
 						cout<<coeficiente;
 			}
-			else if(coeficiente == 1){
+			else if(coeficiente == -1){
 						cout<<"-";
 			}
 

@@ -18,8 +18,17 @@
 
 ed::Polinomio & ed::Polinomio::operator=(ed::Polinomio const &p)
 {
-	// COMPLETAR
+	#ifndef NDEBUG
+		assert(std::abs(this->getCoeficiente()-p.getCoeficiente()) > COTA_ERROR);
+		assert(this->getGrado() != p.getGrado());
+	#endif
+	this->setCoeficiente(p.getCoeficiente());
+	this->setGrado(p.getGrado());
 
+	#ifndef NDEBUG
+		assert(std::abs(this->getCoeficiente()-p.getCoeficiente()) < COTA_ERROR);
+		assert(this->getGrado() == p.getGrado());
+	#endif
 	// Se devuelve el objeto actual
 	return *this;
 }
