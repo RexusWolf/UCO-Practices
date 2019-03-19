@@ -57,6 +57,7 @@ int main (int argc, char **argv)
   struct group *gr;
   char *lgn;
   int uid;
+  int guid;
 
 	/* getopt_long guardará el índice de la opción en esta variable. */
 	int option_index = 0;
@@ -104,14 +105,47 @@ int main (int argc, char **argv)
           printf("Número de grupo principal: %d\n", pw->pw_gid);
           break;
       case 'g':
+          lgn = argv[2];
+          if ((pw = getpwnam(lgn)) == NULL) //DEVUELVE LA ESTRUCTURA TRAS RECIBIR lgn COMO PARÁMETRO
+          {
+              fprintf(stderr, "Get of group information failed.\n");
+              exit(1);
+          }
+
+          // Obtenemos la estructura de información del grupo a través del número de grupo al que pertenece el usuario
+          gr = getgrgid(pw->pw_gid);
+          //Se imprime el campo de la estructura que nos interesa
+          printf("Número de grupo principal: %d\n", pw->pw_gid);
+          printf("Nombre del grupo principal: %s\n", gr->gr_name);
           break;
       case 'd':
+          guid = atoi(argv[2]);
+          if ((gr = getgrgid(guid)) == NULL) //DEVUELVE LA ESTRUCTURA TRAS RECIBIR lgn COMO PARÁMETRO
+          {
+              fprintf(stderr, "Get of group information failed.\n");
+              exit(1);
+          }
+
+          //Se imprime el campo de la estructura que nos interesa
+          printf("Nombre del grupo principal: %s\n", gr->gr_name);
           break;
       case 's':
           break;
       case 'a':
           break;
       case 'b':
+          lgn = getenv("USER");
+          if ((pw = getpwnam(lgn)) == NULL) //DEVUELVE LA ESTRUCTURA TRAS RECIBIR lgn COMO PARÁMETRO
+          {
+              fprintf(stderr, "Get of user information failed.\n");
+              exit(1);
+          }
+
+          // Obtenemos la estructura de información del grupo a través del número de grupo al que pertenece el usuario
+          gr = getgrgid(pw->pw_gid);
+          //Se imprime el campo de la estructura que nos interesa
+          printf("Número de grupo principal: %d\n", pw->pw_gid);
+          printf("Nombre del grupo principal: %s\n", gr->gr_name);
           break;
       case 'h':
          printf("-h, --help  Imprimir esta ayuda\n");
