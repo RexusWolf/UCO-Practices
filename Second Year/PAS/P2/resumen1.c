@@ -1,17 +1,4 @@
-/*
-Ejemplo extraído y adaptado del estándar POSIX y glibc.
-Enlace a la página de documentación de la implemencación de getopt de glibc:
-http://www.gnu.org/software/libc/manual/html_node/Getopt-Long-Options.html
-http://www.gnu.org/software/libc/manual/html_node/Getopt-Long-Option-Example.html
-*/
-
-/*
-./a.out
-./a.out -d hola
-./a.out --delete
-./a.out -k
-./a.out k ----(Que observas en este caso)?----
-*/
+// Autor: Francisco Javier Molina Prieto
 
 #include <stdio.h>
 #include <stdlib.h>
