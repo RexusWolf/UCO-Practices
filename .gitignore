@@ -1,0 +1,12 @@
+#Testing Tools
+GoogleTest-Master
+
+#Libraries
+*.a
+#Compiled objects
+*.o
+#Executables
+*.out
+#Documentation
+*html
+*pdf
