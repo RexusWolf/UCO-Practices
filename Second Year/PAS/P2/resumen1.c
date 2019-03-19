@@ -58,13 +58,14 @@ int main (int argc, char **argv)
   char *lgn;
   int uid;
   int guid;
+  FILE * file;
 
 	/* getopt_long guardará el índice de la opción en esta variable. */
 	int option_index = 0;
 
 	/* Deshabilitar la impresión de errores por defecto */
 	/* opterr=0; */
-	while ((c = getopt_long (argc, argv, "u:i:g:d:s:a:bh", long_options, &option_index))!=-1)
+	while ((c = getopt_long (argc, argv, "u:i:g:d:sa:bh", long_options, &option_index))!=-1)
 	{
 		/* El usuario ha terminado de introducir opciones */
 		if (c == -1)
@@ -130,6 +131,41 @@ int main (int argc, char **argv)
           printf("Nombre del grupo principal: %s\n", gr->gr_name);
           break;
       case 's':
+          if((file = fopen("/etc/group", "r")) == NULL){
+            printf("Error en la apertura del archivo");
+          }
+          else printf("Fichero abierto correctamente.\n");
+          char aux[50];
+
+          char* i = fgets(aux, 50, file);
+
+          while(i!=NULL){
+						int j = 0;
+						char groupname[25] = {};
+            i = fgets(aux, 50, file);
+						while(aux[j] != ':'){
+							groupname[j] = aux[j];
+							j++;
+						}
+						printf("%s\n", groupname );
+
+						if ((pw = getpwnam(groupname)) == NULL) //DEVUELVE LA ESTRUCTURA TRAS RECIBIR lgn COMO PARÁMETRO
+	          {
+	              fprintf(stderr, "Get of group information failed.\n");
+	              exit(1);
+	          }
+
+	          // Obtenemos la estructura de información del grupo a través del número de grupo al que pertenece el usuario
+	          gr = getgrgid(pw->pw_gid);
+	          //Se imprime el campo de la estructura que nos interesa
+	          printf("Nombre del grupo principal: %s\n", gr->gr_name);
+						printf("Número de grupo principal: %d\n", pw->pw_gid);
+						printf("\n");
+
+          }
+
+
+          fclose(file);
           break;
       case 'a':
           break;
