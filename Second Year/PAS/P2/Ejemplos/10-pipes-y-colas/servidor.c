@@ -1,3 +1,11 @@
+/* 
+Servidor que lee de una cola abierta para lectura una cadena de caracteres y la
+imprime por pantalla.
+
+Lo hace mientras que el valor de esa cadena sea distinto a la palabra exit.
+*/
+
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -49,7 +57,7 @@ int main(int argc, char **argv)
 			exit(-1);
 		}
 		// Cerrar la cadena
-		buffer[bytes_read] = '\0';
+		//buffer[bytes_read] = '\0';
 
 		// Comprobar el fin del bucle
 		if (strncmp(buffer, MSG_STOP, strlen(MSG_STOP))==0)
@@ -76,7 +84,9 @@ int main(int argc, char **argv)
 }
 
 
-// Función auxiliar, escritura de un log. No se usa en este ejemplo, pero le servira en ejercicio resumen
+/* Función auxiliar, escritura de un log. 
+No se usa en este ejemplo, pero le puede servir para algun
+ejercicio resumen */
 void funcionLog(char *mensaje) 
 {
 	int resultado;

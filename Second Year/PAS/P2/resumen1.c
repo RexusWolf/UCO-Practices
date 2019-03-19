@@ -1,105 +1,154 @@
 /*
-Ejemplo extraído del estándar POSIX y glibc.
+Ejemplo extraído y adaptado del estándar POSIX y glibc.
 Enlace a la página de documentación de la implemencación de getopt de glibc:
-http://pubs.opengroup.org/onlinepubs/9699919799/functions/getopt.html
-http://www.gnu.org/software/libc/manual/html_node/Getopt.html
-http://www.gnu.org/software/libc/manual/html_node/Example-of-Getopt.html
+http://www.gnu.org/software/libc/manual/html_node/Getopt-Long-Options.html
+http://www.gnu.org/software/libc/manual/html_node/Getopt-Long-Option-Example.html
 */
 
-#include <unistd.h>
-#include <ctype.h>
+/*
+./a.out
+./a.out -d hola
+./a.out --delete
+./a.out -k
+./a.out k ----(Que observas en este caso)?----
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
+#include <getopt.h>
 #include <string.h>
+#include <pwd.h>
+#include <grp.h>
 
 int main (int argc, char **argv)
 {
-    int aflag = 0;
-    int bflag = 0;
-    char *cvalue = NULL;
-    int index;
-    int c;
-    char *lang = "LANG";
-    char *home = "HOME";
-    char *value;
+	int c;
 
-    /* IMPORTANTE:
-     Las variables optind, optarg, opterr y optopt son variables externas incluidas en <unistd.h> */
+  /* Estructura a utilizar por getoptlong */
+  static struct option long_options[] =
+  {
+    /* Opciones que no van a actuar sobre un flag */
+    /* "opcion", recibe o no un argumento, 0,
+       identificador de la opción */
+    {"username",	 required_argument,	   0, 'u'},
+    {"useruid",  required_argument,	   0, 'i'},
+    {"groupname",  required_argument, 0, 'g'},
+    {"groupuid",  required_argument, 0, 'd'},
+    {"allgroups",	no_argument, 0, 's'},
+    {"allinfo",	no_argument, 0, 'a'},
+    {"bactive",	no_argument, 0, 'b'},
+    {"help",	no_argument, 0, 'h'},
+    /* Necesario para indicar el final de las opciones */
+    {0, 0, 0, 0}
+  };
 
-    /*
-     If getopt() does not recognize an option character, it prints an error message to stderr,
-     stores the character in optopt, and returns '?'. The calling program may prevent the error
-     message by setting opterr to 0 */
-    //Prueba a ejecutar el programa comentando esta linea, podrás observar como se obtiene un
-    // error por defecto por la salida estandar, en este caso el terminal.
-    opterr = 0;
+	/* Estas variables servirán para almacenar el resultado de procesar la línea de comandos */
+	int aflag = 0;
+	int bflag = 0;
+	char *cvalue = NULL;
+	char *dvalue = NULL;
+	char *fvalue = NULL;
+  // Variables de entorno
+  char *lang = "LANG";
+  char *home = "HOME";
+  char *value;
+  // Declaracion de las estructuras que almacenaran la informarcion de un usuario y de un grupo
+  struct passwd *pw;
+  struct group *gr;
+  char *lgn;
+  int uid;
 
-    // "abc:" -> busca como opciones a y b sin argumentos y c con un argumento OBLIGATORIO.
-    // ':' indica que la opcion debe llevar un argumento obligario
+	/* getopt_long guardará el índice de la opción en esta variable. */
+	int option_index = 0;
 
-    // getopt va iterando, y devuelve -1 si ya hemos consultado toda la linea de argumentos.
-    // Sino, devuelve el caracter de opción encontrado para caracteres validos
-    // o devuelve ? si el caracter no es valido segun la cadena especificada.
-    while ((c = getopt (argc, argv, "uigdsabh")) != -1)
-    {
-        // Podemos observar qué pasa con las variables externas que va gestionando
-        //   getopt() durante las sucesivas llamadas.
-        //   - optind: Indice del siguiente elemento a procesar del vector argv[]
-        //   - optarg: recoge el valor del argumento obligario de una opcion.
-        //   - optopt: recoge el valor de la opcion cuando es desconocida (?) o INCOMPLETA respecto a las opciones indicadas.
+	/* Deshabilitar la impresión de errores por defecto */
+	/* opterr=0; */
+	while ((c = getopt_long (argc, argv, "u:i:g:d:s:a:bh", long_options, &option_index))!=-1)
+	{
+		/* El usuario ha terminado de introducir opciones */
+		if (c == -1)
+			break;
+		switch (c)
+		{
+      case 'u':
+            lgn = argv[2];
 
-        // Modificar para que indique opciones reconocidas/ordene opciones por existencia.
-        switch (c)
-        {
-		     case 'u':
-		         break;
-         case 'i':
-    		     break;
-         case 'g':
-             break;
-         case 'd':
-             break;
-         case 's':
-             break;
-         case 'a':
-             break;
-		     case 'b':
-		         break;
-		     case 'h':
-		         break;
-		     case '?': //Opcion no reconocida o INCOMPLETA (sin argumento). Probar tambien la diferencia entre ejecutar %$>./a.out m   ó   %$>./a.out -m
-		         if (isprint (optopt)) //Se mira si el caracter es imprimible
-		             fprintf (stderr, "Opción desconocida \"-%c\". Valor de opterr = %d\n", optopt, opterr);
-		         else //Caracter no imprimible o especial
-		             fprintf (stderr, "Caracter `\\x%x'. Valor de opterr = %d\n", optopt, opterr);
-		         return 1;  //Finaliza el programa
-		     default:
-             abort();
-        }
-        printf("optind: %d, optarg: %s, optopt: %c, opterr: %d\n\n", optind, optarg, optopt, opterr);
-    }
+          if ((pw = getpwnam(lgn)) == NULL) //DEVUELVE LA ESTRUCTURA TRAS RECIBIR lgn COMO PARÁMETRO
+          {
+              fprintf(stderr, "Get of user information failed.\n");
+              exit(1);
+          }
+          //Aqui ya se dispone de la estructura que contiene informacion del usuario
+          printf("Nombre: %s\n", pw->pw_gecos); //No es lo mismo el nombre de usuario asociado a un login que el propio login
+          printf("Login: %s\n", pw->pw_name);
+          printf("Password: %s\n", pw->pw_passwd);
+          printf("UID: %d\n", pw->pw_uid);
+          printf("Home: %s\n", pw->pw_dir);
+          printf("Número de grupo principal: %d\n", pw->pw_gid);
 
-    //Este último bucle controla opciones introducidas por el usuario que no hayan sido procesadas
-    //por ser no reconocidas al no llevar un guion "-" delante.
-    //Compara el número de argumentos recibidos con el número de opciones reconocidas mediante "-".
-    //Como getopt() internamente reordena los valores de argv, las primeras posiciones de argv
-    //corresponden a opciones conocidas y las últimas, a partir de optind, a opciones no reconocidas.
+          break;
+      case 'i':
+          uid = atoi(argv[2]);
 
-    for (index = optind; index < argc; index++)
-        printf ("Argumento \"%s\" de la línea de comandos que NO ES UNA OPCIÓN.\n\n", argv[index]);
+          if ((pw = getpwuid(uid)) == NULL) //DEVUELVE LA ESTRUCTURA TRAS RECIBIR lgn COMO PARÁMETRO
+          {
+              fprintf(stderr, "Get of user information failed.\n");
+              exit(1);
+          }
+          //Aqui ya se dispone de la estructura que contiene informacion del usuario
+          printf("Nombre: %s\n", pw->pw_gecos); //No es lo mismo el nombre de usuario asociado a un login que el propio login
+          printf("Login: %s\n", pw->pw_name);
+          printf("Password: %s\n", pw->pw_passwd);
+          printf("UID: %d\n", pw->pw_uid);
+          printf("Home: %s\n", pw->pw_dir);
+          printf("Número de grupo principal: %d\n", pw->pw_gid);
+          break;
+      case 'g':
+          break;
+      case 'd':
+          break;
+      case 's':
+          break;
+      case 'a':
+          break;
+      case 'b':
+          break;
+      case 'h':
+         printf("-h, --help  Imprimir esta ayuda\n");
+         printf("-u, --username  Imprimir esta ayuda\n");
+         printf("-i, --useruid  Imprimir esta ayuda\n");
+         printf("-g, --groupname  Imprimir esta ayuda\n");
+         printf("-d, --groupuid  Imprimir esta ayuda\n");
+         printf("-s, --allgroups  Imprimir esta ayuda\n");
+         printf("-a, --allinfo  Imprimir esta ayuda\n");
+         printf("-b, --bactive  Imprimir esta ayuda\n");
+          break;
 
-    // El siguiente condicional permitiría dar un valor por defecto a la opción c.
-    // Comprueba y razona si se llegaría a ejecutar y en qué circunstancias
-    if(cvalue==NULL)
-        value = getenv(lang);
+			default:
+				abort ();
+		}
+	}
 
-        if (strstr(value,"ES"))
-        {
-            printf("\nLa carpeta del usuario/a es: %s\n", getenv(home));
-        }
-        else
-        {
-            printf("\nUser's home folder is: %s\n", getenv(home));
-        }
-    return 0;
+	/* Imprimir el resto de argumentos de la línea de comandos que no son opciones con "-" */
+	if (optind < argc)
+	{
+		printf("Argumentos ARGV que no son opciones: ");
+		while (optind < argc)
+			printf("%s ", argv[optind++]);
+		putchar ('\n');
+	}
+
+  if(cvalue==NULL)
+      value = getenv(lang);
+
+      if (strstr(value,"EN"))
+      {
+          printf("\nUser's home folder is: %s\n", getenv(home));
+      }
+      else
+      {
+        printf("\nLa carpeta del usuario/a es: %s\n", getenv(home));
+      }
+
+	exit (0);
 }

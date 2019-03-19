@@ -15,7 +15,7 @@ int main()
 	// Descriptor de la cola
 	mqd_t mq;
 	// Buffer para la lectura/escritura
-	char buffer[MAX_SIZE + 1];
+	char buffer[MAX_SIZE];
 	// Atributos de la cola
 	struct mq_attr attr;
 	// Resultado de las operaciones
@@ -28,7 +28,7 @@ int main()
 
 	// Inicializar los atributos de la cola. 
 	attr.mq_maxmsg = 10;        // Maximo número de mensajes
-	attr.mq_msgsize = MAX_SIZE; // Maximo tamaño de un mensaje
+	attr.mq_msgsize = MAX_SIZE; // Maximo tamaño de un mensaje. Tener en cuenta que debe incluir el '/0'
 
 	// Realizar el fork
 	rf = fork();
@@ -46,7 +46,8 @@ int main()
 			   O_RDWR: lectura/escritura
 			   O_RDONLY: solo lectura
 			   O_WRONLY: solo escritura
-			   0644: permisos rw-r--r--
+			   0644: permisos rw-r--r--  
+			         permisos de lectura y escritura para el propietario, y de sólo lectura para el grupo y para otros
 			   attr: estructura con atributos para la cola  */
 			mq = mq_open(QUEUE_NAME, O_CREAT | O_WRONLY, 0644, &attr);
 
@@ -62,7 +63,7 @@ int main()
 			srand(time(NULL));
 			// Número aleatorio entre 0 y 4999
 			numeroAleatorio = rand()%5000;			
-			sprintf(buffer,"%d",numeroAleatorio);
+			sprintf(buffer,"%d",numeroAleatorio); // La funcion sprintf escribe en una cadena el valor indicado y añade el '/0'.
 			printf("[HIJO]: generado el mensaje \"%s\"\n", buffer);
 
 			// Mandamos el mensaje
