@@ -73,62 +73,82 @@ int main (int argc, char **argv)
 		switch (c)
 		{
       case 'u':
-            lgn = argv[2];
+						if(argc == 3){
+		          lgn = argv[2];
 
-          if ((pw = getpwnam(lgn)) == NULL) //DEVUELVE LA ESTRUCTURA TRAS RECIBIR lgn COMO PARÁMETRO
-          {
-              fprintf(stderr, "Get of user information failed.\n");
-              exit(1);
-          }
-          //Aqui ya se dispone de la estructura que contiene informacion del usuario
-          printf("Nombre: %s\n", pw->pw_gecos); //No es lo mismo el nombre de usuario asociado a un login que el propio login
-          printf("Login: %s\n", pw->pw_name);
-          printf("Password: %s\n", pw->pw_passwd);
-          printf("UID: %d\n", pw->pw_uid);
-          printf("Home: %s\n", pw->pw_dir);
-          printf("Número de grupo principal: %d\n", pw->pw_gid);
+		          if ((pw = getpwnam(lgn)) == NULL) //DEVUELVE LA ESTRUCTURA TRAS RECIBIR lgn COMO PARÁMETRO
+		          {
+		              fprintf(stderr, "Get of user information failed.\n");
+		              exit(1);
+		          }
+		          //Aqui ya se dispone de la estructura que contiene informacion del usuario
+		          printf("Nombre: %s\n", pw->pw_gecos); //No es lo mismo el nombre de usuario asociado a un login que el propio login
+		          printf("Login: %s\n", pw->pw_name);
+		          printf("Password: %s\n", pw->pw_passwd);
+		          printf("UID: %d\n", pw->pw_uid);
+		          printf("Home: %s\n", pw->pw_dir);
+		          printf("Número de grupo principal: %d\n", pw->pw_gid);
+					}
+					else{
+						printf("Número de argumentos incorrecto.\n");
+					}
 
           break;
       case 'i':
-          uid = atoi(argv[2]);
+						if(argc == 3){
+		          uid = atoi(argv[2]);
 
-          if ((pw = getpwuid(uid)) == NULL) //DEVUELVE LA ESTRUCTURA TRAS RECIBIR lgn COMO PARÁMETRO
-          {
-              fprintf(stderr, "Get of user information failed.\n");
-              exit(1);
-          }
-          //Aqui ya se dispone de la estructura que contiene informacion del usuario
-          printf("Nombre: %s\n", pw->pw_gecos); //No es lo mismo el nombre de usuario asociado a un login que el propio login
-          printf("Login: %s\n", pw->pw_name);
-          printf("Password: %s\n", pw->pw_passwd);
-          printf("UID: %d\n", pw->pw_uid);
-          printf("Home: %s\n", pw->pw_dir);
-          printf("Número de grupo principal: %d\n", pw->pw_gid);
+		          if ((pw = getpwuid(uid)) == NULL) //DEVUELVE LA ESTRUCTURA TRAS RECIBIR lgn COMO PARÁMETRO
+		          {
+		              fprintf(stderr, "Get of user information failed.\n");
+		              exit(1);
+		          }
+		          //Aqui ya se dispone de la estructura que contiene informacion del usuario
+		          printf("Nombre: %s\n", pw->pw_gecos); //No es lo mismo el nombre de usuario asociado a un login que el propio login
+		          printf("Login: %s\n", pw->pw_name);
+		          printf("Password: %s\n", pw->pw_passwd);
+		          printf("UID: %d\n", pw->pw_uid);
+		          printf("Home: %s\n", pw->pw_dir);
+		          printf("Número de grupo principal: %d\n", pw->pw_gid);
+					}
+					else{
+						printf("Número de argumentos incorrecto.\n");
+					}
           break;
       case 'g':
-          lgn = argv[2];
-          if ((pw = getpwnam(lgn)) == NULL) //DEVUELVE LA ESTRUCTURA TRAS RECIBIR lgn COMO PARÁMETRO
-          {
-              fprintf(stderr, "Get of group information failed.\n");
-              exit(1);
-          }
+					if(argc==3){
+	          lgn = argv[2];
+	          if ((pw = getpwnam(lgn)) == NULL) //DEVUELVE LA ESTRUCTURA TRAS RECIBIR lgn COMO PARÁMETRO
+	          {
+	              fprintf(stderr, "Get of group information failed.\n");
+	              exit(1);
+	          }
 
-          // Obtenemos la estructura de información del grupo a través del número de grupo al que pertenece el usuario
-          gr = getgrgid(pw->pw_gid);
-          //Se imprime el campo de la estructura que nos interesa
-          printf("Número de grupo principal: %d\n", pw->pw_gid);
-          printf("Nombre del grupo principal: %s\n", gr->gr_name);
+	          // Obtenemos la estructura de información del grupo a través del número de grupo al que pertenece el usuario
+	          gr = getgrgid(pw->pw_gid);
+	          //Se imprime el campo de la estructura que nos interesa
+	          printf("Número de grupo principal: %d\n", pw->pw_gid);
+	          printf("Nombre del grupo principal: %s\n", gr->gr_name);
+					}
+					else{
+						printf("Número de argumentos incorrecto.\n");
+					}
           break;
       case 'd':
-          guid = atoi(argv[2]);
-          if ((gr = getgrgid(guid)) == NULL) //DEVUELVE LA ESTRUCTURA TRAS RECIBIR lgn COMO PARÁMETRO
-          {
-              fprintf(stderr, "Get of group information failed.\n");
-              exit(1);
-          }
+					if(argc==3){
+					  guid = atoi(argv[2]);
+	          if ((gr = getgrgid(guid)) == NULL) //DEVUELVE LA ESTRUCTURA TRAS RECIBIR lgn COMO PARÁMETRO
+	          {
+	              fprintf(stderr, "Get of group information failed.\n");
+	              exit(1);
+	          }
 
-          //Se imprime el campo de la estructura que nos interesa
-          printf("Nombre del grupo principal: %s\n", gr->gr_name);
+	          //Se imprime el campo de la estructura que nos interesa
+	          printf("Nombre del grupo principal: %s\n", gr->gr_name);
+					}
+					else{
+						printf("Número de argumentos incorrecto.\n");
+					}
           break;
       case 's':
           if((file = fopen("/etc/group", "r")) == NULL){
@@ -168,6 +188,27 @@ int main (int argc, char **argv)
           fclose(file);
           break;
       case 'a':
+					if(argc==3){
+						lgn = argv[2];
+
+						if ((pw = getpwnam(lgn)) == NULL) //DEVUELVE LA ESTRUCTURA TRAS RECIBIR lgn COMO PARÁMETRO
+						{
+								fprintf(stderr, "Get of user information failed.\n");
+								exit(1);
+						}
+						//Aqui ya se dispone de la estructura que contiene informacion del usuario
+						printf("Nombre: %s\n", pw->pw_gecos); //No es lo mismo el nombre de usuario asociado a un login que el propio login
+						printf("Login: %s\n", pw->pw_name);
+						printf("Password: %s\n", pw->pw_passwd);
+						printf("UID: %d\n", pw->pw_uid);
+						printf("Home: %s\n", pw->pw_dir);
+						gr = getgrgid(pw->pw_gid);
+						printf("Nombre del grupo principal: %s\n", gr->gr_name);
+						printf("Número de grupo principal: %d\n", pw->pw_gid);
+					}
+					else{
+						printf("Numero de argumentos incorrecto.\n");
+					}
           break;
       case 'b':
           lgn = getenv("USER");
@@ -199,7 +240,7 @@ int main (int argc, char **argv)
 		}
 	}
 
-	/* Imprimir el resto de argumentos de la línea de comandos que no son opciones con "-" */
+	/* Imprimir el resto de argumentos de la línea de comandos que no son opciones con "-"
 	if (optind < argc)
 	{
 		printf("Argumentos ARGV que no son opciones: ");
@@ -208,7 +249,9 @@ int main (int argc, char **argv)
 		putchar ('\n');
 	}
 
-  if(cvalue==NULL)
+*/
+
+  if(argc == 1)
       value = getenv(lang);
 
       if (strstr(value,"EN"))
