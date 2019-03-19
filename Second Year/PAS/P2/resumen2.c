@@ -40,18 +40,24 @@ int main()
     case -1: // Error al hacer fork()
       break;
     case 0:
-      close(fildes[1]);
       nbytes = read(fildes[0], buf, BSIZE);
+      printf("Leido %ld en la tuberia 1.\n", nbytes );
+      close(fildes[0]);
+      printf("Tuberia 1 cerrada.\n");
       ptr = strtok(cad, ";");
       printf("%s\n", ptr);
       //cad2 = cad;
-      close(fildes[0]);
+      printf("He escrito en la tuberia 2\n");
+      close(fildes[1]);
+      printf("Tuberia 2 cerrada.\n");
       exit(EXIT_SUCCESS);
 
     default:
       close(fildes[0]);
       write(fildes[1], cad, 20);
+      printf("He escrito los dos números en la tuberia 1.\n");
       close(fildes[1]);
+      printf("Tuberia 1 cerrada.\n");
       exit(EXIT_SUCCESS);
   }
 
