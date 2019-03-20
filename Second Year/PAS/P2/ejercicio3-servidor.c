@@ -57,7 +57,7 @@ int main(int argc, char **argv)
 
 	// Abrir la cola del cliente. La cola CLIENT_QUEUE le servira en ejercicio resumen.
 	// No es necesario crearla si se lanza primero el cliente, sino el programa no funciona.
-	mq_client = mq_open(SERVER_QUEUE, O_WRONLY);
+	mq_client = mq_open(CLIENT_QUEUE, O_WRONLY);
 	if(mq_client == (mqd_t)-1 )
 	{
 			perror("Error al abrir la cola del cliente");
@@ -85,12 +85,12 @@ int main(int argc, char **argv)
 		if (strncmp(buffer, MSG_STOP, strlen(MSG_STOP))==0)
 			must_stop = 1;
 		else{
-			printf("Recibido el mensaje: %s\n", buffer);
+			printf("Recibido el mensaje: %s", buffer);
 
 			/* Execute regular expression */
       reti = regexec(&regex, buffer , 0, NULL, 0);
       if( !reti ){
-              puts("Match");
+              puts("Match\n");
 							char cad[20] = "Empareja";
 							strcpy(bufferclient, cad);
       }
@@ -106,7 +106,7 @@ int main(int argc, char **argv)
       }
 
 			// Enviar y comprobar si el mensaje se manda
-			if(mq_send(mq_client, buffer, MAX_SIZE, 0) != 0)
+			if(mq_send(mq_client, bufferclient, MAX_SIZE, 0) != 0)
 			{
 				perror("Error al enviar el mensaje");
 				exit(-1);
@@ -118,8 +118,6 @@ int main(int argc, char **argv)
 	/* Free compiled regular expression if you want to use the regex_t again */
 	regfree(&regex);
 
-	return 0;
-
 	// Cerrar la cola del servidor
 	if(mq_close(mq_server) == (mqd_t)-1)
 	{
@@ -130,7 +128,7 @@ int main(int argc, char **argv)
 	// Cerrar la cola del servidor
 	if(mq_close(mq_client) == (mqd_t)-1)
 	{
-		perror("Error al cerrar la cola del servidor");
+		perror("Error al cerrar la cola del cliente");
 		exit(-1);
 	}
 
