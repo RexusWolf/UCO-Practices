@@ -23,16 +23,16 @@ int esPrimo(int n)
 
     if (n == 1)
     {
-      printf("1 is neither a prime nor a composite number.");
+    //  printf("1 is neither a prime nor a composite number.");
     }
     else
     {
         if (flag == 0){
-          printf("%d is a prime number.", n);
+      //    printf("%d is a prime number.", n);
           return 1;
         }
         else{
-          printf("%d is not a prime number.", n);
+      //    printf("%d is not a prime number.", n);
           return 0;
         }
     }
@@ -49,6 +49,9 @@ int fildes[2];
 const int BSIZE = 100;
 char buf[BSIZE];
 ssize_t nbytes;
+char cad1[8];
+char cad2[8];
+int num1, num2;
 char *cadnum1;
 char *cadnum2;
 
@@ -66,12 +69,7 @@ switch (fork())
 		perror("No se ha podido crear el proceso hijo...");
 		exit(EXIT_FAILURE);
 
-	case 0: // El hijo lee desde la tubería, no necesitamos escribir.
-		if (close(fildes[1]) == -1)
-		{
-			perror("Error en close");
-			exit(EXIT_FAILURE);
-		}
+	case 0:
 
 		// Leer usando READ. Es una llamada bloqueante.
 		nbytes = read(fildes[0], buf, BSIZE);
@@ -88,42 +86,53 @@ switch (fork())
       printf("%s\n", cadnum1);
       cadnum2 = strtok(NULL, ";");
       printf("%s\n", cadnum2);
+
+
+  		if (close(fildes[0]) == -1) //Se termina de leer -> Cerramos filfes[0]
+  		{
+  			perror("Error en close");
+  			exit(EXIT_FAILURE);
+  		}
+  		else
+  			printf("[HIJO]: Tuberia 1 cerrada.\n");
+
+
       int numero1 = atoi(cadnum1);
       int numero2 = atoi(cadnum2);
       if(esPrimo(numero1) && esPrimo(numero2)){
         if((numero1 - numero2) >= -2 || (numero1-numero2) <=2){
-          printf("Son primos gemelos.\n");
+          //printf("Son primos gemelos.\n");
+          strcpy(buf, "Gemelos");
+        }
+        else{
+          //printf("Son primos, no son gemelos.\n");
+          strcpy(buf, "Primos");
         }
       }
       else{
-        printf("No son primos.\n");
+          strcpy(buf, "No-primos");
+          //printf("No son primos.\n");
       }
 
+      if (write(fildes[1], buf , 14) == -1)
+  		{
+  			perror("Error en write");
+  			exit(EXIT_FAILURE);
+  		}
 
-		if (close(fildes[0]) == -1) //Se termina de leer -> Cerramos filfes[0]
-		{
-			perror("Error en close");
-			exit(EXIT_FAILURE);
-		}
-		else
-			printf("[HIJO]: Tuberia cerrada.\n");
+    // El hijo lee desde la tubería, no necesitamos escribir.
+  		if (close(fildes[1]) == -1)
+  		{
+  			perror("Error en close");
+  			exit(EXIT_FAILURE);
+  		}
+      else
+        printf("[HIJO]: Tuberia 2 cerrada.\n");
 
 		exit(EXIT_SUCCESS);
 
 
 	default: // El padre escribe en la tubería
-
-		// No se necesita leer
-		if (close(fildes[0]) == -1)
-		{
-			perror("Error en close");
-			exit(EXIT_FAILURE);
-		}
-
-
-    char cad1[8];
-    char cad2[8];
-    int num1, num2;
 
     printf("Introduce el primer número entero:\n");
     scanf("%d", &num1 );
@@ -143,14 +152,6 @@ switch (fork())
 			exit(EXIT_FAILURE);
 		}
 
-		// El hijo verá FEOF si posterior a esta llamada close del padre hiciera una read.
-		if (close(fildes[1]) == -1)
-		{
-			perror("Error en close");
-			exit(EXIT_FAILURE);
-		}
-		else
-			printf("[PADRE]: Tuberia cerrada.\n");
 
 		while ( (flag=wait(&status)) > 0 )
 		{
@@ -165,6 +166,38 @@ switch (fork())
 				printf("Proceso Padre, Hijo con PID %ld reanudado\n",(long int) flag);
 			}
 		}
+
+    // Leer usando READ. Es una llamada bloqueante.
+    nbytes = read(fildes[0], buf, BSIZE);
+    if (nbytes == -1)
+    {
+      perror("Error en read");
+      exit(EXIT_FAILURE);
+    }
+    else if (nbytes == 0) //read() no ha leido nada -> Se llegaría a FEOF porque el padre habría cerrado la tuberia.
+      printf("[HIJO]: Detecto que mi padre ha cerrado la tuberia...\n");
+    else
+      printf("[HIJO]: Leido %s de la tuberia.\n", buf);
+
+    // El hijo verá FEOF si posterior a esta llamada close del padre hiciera una read.
+    if (close(fildes[0]) == -1)
+    {
+      perror("Error en close");
+      exit(EXIT_FAILURE);
+    }
+    else
+      printf("[PADRE]: Tuberia 1 cerrada.\n");
+
+
+
+		if (close(fildes[1]) == -1)
+		{
+			perror("Error en close");
+			exit(EXIT_FAILURE);
+		}
+    else
+      printf("[PADRE]: Tuberia 2 cerrada.\n");
+
 		if (flag==(pid_t)-1 && errno==ECHILD)
 		{
 			printf("Proceso Padre, valor de errno = %d, definido como %s, no hay más hijos que esperar!\n", errno, strerror(errno));
