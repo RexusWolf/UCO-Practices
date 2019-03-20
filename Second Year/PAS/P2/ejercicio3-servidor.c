@@ -26,10 +26,13 @@ int main(int argc, char **argv)
 {
 	// Cola del servidor
 	mqd_t mq_server;
+	// Cola del cliente
+	mqd_t mq_client;
 	// Atributos de la cola
 	struct mq_attr attr;
 	// Buffer para intercambiar mensajes
 	char buffer[MAX_SIZE + 1];
+	char bufferclient[MAX_SIZE];
 	// flag que indica cuando hay que parar. Se escribe palabra exit
 	int must_stop = 0;
 	// Inicializar los atributos de la cola
@@ -53,6 +56,15 @@ int main(int argc, char **argv)
 	{
    	perror("Error al abrir la cola del servidor");
       exit(-1);
+	}
+
+	// Abrir la cola del cliente.
+	// No es necesario crearla si se lanza primero el servidor, sino el programa no funciona.
+	mq_client = mq_open(CLIENT_QUEUE, O_WRONLY);
+	if(mq_client == (mqd_t)-1 )
+	{
+			perror("Error al abrir la cola del cliente");
+			exit(-1);
 	}
 
 	do
@@ -83,16 +95,25 @@ int main(int argc, char **argv)
       if( !reti ){
               puts("Match\n");
 							char cad[20] = "Empareja";
+							strcpy(bufferclient, cad);
       }
       else if( reti == REG_NOMATCH ){
               puts("No match");
 							char cad[20] = "No empareja";
+							strcpy(bufferclient, cad);
       }
       else{
               regerror(reti, &regex, msgbuf, sizeof(msgbuf));
               fprintf(stderr, "Regex match failed: %s\n", msgbuf);
               exit(1);
       }
+
+			// Enviar y comprobar si el mensaje se manda
+			if(mq_send(mq_client, bufferclient, MAX_SIZE, 0) != 0)
+			{
+				perror("Error al enviar el mensaje al cliente");
+				exit(-1);
+			}
 		}
 	}while (!must_stop); 	// Iterar hasta que llegue el código de salida, es decir, la palabra exit
 

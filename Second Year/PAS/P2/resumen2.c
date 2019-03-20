@@ -28,7 +28,8 @@ int main()
   strcat(cad1, ";");
   sprintf(cad2, "%d", num2);
   strcat(cad1, cad2);
-  strcat(cad, cad1);
+  printf("%s\n", cad1 );
+  strcpy(buf, cad1);
 
   status = pipe(fildes);
   if (status == -1){
@@ -40,8 +41,9 @@ int main()
     case -1: // Error al hacer fork()
       break;
     case 0:
-      nbytes = read(fildes[0], buf, BSIZE);
-      printf("Leido %ld en la tuberia 1.\n", nbytes );
+      nbytes = read(fildes[0], buf, sizeof(buf));
+
+      printf("Leido %s en la tuberia 1.\n", &buf );
       close(fildes[0]);
       printf("Tuberia 1 cerrada.\n");
       ptr = strtok(cad, ";");
@@ -54,10 +56,11 @@ int main()
 
     default:
       close(fildes[0]);
+      printf("Tubería 1 cerrada.\n");
       write(fildes[1], cad, 20);
-      printf("He escrito los dos números en la tuberia 1.\n");
+      printf("He escrito los dos números en la tuberia 2.\n");
       close(fildes[1]);
-      printf("Tuberia 1 cerrada.\n");
+      printf("Tuberia 2 cerrada.\n");
       exit(EXIT_SUCCESS);
   }
 
