@@ -23,19 +23,8 @@ int main(int argc, char **argv)
 {
 	// Cola del servidor
 	mqd_t mq_server;
-	// Cola del cliente
-	mqd_t mq_client;
-	// Atributos de la cola
-	struct mq_attr attr;
-	// Buffer para intercambiar mensajes de Emparejamiento
-	char bufferclient[MAX_SIZE + 1];
 	// Buffer para intercambiar mensajes
 	char buffer[MAX_SIZE];
-	// flag que indica cuando hay que parar. Se escribe palabra exit
-	int must_stop = 0;
-	// Inicializar los atributos de la cola
-	attr.mq_maxmsg = 10;        // Maximo número de mensajes
-	attr.mq_msgsize = MAX_SIZE; // Maximo tamaño de un mensaje
 
 	// Abrir la cola del servidor.
 	// No es necesario crearla si se lanza primero el servidor, sino el programa no funciona.
@@ -44,14 +33,6 @@ int main(int argc, char **argv)
 	{
       perror("Error al abrir la cola del servidor");
       exit(-1);
-	}
-
-	// Crear la cola de mensajes del cliente. La cola CLIENT_QUEUE le servira en ejercicio resumen
-	mq_client = mq_open(CLIENT_QUEUE, O_CREAT | O_RDONLY, 0644, &attr);
-	if(mq_client == (mqd_t)-1 )
-	{
-		perror("Error al abrir la cola del cliente");
-			exit(-1);
 	}
 
 	printf("Mandando mensajes al servidor (escribir \"%s\" para parar):\n", MSG_STOP);
@@ -75,51 +56,10 @@ int main(int argc, char **argv)
 	// Iterar hasta escribir el código de salida
 	}while (strncmp(buffer, MSG_STOP, strlen(MSG_STOP)));
 
-
-
-	do
-	{
-		// Número de bytes leidos
-		ssize_t bytes_read;
-
-		// Recibir el mensaje
-		bytes_read = mq_receive(mq_client, bufferclient, MAX_SIZE, NULL);
-		// Comprobar que la recepción es correcta (bytes leidos no son negativos)
-		if(bytes_read < 0)
-		{
-			perror("Error al recibir el mensaje");
-			exit(-1);
-		}
-
-		// Cerrar la cadena
-		//buffer[bytes_read] = '\0';
-
-		// Comprobar el fin del bucle
-		if (strncmp(bufferclient, MSG_STOP, strlen(MSG_STOP))==0)
-			must_stop = 1;
-		else
-			printf("Recibido el mensaje: %s\n", bufferclient);
-	}while(!must_stop);
-		// Iterar hasta que llegue el código de salida, es decir, la palabra exit
-
 		// Cerrar la cola del servidor
 		if(mq_close(mq_server) == (mqd_t)-1)
 		{
 			perror("Error al cerrar la cola del servidor");
-			exit(-1);
-		}
-
-		// Cerrar la cola del cliente
-		if(mq_close(mq_client) == (mqd_t)-1)
-		{
-			perror("Error al cerrar la cola del cliente");
-			exit(-1);
-		}
-
-		// Eliminar la cola del cliente
-		if(mq_unlink(CLIENT_QUEUE) == (mqd_t)-1)
-		{
-			perror("Error al eliminar la cola del cliente");
 			exit(-1);
 		}
 
