@@ -35,6 +35,14 @@ int main(int argc, char **argv)
       exit(-1);
 	}
 
+	// Crear la cola de mensajes del servidor. La cola CLIENT_QUEUE le servira en ejercicio resumen
+	mq_client = mq_open(CLIENT_QUEUE, O_CREAT | O_RDONLY, 0644, &attr);
+	if(mq_client == (mqd_t)-1 )
+	{
+   	perror("Error al abrir la cola del servidor");
+      exit(-1);
+	}
+
 	printf("Mandando mensajes al servidor (escribir \"%s\" para parar):\n", MSG_STOP);
 	do
 	{
@@ -63,8 +71,39 @@ int main(int argc, char **argv)
 			exit(-1);
 		}
 
+		do
+		{
+			// Número de bytes leidos
+			ssize_t bytes_read;
+
+			// Recibir el mensaje
+			bytes_read = mq_receive(mq_client, buffer, MAX_SIZE, NULL);
+			// Comprobar que la recepción es correcta (bytes leidos no son negativos)
+			if(bytes_read < 0)
+			{
+				perror("Error al recibir el mensaje");
+				exit(-1);
+			}
+
+			// Cerrar la cadena
+			//buffer[bytes_read] = '\0';
+
+			// Comprobar el fin del bucle
+			if (strncmp(buffer, MSG_STOP, strlen(MSG_STOP))==0)
+				must_stop = 1;
+			else
+				printf("Recibido el mensaje: %s", buffer);
+
+		}while (!must_stop);
+
 	return 0;
 }
+
+
+
+
+
+
 
 
 /* Función auxiliar, escritura de un log.
