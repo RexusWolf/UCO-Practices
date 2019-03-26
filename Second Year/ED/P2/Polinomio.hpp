@@ -117,10 +117,19 @@ class Polinomio: public ed::PolinomioInterfaz
 
   // Operadores aritméticos y asignación
 
-		// COMPLETAR LOS COMENTARIOS DE DOXYGEN
+	//Suma
 	Polinomio & operator+=(Polinomio const &p);
 
+  Polinomio & operator+=(ed::Monomio const &m);
 
+  Polinomio & operator+=(double const &x);
+
+  //Resta
+  Polinomio & operator-=(ed::Polinomio const &p);
+
+  Polinomio & operator-=(ed::Monomio const &m);
+  
+  Polinomio & operator-=(double const &x);
 	// COMPLETAR EL RESTO DE OPERADORES
 
 
