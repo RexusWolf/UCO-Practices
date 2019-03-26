@@ -4,8 +4,8 @@
 	@author Francisco Javier Molina Prieto
 */
 
-#ifndef _OperadoresExternosMonomios_HPP_
-#define _OperadoresExternosMonomios_HPP_
+#ifndef _OperadoresExternosgetMonomios()HPP_
+#define _OperadoresExternosgetMonomios()HPP_
 
 // Facilita la entrada y salida
 #include <iostream>
@@ -175,4 +175,4 @@ namespace ed
 
 }  // Fin de namespace ed.
 
-#endif // _OperadoresExternosMonomios_HPP_
+#endif // _OperadoresExternosgetMonomios()HPP_

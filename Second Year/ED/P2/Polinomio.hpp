@@ -3,13 +3,14 @@
    \brief Definición de la clase Polinomio
 */
 
-#ifndef _POLINOMIO_HPP_
-#define _POLINOMIO_HPP_
+#ifndef _getMonomios()HPP_
+#define _getMonomios()HPP_
 
 // Control de asertos
 #include <cassert>
 
 // Vector de STL
+#include <vector>
 #include <vector>
 
 // Para usar la función abs
@@ -17,7 +18,6 @@
 
 #include "PolinomioInterfaz.hpp"
 #include "Monomio.hpp"
-#include <list>
 
 
 // Se incluye la clase Polinomio dentro del espacio de nombre de la asigantura: ed
@@ -30,7 +30,7 @@ class Polinomio: public ed::PolinomioInterfaz
   //! \name Atributos privados de la clase Polinomio
 
    private:
-     std::list<Monomio> polinomio_;
+     std::vector<Monomio> getMonomios();
 
    //! \name Funciones o métodos públicos de la clase Polinomio
    public:
@@ -41,7 +41,7 @@ class Polinomio: public ed::PolinomioInterfaz
     double coeficiente = 0.0;
     int grado = 0;
     Monomio m(coeficiente, grado);
-    polinomio_.push_back(m);
+    getMonomios().push_back(m);
 
     #ifndef NDEBUG
       assert(std::abs(m.getCoeficiente()-coeficiente) < COTA_ERROR);
@@ -58,25 +58,29 @@ class Polinomio: public ed::PolinomioInterfaz
 
   //! \name Observadores: funciones de consulta de la clase Polinomio
 
+
+  inline std::vector<Monomio> getMonomios() const {return getMonomios();};
+
   inline bool esNulo(){
-    if(this->polinomio_.begin()->getCoeficiente() == 0)
-    return true;
+    Monomio primero = this->getMonomios()[0];
+    if((this->getNumeroMonomios() == 1) && (std::abs(primero.getCoeficiente() < COTA_ERROR)) && (primero.getGrado() == 0))
+      return true;
     else return false;
   }
 
-  inline int getGrado(){return this->polinomio_.begin()->getGrado();}
+  inline int getGrado(){return this->getMonomios().begin()->getGrado();}
 
   inline int getNumeroMonomios(){
-    return polinomio_.size();
+    return getMonomios().size();
   }
 
   bool existeMonomio(int ngrado){
-    std::list<Monomio>::iterator begin;
-    std::list<Monomio>::iterator end;
+    std::vector<Monomio>::iterator begin;
+    std::vector<Monomio>::iterator end;
 
-    if(polinomio_.empty()) return false;
+    if(getMonomios().empty()) return false;
 
-    for(begin = polinomio_.begin(); begin != end; begin++){
+    for(begin = getMonomios().begin(); begin != end; begin++){
       if(begin->getGrado() == ngrado) return true;
     }
 
@@ -85,21 +89,23 @@ class Polinomio: public ed::PolinomioInterfaz
 
 
   Monomio getMonomio(int ngrado){
-    std::list<Monomio>::iterator begin;
-    std::list<Monomio>::iterator end;
+    std::vector<Monomio>::iterator begin;
+    std::vector<Monomio>::iterator end;
 
     #ifndef NDEBUG
-      assert(polinomio_.empty() == false );
+      assert(getMonomios().empty() == false );
     #endif
 
-    for(begin = polinomio_.begin(); begin != end; begin++){
+    for(begin = getMonomios().begin(); begin != end; begin++){
       if(begin->getGrado() == ngrado) return *begin;
     }
 
   }
+
 	//! \name Funciones de modificación de la clase Polinomio
 
-	// COMPLETAR
+	// Función de ordenación de polinomio
+  void ordenaPolinomio();
 
 
  	////////////////////////////////////////////////////////////////
@@ -130,6 +136,20 @@ class Polinomio: public ed::PolinomioInterfaz
   Polinomio & operator-=(ed::Monomio const &m);
   
   Polinomio & operator-=(double const &x);
+
+   //Multiplicación
+  Polinomio & operator*=(ed::Polinomio const &p);
+
+  Polinomio & operator*=(ed::Monomio const &m);
+  
+  Polinomio & operator*=(double const &x);
+
+   //División
+  Polinomio & operator/=(ed::Polinomio const &p);
+
+  Polinomio & operator/=(ed::Monomio const &m);
+  
+  Polinomio & operator/=(double const &x);
 	// COMPLETAR EL RESTO DE OPERADORES
 
 
@@ -154,5 +174,5 @@ class Polinomio: public ed::PolinomioInterfaz
 
 } // \brief Fin de namespace ed.
 
-//  _POLINOMIO_HPP_
+//  _getMonomios()HPP_
 #endif
