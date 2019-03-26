@@ -40,34 +40,31 @@ class Polinomio: public ed::PolinomioInterfaz
   inline Polinomio(){
     double coeficiente = 0.0;
     int grado = 0;
-    Monomio(coeficiente, grado);
+    Monomio m(coeficiente, grado);
+    polinomio_.push_back(m);
 
     #ifndef NDEBUG
-      assert(std::abs(this->getCoeficiente()-coeficiente) < COTA_ERROR);
-      assert(if(this->getGrado() == 0));
+      assert(std::abs(m.getCoeficiente()-coeficiente) < COTA_ERROR);
+      assert(m.getGrado() == 0);
     #endif
   }
 
-  inline Polimonio(const Polinomio &p){
-    double coeficiente = p.getCoeficiente();
-    int grado = p.getGrado();
-    Monomio(coeficiente, grado);
-
+  ed::Monomio inline Polimonio(const Polinomio &p){
+    *this = p;
     #ifndef NDEBUG
-      assert(std::abs(this->getCoeficiente()-coeficiente) < COTA_ERROR);
-      assert(if(this->getGrado() == 0));
+      assert(*this == p);
     #endif
   }
 
   //! \name Observadores: funciones de consulta de la clase Polinomio
 
-	inline bool esNulo(){
-    if(this->getGrado() == 0 && this->getCoeficiente() < COTA_ERROR)
+  inline bool esNulo(){
+    if(this->polinomio_.begin()->getCoeficiente() == 0)
     return true;
     else return false;
   }
 
-  inline int getGrado(){return grado_;}
+  inline int getGrado(){return this->polinomio_.begin()->getGrado();}
 
   inline int getNumeroMonomios(){
     return polinomio_.size();
@@ -80,13 +77,26 @@ class Polinomio: public ed::PolinomioInterfaz
     if(polinomio_.empty()) return false;
 
     for(begin = polinomio_.begin(); begin != end; begin++){
-      if(begin.getGrado() == ngrado) return true;
+      if(begin->getGrado() == ngrado) return true;
     }
 
     return false;
   }
 
 
+  Monomio getMonomio(int ngrado){
+    std::list<Monomio>::iterator begin;
+    std::list<Monomio>::iterator end;
+
+    #ifndef NDEBUG
+      assert(polinomio_.empty() == false );
+    #endif
+
+    for(begin = polinomio_.begin(); begin != end; begin++){
+      if(begin->getGrado() == ngrado) return *begin;
+    }
+
+  }
 	//! \name Funciones de modificación de la clase Polinomio
 
 	// COMPLETAR
