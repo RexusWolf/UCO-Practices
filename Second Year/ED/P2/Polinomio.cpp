@@ -6,6 +6,7 @@
 
 // Ficheros de cabecera
 #include <iostream>
+using namespace std;
 
 #include "Polinomio.hpp"
 
@@ -119,17 +120,32 @@ ed::Polinomio & ed::Polinomio::operator-=(double const &x){
 //Multiplicación
 
 ed::Polinomio & ed::Polinomio::operator*=(ed::Polinomio const &p){
-	
+	std::vector<Monomio>::iterator it;
+	for (it = p.getMonomios().begin(); it != p.getMonomios().end(); it++){
+		*this *= *it;
+	}
+
 	return *this;
 }
 
 ed::Polinomio & ed::Polinomio::operator*=(ed::Monomio const &m){
-	
+	std::vector<Monomio> vector = this->getMonomios();
+
+	std::vector<Monomio>::iterator it;
+	for (it = vector.begin(); it != vector.end(); it++){
+		*it *= m;
+	}
+
+	this->setMonomios(vector);
 	return *this;
 }
 
 ed::Polinomio & ed::Polinomio::operator*=(double const &x){
-
+	ed::Monomio m(x,0);
+	std::vector<Monomio>::iterator it;
+	for(it = this->getMonomios.begin(); it != this->getMonomios().end(); it++ ){
+		*it *= m;
+	}
 	return *this;
 }
 
@@ -141,12 +157,19 @@ ed::Polinomio & ed::Polinomio::operator/=(ed::Polinomio const &p){
 }
 
 ed::Polinomio & ed::Polinomio::operator/=(ed::Monomio const &m){
-	
+	std::vector<Monomio>::iterator it;
+	for(it = this->getMonomios.begin(); it != this->getMonomios().end(); it++ ){
+		*it /= m;
+	}
 	return *this;
 }
 
 ed::Polinomio & ed::Polinomio::operator/=(double const &x){
-
+	ed::Monomio m(x,0);
+	std::vector<Monomio>::iterator it;
+	for(it = this->getMonomios.begin(); it != this->getMonomios().end(); it++ ){
+		*it /= m;
+	}
 	return *this;
 }
 
@@ -155,6 +178,32 @@ ed::Polinomio & ed::Polinomio::operator/=(double const &x){
 // Funciones lectura y escritura de la clase Polinomio
 
 // COMPLETAR
+void ed::Polinomio::leerPolinomio(){
+	double coeficiente;
+	int grado;
+	cout<<"Introduce coeficiente:"<<endl;
+	cin>>coeficiente;
+	cout<<"Introducir grado:"<<endl;
+	cin>>grado;
+	while(grado<0){
+	cout<<"ERROR: Grado no válido."<<endl;
+	cout<<"Introducir nuevo grado:"<<endl;
+	cin>>grado;
+	}
+	ed::Monomio m(coeficiente,grado);
+	this->insertaMonomio(m);
+	#ifndef NDEBUG
+			assert (m.getGrado() >= 0);
+	#endif
+}
+
+void ed::Polinomio::escribirPolinomio(){
+	std::vector<ed::Monomio>::iterator it;
+
+	for( it = this->getMonomios().begin(); it != this->getMonomios().end(); it++){
+		it->escribirMonomio();
+	}
+}
 
 
 ///////////////////////////////////////////////////////////////////////

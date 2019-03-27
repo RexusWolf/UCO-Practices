@@ -159,8 +159,8 @@ class Polinomio: public ed::PolinomioInterfaz
 
 	//! \name Funciones lectura y escritura de la clase Polinomio
 
-	// COMPLETAR
-
+	void escribirPolinomio();
+  void leerPolinomio();
 
 	///////////////////////////////////////////////////////////////////////
 
