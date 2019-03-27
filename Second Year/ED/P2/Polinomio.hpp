@@ -3,8 +3,8 @@
    \brief Definición de la clase Polinomio
 */
 
-#ifndef _getMonomios()HPP_
-#define _getMonomios()HPP_
+#ifndef _POLINOMIO_HPP_
+#define _POLINOMIO_HPP_
 
 // Control de asertos
 #include <cassert>
@@ -30,7 +30,7 @@ class Polinomio: public ed::PolinomioInterfaz
   //! \name Atributos privados de la clase Polinomio
 
    private:
-     std::vector<Monomio> getMonomios();
+     std::vector<Monomio> monomios_;
 
    //! \name Funciones o métodos públicos de la clase Polinomio
    public:
@@ -50,16 +50,18 @@ class Polinomio: public ed::PolinomioInterfaz
   }
 
   ed::Monomio inline Polimonio(const Polinomio &p){
-    *this = p;
+    this->setMonomios(p.getMonomios());
     #ifndef NDEBUG
-      assert(*this == p);
+      assert(this->getMonomios() == p.getMonomios());
     #endif
   }
 
   //! \name Observadores: funciones de consulta de la clase Polinomio
 
 
-  inline std::vector<Monomio> getMonomios() const {return getMonomios();};
+  inline std::vector<Monomio> getMonomios() const {return monomios_;};
+
+  inline void setMonomios(std::vector<Monomio> const &vectormonomios){this->monomios_ = vectormonomios;};
 
   inline bool esNulo(){
     Monomio primero = this->getMonomios()[0];
@@ -106,7 +108,7 @@ class Polinomio: public ed::PolinomioInterfaz
 
 	// Función de ordenación de polinomio
   void ordenaPolinomio();
-
+  void insertaMonomio(Monomio const &new_monomio);
 
  	////////////////////////////////////////////////////////////////
 

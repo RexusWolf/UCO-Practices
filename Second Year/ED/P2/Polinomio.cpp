@@ -17,36 +17,47 @@
 /////////////////////////////////////////////////////////////
 
 ed::Polinomio & ed::Polinomio::operator=(ed::Polinomio const &p){
-	bool iguales = true;
-  std::vector<ed::Monomio>::iterator begin = this->getMonomios().begin();
-	std::vector<ed::Monomio>::iterator end = this->getMonomios().end();;
-	for(begin; begin != end; begin++){
-      if(begin->getCoeficiente() != p.getMonomios().begin()->getCoeficiente()) exit(-1);
-  }
+	#ifndef NDEBUG
+		assert(this->getMonomios() != p.getMonomios());
+	#endif
+
+	this->setMonomios(p.getMonomios());
+
+	#ifndef NDEBUG
+		assert(this->getMonomios() == p.getMonomios());
+	#endif
+
 	// Se devuelve el objeto actual
-	return *this;
-		
+	return *this;		
 }
 
 
 ed::Polinomio & ed::Polinomio::operator=(ed::Monomio const &m){
-	//Crea un polinomio vacío. Se le asigna un monomio vacío.
-	Polinomio new_p;
-	new_p.getMonomios().begin()->setCoeficiente(0.0);
-	new_p.getMonomios().begin()->setGrado(0);
-	*this = new_p;
-	// Se devuelve el objeto actual
+	std::vector<Monomio> aux_vector;
+	aux_vector.push_back(m);
+
+	this->setMonomios(aux_vector);
+
+	#ifndef NDEBUG
+		assert(this->getMonomios() == aux_vector);
+	#endif
 	return *this;
 }
 
 
 ed::Polinomio & ed::Polinomio::operator=(double const &x){
 	// Asigno el número real x como coeficiente de un polinomio vacío.
-	Polinomio p;
+	std::vector<Monomio> aux_vector;
+	ed::Monomio m(x, 0);
+	aux_vector.push_back(m);
 	// El monomio existente al crear el polinomio, tendrá grado 0.
-	p.getMonomios().begin()->setGrado(0);
-	p.getMonomios().begin()->setCoeficiente(x);
+	this->setMonomios(aux_vector);
 	// Se devuelve el objeto actual
+
+	#ifndef NDEBUG
+		assert(this->getMonomios() == aux_vector);
+	#endif
+
 	return *this;
 }
 
@@ -56,19 +67,23 @@ ed::Polinomio & ed::Polinomio::operator=(double const &x){
 
 //Suma
 ed::Polinomio & ed::Polinomio::operator+=(ed::Polinomio const &p){
-	
+	std::vector<Monomio>::iterator it;
+	for (it = p.getMonomios().begin(); it != p.getMonomios().end(); it++){
+		this->insertaMonomio(*it);
+	}
 	// Se devuelve el objeto actual
 	return *this;
 }
 
 ed::Polinomio & ed::Polinomio::operator+=(ed::Monomio const &m){
-	
+	this->insertaMonomio(m);
 	// Se devuelve el objeto actual
 	return *this;
 }
 
 ed::Polinomio & ed::Polinomio::operator+=(double const &x){
-	
+	Monomio m(x,0);
+	this->insertaMonomio(m);
 	// Se devuelve el objeto actual
 	return *this;
 }
@@ -76,17 +91,28 @@ ed::Polinomio & ed::Polinomio::operator+=(double const &x){
 //Resta
 
 ed::Polinomio & ed::Polinomio::operator-=(ed::Polinomio const &p){
-	
+	std::vector<Monomio>::iterator it;
+	ed::Monomio m;
+	for (it = p.getMonomios().begin(); it != p.getMonomios().end(); it++){
+		m.setCoeficiente(- it->getCoeficiente());
+		m.setGrado(it->getGrado());
+		this->insertaMonomio(m);
+	}
 	return *this;
 }
 
 ed::Polinomio & ed::Polinomio::operator-=(ed::Monomio const &m){
-	
+	Monomio aux(-m.getCoeficiente(), m.getGrado());
+	this->insertaMonomio(m);
+	// Se devuelve el objeto actual
 	return *this;
 }
 
 ed::Polinomio & ed::Polinomio::operator-=(double const &x){
-
+	Monomio m(x,0);
+	this->insertaMonomio(m);
+	// Se devuelve el objeto actual
+	return *this;
 	return *this;
 }
 
@@ -156,4 +182,19 @@ void ed::Polinomio::ordenaPolinomio(){
 		aux_polinomio.push_back(aux);
 	}
 	this->getMonomios() = aux_polinomio;
+}
+
+void ed::Polinomio::insertaMonomio(ed::Monomio const &new_monomio){
+	if (this->existeMonomio(new_monomio.getGrado)){
+		std::vector<Monomio>::iterator it;
+		for (it = monomios_.begin(); it != monomios_.end(); it++){
+			if(it->getGrado() == new_monomio.getGrado()){
+				*it += new_monomio;
+			}
+		}
+	}
+	else{
+		monomios_.push_back(new_monomio);
+		//this->ordenaPolinomio();
+	}
 }
