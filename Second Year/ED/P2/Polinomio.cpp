@@ -23,11 +23,11 @@ ed::Polinomio & ed::Polinomio::operator=(ed::Polinomio const &p){
 	#endif
 
 	this->setMonomios(p.getMonomios());
-
+	/*
 	#ifndef NDEBUG
 		assert(this->getMonomios() == p.getMonomios());
 	#endif
-
+	*/
 	// Se devuelve el objeto actual
 	return *this;		
 }
@@ -38,10 +38,11 @@ ed::Polinomio & ed::Polinomio::operator=(ed::Monomio const &m){
 	aux_vector.push_back(m);
 
 	this->setMonomios(aux_vector);
-
+	/*
 	#ifndef NDEBUG
 		assert(this->getMonomios() == aux_vector);
 	#endif
+	*/
 	return *this;
 }
 
@@ -54,11 +55,11 @@ ed::Polinomio & ed::Polinomio::operator=(double const &x){
 	// El monomio existente al crear el polinomio, tendrá grado 0.
 	this->setMonomios(aux_vector);
 	// Se devuelve el objeto actual
-
+	/*
 	#ifndef NDEBUG
 		assert(this->getMonomios() == aux_vector);
 	#endif
-
+	*/
 	return *this;
 }
 
@@ -143,7 +144,7 @@ ed::Polinomio & ed::Polinomio::operator*=(ed::Monomio const &m){
 ed::Polinomio & ed::Polinomio::operator*=(double const &x){
 	ed::Monomio m(x,0);
 	std::vector<Monomio>::iterator it;
-	for(it = this->getMonomios.begin(); it != this->getMonomios().end(); it++ ){
+	for(it = this->getMonomios().begin(); it != this->getMonomios().end(); it++ ){
 		*it *= m;
 	}
 	return *this;
@@ -158,7 +159,7 @@ ed::Polinomio & ed::Polinomio::operator/=(ed::Polinomio const &p){
 
 ed::Polinomio & ed::Polinomio::operator/=(ed::Monomio const &m){
 	std::vector<Monomio>::iterator it;
-	for(it = this->getMonomios.begin(); it != this->getMonomios().end(); it++ ){
+	for(it = this->getMonomios().begin(); it != this->getMonomios().end(); it++ ){
 		*it /= m;
 	}
 	return *this;
@@ -167,7 +168,7 @@ ed::Polinomio & ed::Polinomio::operator/=(ed::Monomio const &m){
 ed::Polinomio & ed::Polinomio::operator/=(double const &x){
 	ed::Monomio m(x,0);
 	std::vector<Monomio>::iterator it;
-	for(it = this->getMonomios.begin(); it != this->getMonomios().end(); it++ ){
+	for(it = this->getMonomios().begin(); it != this->getMonomios().end(); it++ ){
 		*it /= m;
 	}
 	return *this;
@@ -234,7 +235,7 @@ void ed::Polinomio::ordenaPolinomio(){
 }
 
 void ed::Polinomio::insertaMonomio(ed::Monomio const &new_monomio){
-	if (this->existeMonomio(new_monomio.getGrado)){
+	if (this->existeMonomio(new_monomio.getGrado())){
 		std::vector<Monomio>::iterator it;
 		for (it = monomios_.begin(); it != monomios_.end(); it++){
 			if(it->getGrado() == new_monomio.getGrado()){
