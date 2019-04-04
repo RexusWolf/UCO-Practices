@@ -11,13 +11,14 @@
 
 // Vector de STL
 #include <vector>
-#include <vector>
+#include <list>
 
 // Para usar la función abs
 #include <cmath>
 
 #include "PolinomioInterfaz.hpp"
 #include "Monomio.hpp"
+#include "operadoresExternosMonomios.hpp"
 
 
 // Se incluye la clase Polinomio dentro del espacio de nombre de la asigantura: ed

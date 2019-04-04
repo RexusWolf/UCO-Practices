@@ -6,14 +6,21 @@
 
 // Ficheros de cabecera
 #include <iostream>
-using namespace std;
+using std::cout;
+using std::cin;
+using std::endl;
+#include <cstdio>
+
+#include <algorithm>
+using std::sort;
 
 #include "Polinomio.hpp"
+using ed::Polinomio;
+
+#include "operadoresExternosMonomios.hpp"
+#include "operadoresExternosPolinomios.hpp"
 
 // Operadores de asignación
-
-// COMPLETAR
-
 
 /////////////////////////////////////////////////////////////
 

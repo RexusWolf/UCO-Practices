@@ -15,6 +15,13 @@
 // Para la sobrecarga de los operadores de flujo: << y >>
 using std::istream;
 using std::ostream;
+using std::getline;
+
+//Para el uso de strings
+#include <string>
+using std::string;
+//Para el uso de funciones de conversion de cadenas
+#include <cstdlib>
 
 // Espacio de nombre de la asigantura: ed
 namespace ed
