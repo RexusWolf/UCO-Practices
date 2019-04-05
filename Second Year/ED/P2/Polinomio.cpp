@@ -187,29 +187,36 @@ ed::Polinomio & ed::Polinomio::operator/=(double const &x){
 
 // COMPLETAR
 void ed::Polinomio::leerPolinomio(){
-	double coeficiente;
-	int grado;
-	cout<<"Introduce coeficiente:"<<endl;
-	cin>>coeficiente;
-	cout<<"Introducir grado:"<<endl;
-	cin>>grado;
-	while(grado<0){
-	cout<<"ERROR: Grado no válido."<<endl;
-	cout<<"Introducir nuevo grado:"<<endl;
-	cin>>grado;
+	int num = 0;
+	cout<<"Introduce número de monomios"<<endl;
+	cin>>num;
+	while(num>0){
+		double coeficiente;
+		int grado;
+		cout<<"Introduce coeficiente:"<<endl;
+		cin>>coeficiente;
+		cout<<"Introducir grado:"<<endl;
+		cin>>grado;
+		while(grado<0){
+		cout<<"ERROR: Grado no válido."<<endl;
+		cout<<"Introducir nuevo grado:"<<endl;
+		cin>>grado;
+		}
+		ed::Monomio m(coeficiente,grado);
+		this->insertaMonomio(m);
+		num--;
+		#ifndef NDEBUG
+		assert(m.getGrado() >= 0);
+		#endif
 	}
-	ed::Monomio m(coeficiente,grado);
-	this->insertaMonomio(m);
-	#ifndef NDEBUG
-			assert (m.getGrado() >= 0);
-	#endif
+
+
 }
 
 void ed::Polinomio::escribirPolinomio(){
-	std::vector<ed::Monomio>::iterator it;
 
-	for( it = this->getMonomios().begin(); it != this->getMonomios().end(); it++){
-		it->escribirMonomio();
+	for( int i = 0; i != this->getNumeroMonomios(); i++){
+		this->getMonomios()[i].escribirMonomio();
 	}
 }
 

@@ -4,8 +4,8 @@
 	@author Francisco Javier Molina Prieto
 */
 
-#ifndef _OperadoresExternosgetMonomios()HPP_
-#define _OperadoresExternosgetMonomios()HPP_
+#ifndef _OperadoresExternosgetMonomiosHPP_
+#define _OperadoresExternosgetMonomiosHPP_
 
 // Facilita la entrada y salida
 #include <iostream>

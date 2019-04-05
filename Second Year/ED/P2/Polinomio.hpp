@@ -62,22 +62,22 @@ class Polinomio: public ed::PolinomioInterfaz
 
   inline std::vector<Monomio> getMonomios() const {return monomios_;};
 
-  inline void setMonomios(std::vector<Monomio> const &vectormonomios){this->monomios_ = vectormonomios;};
+  inline void setMonomios(std::vector<Monomio> const &vectormonomios){this->monomios_ = vectormonomios;}
 
-  inline bool esNulo(){
+  inline bool esNulo() const {
     Monomio primero = this->getMonomios()[0];
     if((this->getNumeroMonomios() == 1) && (std::abs(primero.getCoeficiente() < COTA_ERROR)) && (primero.getGrado() == 0))
       return true;
     else return false;
   }
 
-  inline int getGrado(){return this->getMonomios().begin()->getGrado();}
+  inline int getGrado() const {return this->getMonomios().begin()->getGrado();}
 
-  inline int getNumeroMonomios(){
+  inline int getNumeroMonomios() const {
     return getMonomios().size();
   }
 
-  bool existeMonomio(int ngrado){
+  bool existeMonomio(int ngrado)const{
     std::vector<Monomio>::iterator begin;
     std::vector<Monomio>::iterator end;
 
@@ -91,10 +91,11 @@ class Polinomio: public ed::PolinomioInterfaz
   }
 
 
-  Monomio getMonomio(int ngrado){
+  Monomio getMonomio(int ngrado) const{
     std::vector<Monomio>::iterator begin;
     std::vector<Monomio>::iterator end;
 
+    Monomio monomio(0,0);
     #ifndef NDEBUG
       assert(getMonomios().empty() == false );
     #endif
@@ -103,6 +104,7 @@ class Polinomio: public ed::PolinomioInterfaz
       if(begin->getGrado() == ngrado) return *begin;
     }
 
+    return monomio;
   }
 
 	//! \name Funciones de modificación de la clase Polinomio

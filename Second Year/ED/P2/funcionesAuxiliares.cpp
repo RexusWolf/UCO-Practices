@@ -62,13 +62,7 @@ int ed::menu()
 ///////////////////////////////////////////////////////////////////////////
 void ed::testPolinomio()
 {
-  // QUITAR ESTAS SENTENCIAS Y EL COMENTARIO DE BLOQUE
-  std::cout << BIGREEN;
-  std::cout << "testPolinomio()" << std::endl;
-  std::cout << RESET;
-  std::cout << "Quitar el comentario de bloque cuando se haya codificado la clase Polinomio " << std::endl << std::endl;
-
-  /*
+ 
 	double x;
 
 	ed::Monomio m;
@@ -446,7 +440,7 @@ void ed::testPolinomio()
 	std::cin.ignore();
 	std::cout << std::endl << std::endl;
 
-
+/*
 	///////////////////////////////////////////////////////////////
 	// Calcular el valor de un polinomo para un número real x
 	std::cout << BIGREEN;

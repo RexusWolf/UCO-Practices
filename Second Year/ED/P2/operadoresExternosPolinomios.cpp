@@ -22,8 +22,8 @@ namespace ed
 
 bool operator==(ed::Polinomio const & p1, ed::Polinomio const & p2)
 {
-	vector <Monomio>::const_iterator m1 = p1.getMonomios().begin();
-	vector <Monomio>::const_iterator m2 = p2.getMonomios().begin();
+	std::vector <Monomio>::const_iterator m1 = p1.getMonomios().begin();
+	std::vector <Monomio>::const_iterator m2 = p2.getMonomios().begin();
 	if(p1.getNumeroMonomios() != p2.getNumeroMonomios()) return false;
 	else {
 		while((m1 != p1.getMonomios().end()) && m2 != p2.getMonomios().end()) {
@@ -45,7 +45,7 @@ bool operator==(Monomio const & monomio, Polinomio const &polinomio) {
 }
 
 bool operator==(Polinomio const &p, double x) {
-	vector <Monomio>::const_iterator monomio;
+	std::vector <Monomio>::const_iterator monomio;
 	if(p.getNumeroMonomios() != 1) return false;
 	else if(p.getMonomios().front() != x) return false;
 	else return true;
@@ -112,8 +112,8 @@ Polinomio & operator-(Polinomio const & p) {
 Polinomio & operator+(Polinomio const &p1,  Polinomio const &p2) {
 	//Creo el nuevo objeto
 	Polinomio *new_polinomio = new Polinomio;
-	//Creo el nuevo vector con los mismos monomios que el polinomio 1
-	vector <Monomio> new_vector = p1.getMonomios();
+	//Creo el nuevo std::vector con los mismos monomios que el polinomio 1
+	std::vector <Monomio> new_vector = p1.getMonomios();
 	for(int i = 0; i < p2.getNumeroMonomios(); i++) {
 		//Si existe un monomio en el polinomio 1 con el mismo grado que el monomio de esta itearaciñon del polinomio 2
 		if(p1.existeMonomio(p2.getMonomios()[i].getGrado())) {
@@ -134,7 +134,7 @@ Polinomio & operator+(Polinomio const &p1,  Polinomio const &p2) {
 
 Polinomio & operator+(Polinomio const &p, Monomio const & m) {
 	Polinomio *return_polinomio = new Polinomio;
-	vector <Monomio> new_vector = p.getMonomios();
+	std::vector <Monomio> new_vector = p.getMonomios();
 	bool sumado = false;
 	for(int index = 0; index < p.getNumeroMonomios(); index++) {
 		if(p.getMonomios()[index].getGrado() == m.getGrado()) {
@@ -197,7 +197,7 @@ Polinomio & operator-(double x, Polinomio const &p) {
 
 Polinomio & operator*(Polinomio const &p1,  Polinomio const &p2) {
 	Polinomio new_polinomio;
-	vector <Monomio>::const_iterator m1;
+	std::vector <Monomio>::const_iterator m1;
 	for(m1 = p1.getMonomios().begin(); m1 != p1.getMonomios().end(); m1++) {
 		new_polinomio = p2 * (*m1);
 	}
@@ -206,15 +206,15 @@ Polinomio & operator*(Polinomio const &p1,  Polinomio const &p2) {
 }
 
 Polinomio & operator*(Polinomio const &polinomio, Monomio const & m) {
-	vector <Monomio> new_vector = polinomio.getMonomios();
+	std::vector <Monomio> new_vector = polinomio.getMonomios();
 	int index = 0;
-	vector <Monomio>::const_iterator monomio_it;
+	std::vector <Monomio>::const_iterator monomio_it;
 	for(monomio_it = polinomio.getMonomios().begin(); monomio_it != polinomio.getMonomios().end(); monomio_it++) {
 		new_vector.assign(index, *monomio_it * m);
 		index++;
 	}
 	Polinomio new_polinomio;
-	new_polinomio.getMonomios()setMonomios(new_vector);
+	new_polinomio.setMonomios(new_vector);
 	Polinomio *return_polinomio = new Polinomio(new_polinomio);
 	return *return_polinomio;
 }
@@ -268,7 +268,7 @@ Polinomio & operator/(double x, Polinomio const &p) {
 //Operadores de flujo
 
 ostream &operator<<(ostream &stream, Polinomio const &p) {
-	vector <Monomio>::const_iterator monomio;
+	std::vector<Monomio>::const_iterator monomio;
 	for(monomio = p.getMonomios().begin(); monomio != p.getMonomios().end(); monomio++) {
 		stream << *monomio << " ";
 	}
