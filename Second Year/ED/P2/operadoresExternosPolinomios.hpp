@@ -1,7 +1,9 @@
 /*!
-	\file operadoresExternosPolinomios.hpp
-	\brief Ficheros con operadores de monomios y polinomios
-*/
+ * @file operadoresExternosPolinomios.hpp
+ * @author Francisco Javier Molina Prieto
+ * @brief Fichero de implementación de los operadores externos de la clase polinomio
+ * @version 0.5
+ */
 
 #ifndef _OperadoresPolinomios_HPP_
 #define _OperadoresPolinomios_HPP_

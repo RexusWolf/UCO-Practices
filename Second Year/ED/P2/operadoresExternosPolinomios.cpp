@@ -1,8 +1,9 @@
 /*!
-   \file operadoresExternosPolinomios.cpp
-   \brief Fichero que contiene el código de las funciones de la clase Polinomio
-*/
-
+ * @file operadoresExternosPolinomios.cpp
+ * @author Francisco Javier Molina Prieto
+ * @brief Fichero de implementación de los operadores externos de la clase polinomio
+ * @version 0.5
+ */
 
 // Ficheros de cabecera
 #include <iostream>

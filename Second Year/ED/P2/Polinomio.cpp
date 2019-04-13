@@ -1,8 +1,9 @@
 /*!
-   \file Polinomio.cpp
-   \brief Fichero que contiene el código de las funciones de la clase Polinomio
-*/
-
+ * @file Polinomio.cpp
+ * @author Francisco Javier Molina Prieto
+ * @brief Fichero de la clase polinomio
+ * @version 0.5
+ */
 
 // Ficheros de cabecera
 #include <iostream>

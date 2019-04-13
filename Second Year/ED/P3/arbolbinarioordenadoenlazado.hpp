@@ -44,7 +44,7 @@ namespace ed
 
 			NodoArbolBinario (const NodoArbolBinario &n)
 			{
-				this = n;
+				*this = n;
 				#ifndef NDEBUG
 					assert(getInfo() == n.getInfo());
 				#endif
@@ -75,23 +75,23 @@ namespace ed
 			void recorridoPreOrden (OperadorNodo<G> &operador) const
 			{
 				operador.aplicar();
-				_izquierdo->recorridoPreOrden(&operador);
-				_derecho->recorridoPreOrden(&operador);				
+				if(getIzquierdo() != NULL) getIzquierdo()->recorridoPreOrden(&operador);
+				if(getDerecho() != NULL) getDerecho()->recorridoPreOrden(&operador);				
 
 			}
 
 			void recorridoPostOrden (OperadorNodo<G> &operador) const
 			{
-				_izquierdo->recorridoPostOrden(&operador);
-				_derecho->recorridoPostOrden(&operador);
+				if(getIzquierdo() != NULL) getIzquierdo()->recorridoPostOrden(&operador);
+				if(getDerecho() != NULL) getDerecho()->recorridoPostOrden(&operador);
 				operador.aplicar();	
 			}
 
 			void recorridoInOrden (OperadorNodo<G> &operador) const
 			{
-				_izquierdo->recorridoInOrden(&operador);
+				if(getIzquierdo() != NULL) getIzquierdo()->recorridoInOrden(&operador);
 				operador.aplicar();
-				_derecho->recorridoInOrden(&operador);
+				if(getDerecho() != NULL) getDerecho()->recorridoInOrden(&operador);
 			}
 
 			/*!\brief Modificadores. */
@@ -145,7 +145,7 @@ namespace ed
 
 		ArbolBinarioOrdenadoEnlazado (const ArbolBinarioOrdenadoEnlazado<G>& a)
 		{
-			this = a;
+			*this = a;
 		}
 
 		~ArbolBinarioOrdenadoEnlazado ()
@@ -183,43 +183,52 @@ namespace ed
 		void recorridoPreOrden (OperadorNodo<G> &operador) const
 		{
 			operador.aplicar();
-			getIzquierdo()->recorridoPreOrden(&operador);
-			getDerecho()->recorridoPreOrden(&operador);
+			if(getIzquierdo() != NULL) getIzquierdo()->recorridoPreOrden(&operador);
+			if(getDerecho() != NULL) getDerecho()->recorridoPreOrden(&operador);
 			// REVISAR
 		}
 
 		void recorridoPostOrden (OperadorNodo<G> &operador) const
 		{
-			getIzquierdo()->recorridoPostOrden(&operador);
-			getDerecho()->recorridoPostOrden(&operador);
+			if(getIzquierdo() != NULL) getIzquierdo()->recorridoPostOrden(&operador);			
+			if(getDerecho() != NULL) getDerecho()->recorridoPostOrden(&operador);
 			operador.aplicar();
 			// REVISAR
 		}
 
 		void recorridoInOrden (OperadorNodo<G> &operador) const
 		{
-			getIzquierdo()->recorridoInOrden(&operador);
+			if(getIzquierdo() != NULL) getIzquierdo()->recorridoInOrden(&operador);
 			operador.aplicar();
-			getDerecho()->recorridoInOrden(&operador);
+			if(getDerecho() != NULL) getDerecho()->recorridoInOrden(&operador);
 			// REVISAR
 		}
 
 		bool buscar(const G& x) const
 		{
-			// TODO
+			// Recorreríamos y almacenariamos en un vector todos los nodos del árbol.
+			recorridoInOrden(&AlmacenarNodo);
+			// Comprobaríamos si existe el nodo x en algún nodo del árbol, recorriendo el vector.
+		
+			// Si lo encuentra, actualizamos el cursos de _actual y _padre.
+
+			#ifndef NDEBUG
+				assert(_actual == x);
+			#endif
+
 			return false;
 		}
 
 		bool estaVacio() const
 		{
-			// TODO
+			if(_raiz == NULL) return true;
 			return false;
 		}
 
 		G raiz() const
 		{
 			#ifndef NDEBUG
-			// ASSERT TO DO
+				assert(estaVacio() == false);
 			#endif
 			return getInfo(_raiz);
 		}
@@ -227,7 +236,7 @@ namespace ed
 		bool existeActual() const
 		{
 			#ifndef NDEBUG
-			// ASSERT TO DO
+				assert(estaVacio() == false);
 			#endif
 			if(_actual != NULL) return true;
 			return false;

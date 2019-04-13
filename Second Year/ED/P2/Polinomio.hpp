@@ -1,7 +1,9 @@
 /*!
-   \file Polinomio.hpp
-   \brief Definición de la clase Polinomio
-*/
+ * @file Polinomio.hpp
+ * @author Francisco Javier Molina Prieto
+ * @brief Fichero de la clase polinomio
+ * @version 0.5
+ */
 
 #ifndef _POLINOMIO_HPP_
 #define _POLINOMIO_HPP_
@@ -117,13 +119,13 @@ class Polinomio: public ed::PolinomioInterfaz
 
    //! \name Operadores de la clase Polinomio
 
-	// COMPLETAR LOS COMENTARIOS DE DOXYGEN
+	
 	Polinomio & operator=(Polinomio const &p);
 
-	// COMPLETAR LOS COMENTARIOS DE DOXYGEN
+
 	Polinomio & operator=(Monomio const &m);
 
-	// COMPLETAR LOS COMENTARIOS DE DOXYGEN
+
 	Polinomio & operator=(double const &x);
 
   // Operadores aritméticos y asignación
@@ -155,7 +157,6 @@ class Polinomio: public ed::PolinomioInterfaz
   Polinomio & operator/=(ed::Monomio const &m);
   
   Polinomio & operator/=(double const &x);
-	// COMPLETAR EL RESTO DE OPERADORES
 
 
   /////////////////////////////////////////////////////////////////////////////////////
