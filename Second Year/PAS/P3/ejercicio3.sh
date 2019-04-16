@@ -1,29 +1,47 @@
 #!/bin/bash
 
 # Comprueba el número de argumentos
-if [ $# -lt 1 ] || [ $# -gt 2 ]; then
-	echo "Uso del programa: ./ejercicio2.sh <directorio> <bytes>"
+if [ $# -lt 1 ] || [ $# -gt 3 ]; then
+	echo "Uso del programa: ./ejercicio3.sh <directorio> <umbral1> <umbral2>"
 	exit 1
 fi
 
-if [ $# -eq 2 ]; then
-	n_bytes=$2
-else 
-	n_bytes=0
+umbral1=10000
+umbral2=100000
+
+if [ $# -ge 2 ]; then
+	umbral1=$2
 fi
 
-for file in $(find $1 -size +"$n_bytes"c -type f -or -size "$n_bytes"c -type f)
+if [ $# -eq 3 ]; then
+	umbral2=$3
+fi
+
+if [ -d "pequenos" ]; then
+  rm -rf pequenos
+fi
+if [ -d "medianos" ]; then
+  rm -rf medianos
+fi
+if [ -d "grandes" ]; then
+  rm -rf grandes
+fi
+
+mkdir pequenos
+mkdir medianos
+mkdir grandes
+
+for file in $(find $1 -size -"$umbral1"c -type f -or -size "$umbral1"c -type f)
 do
-    # Cuenta los caracteres del usuario del fichero
-	CaracteresUser=$(stat -c %U $file | wc -m)
+	cp $file pequenos
+done
 
-    # Comprueba si el fichero es ejecutable
-	if [ -x "$file" ]
-	then
-		Exec=1
-	else
-		Exec=0
-	fi
+for file in $(find $1 -size +"$umbral1"c -type f -and -size -"$umbral2"c -type f)
+do
+	cp $file medianos
+done
 
-	echo "$(basename $file);$CaracteresUser;$(stat -c '%w;%X;%s;%b;%A' $file);$Exec)"
-done | sort -k 5 -n -t ";"
+for file in $(find $1 -size +"$umbral2"c -type f -or -size "$umbral2"c -type f)
+do
+	cp $file grandes
+done
