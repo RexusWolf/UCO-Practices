@@ -7,8 +7,8 @@ echo "El número de archivos de la carpeta actual es $(find . -maxdepth 1 -type 
 # awk hace print de los argumentos pasados (output del who) e imprime la 1ª columna.
 echo $(who | awk '{print $1}' | sort | uniq)
 
-read -n 1 -t5 -p "¿Qué caracter quieres contar?" caracter
-# Hay que comprobar si se ha introducido algo en la cadena
+read -n 1 -t5 -p "¿Qué caracter quieres contar? " caracter
+# Hay que comprobar si se ha introducido algo.
 if [ "$caracter" == "" ]; then
 	caracter="a"
 fi
