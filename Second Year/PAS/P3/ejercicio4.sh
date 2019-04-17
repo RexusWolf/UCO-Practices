@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [ $# -gt 0 ]; then
+	echo "Uso del programa: ./ejercicio4.sh"
+	exit 1
+fi
+
 cd ejemploCarpeta
 # La option maxdepth nos permite realizara el find solo en el directorio actual.
 echo "El número de archivos de la carpeta actual es $(find . -maxdepth 1 -type f | wc -l)"
