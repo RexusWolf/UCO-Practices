@@ -1,29 +1,23 @@
 #!/bin/bash
 
-# Comprueba el número de argumentos
-if [ $# -lt 1 ] || [ $# -gt 2 ]; then
-	echo "Uso del programa: ./ejercicio2.sh <directorio> <bytes>"
-	exit 1
+cd ejemploCarpeta
+# La option maxdepth nos permite realizara el find solo en el directorio actual.
+echo "El número de archivos de la carpeta actual es $(find . -maxdepth 1 -type f | wc -l)"
+
+# awk hace print de los argumentos pasados (output del who) e imprime la 1ª columna.
+echo $(who | awk '{print $1}' | sort | uniq)
+
+read -n 1 -t5 -p "¿Qué caracter quieres contar?" caracter
+# Hay que comprobar si se ha introducido algo en la cadena
+if [ "$caracter" == "" ]; then
+	caracter="a"
 fi
 
-if [ $# -eq 2 ]; then
-	n_bytes=$2
-else 
-	n_bytes=0
-fi
-
-for file in $(find $1 -size +"$n_bytes"c -type f -or -size "$n_bytes"c -type f)
+# La salida del bucle la trataremos con grep y wc.
+for file in $(find .)
 do
-    # Cuenta los caracteres del usuario del fichero
-	CaracteresUser=$(stat -c %U $file | wc -m)
+	echo "$(basename $file)"
+done | grep "$caracter" -o | wc -l > matchfile # -o printea solo las coincidencias
 
-    # Comprueba si el fichero es ejecutable
-	if [ -x "$file" ]
-	then
-		Exec=1
-	else
-		Exec=0
-	fi
-
-	echo "$(basename $file);$CaracteresUser;$(stat -c '%w;%X;%s;%b;%A' $file);$Exec)"
-done | sort -k 5 -n -t ";"
+echo -e "\nEl carácter $caracter aparece $(cat matchfile) veces en nombres de ficheros o carpetas contenidos en la carpeta actual"
+rm -f matchfile
