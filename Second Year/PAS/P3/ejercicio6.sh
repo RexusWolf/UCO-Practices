@@ -27,7 +27,8 @@ function listDirectory(){
 	echo "</ul>" >> $html
 }
 
-echo "</head>" >> $html
+echo "Generando el listado de la carpeta $(dirname $html) sobre el fichero $html"
+echo "</head>" >> "$html"
 echo "<title>Listado directorios de $1/</title>" >> "$html"
 echo "</head>" >> "$html"
 echo "<body>" >> "$html"
@@ -35,3 +36,4 @@ echo "<h1>Listado directorios de $1/</h1>" >> "$html"
 listDirectory $1
 echo "</body>" >> "$html"
 echo "</html>" >> "$html"
+echo "Terminado!"

@@ -17,6 +17,7 @@ if [ $# -eq 3 ]; then
 	umbral2=$3
 fi
 
+echo "Creando las carpetas pequenos, medianos y grandes..."
 if [ -d "pequenos" ]; then
   rm -rf pequenos
 fi
@@ -31,6 +32,7 @@ mkdir pequenos
 mkdir medianos
 mkdir grandes
 
+echo "Copiando los archivos..."
 for file in $(find $1 -size -"$umbral1"c -type f -or -size "$umbral1"c -type f)
 do
 	cp $file pequenos
