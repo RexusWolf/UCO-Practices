@@ -1,29 +1,25 @@
 #!/bin/bash
 
-# Comprueba el número de argumentos
-if [ $# -lt 1 ] || [ $# -gt 2 ]; then
-	echo "Uso del programa: ./ejercicio2.sh <directorio> <bytes>"
-	exit 1
+# Comprobamos si la carpeta Copia existe
+if [ ! -d "$HOME/Copia" ]; then
+	echo "La carpeta no existe. Creando..."
+	mkdir ~/Copia
 fi
 
-if [ $# -eq 2 ]; then
-	n_bytes=$2
-else 
-	n_bytes=0
-fi
-
-for file in $(find $1 -size +"$n_bytes"c -type f -or -size "$n_bytes"c -type f)
+for file in $(find ~/Copia -type f)
 do
-    # Cuenta los caracteres del usuario del fichero
-	CaracteresUser=$(stat -c %U $file | wc -m)
-
-    # Comprueba si el fichero es ejecutable
-	if [ -x "$file" ]
-	then
-		Exec=1
-	else
-		Exec=0
+	fechaCreado=$(stat $file -c %X)
+	# Para obtener los segundos desde su creación, hay que realizar lo siguiente
+	let segundos=$(date +%s)-$fechaCreado
+	if [ $segundos -gt 200 ]; then
+		echo "Borrando $file de $segundos segundos..."
+		rm -f $file
 	fi
+done
 
-	echo "$(basename $file);$CaracteresUser;$(stat -c '%w;%X;%s;%b;%A' $file);$Exec)"
-done | sort -k 5 -n -t ";"
+if [ $# -gt 0 ]; then
+		tar -czf $Copia/copia-$(whoami)-$(date +%s).tar.gz $*
+		echo "La copia de seguridad se ha creado correctamente."
+else
+		echo "No se ha creado copia de seguridad."
+fi
