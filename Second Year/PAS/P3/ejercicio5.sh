@@ -18,7 +18,7 @@ do
 done
 
 if [ $# -gt 0 ] && [ -d "$1" ]; then
-		tar -czf $Copia/copia-$(whoami)-$(date +%s).tar.gz $*
+		tar -czf ~Copia/copia-$(whoami)-$(date +%s).tar.gz $*
 		echo "La copia de seguridad se ha creado correctamente."
 else
 		echo "No se ha creado copia de seguridad."
