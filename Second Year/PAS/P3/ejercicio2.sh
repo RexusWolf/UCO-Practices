@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Comprueba el número de argumentos
-if [ $# -lt 1 ] || [ $# -gt 2 ]; then
+if [ $# -lt 1 ] || [ $# -gt 2 ] || [ ! -d "$1" ]; then
 	echo "Uso del programa: ./ejercicio2.sh <directorio> <bytes>"
 	exit 1
 fi
@@ -15,7 +15,7 @@ fi
 for file in $(find $1 -size +"$n_bytes"c -type f -or -size "$n_bytes"c -type f)
 do
     # Cuenta los caracteres del usuario del fichero
-	CaracteresUser=$(stat -c %U $file | wc -m)
+	CaracteresUser=$(stat -c %U $file | wc -c)
 
     # Comprueba si el fichero es ejecutable
 	if [ -x "$file" ]

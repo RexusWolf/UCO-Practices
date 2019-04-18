@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Comprueba el número de argumentos
-if [ $# -lt 1 ] || [ $# -gt 3 ]; then
+if [ $# -lt 1 ] || [ ! -d "$1" ] || [ $# -gt 3 ]; then
 	echo "Uso del programa: ./ejercicio3.sh <directorio> <umbral1> <umbral2>"
 	exit 1
 fi
@@ -14,7 +14,7 @@ if [ $# -ge 2 ]; then
 fi
 
 if [ $# -eq 3 ]; then
-	umbral2=$3
+	umbral2=$3	
 fi
 
 echo "Creando las carpetas pequenos, medianos y grandes..."

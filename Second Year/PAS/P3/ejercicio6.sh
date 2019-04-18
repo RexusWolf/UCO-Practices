@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Comprueba los argumentos
-if [ $# -lt 1 ] || [ ! -d $1 ]; then
+if [ $# != 1 ] || [ ! -d $1 ]; then
 	echo "Uso del programa: ./ejercicio6.sh <directorio>"
 	exit 1
 fi
