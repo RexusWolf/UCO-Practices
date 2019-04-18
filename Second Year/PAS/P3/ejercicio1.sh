@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ $# -lt 1 ] || [ $# -gt 2 ]; then
+if [ $# != 1 ] || [ ! -d "$1" ]; then
 	echo "Uso del programa: ./ejercicio1.sh <directorio>"
 	exit 1
 fi
