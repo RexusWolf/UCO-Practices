@@ -3,12 +3,14 @@ GoogleTest-Master
 
 #Libraries
 *.a
+*.vscode
 #Compiled objects
 *.o
 #Executables
 *.out
+*.exe
 #Documentation
 *html
 *pdf
-*.vscode
+#Zipped Files
 *.zip

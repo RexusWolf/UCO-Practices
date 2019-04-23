@@ -99,7 +99,7 @@ int main()
       }break;
 
       case 0:{
-        cout <<"Saliendo...\n" << RESET;
+        cout <<"Saliendo...\n";
       }break;
 
       default:{
@@ -107,11 +107,12 @@ int main()
         break;
       }
 
-      if (opt != 0){
+      if (option != 0){
       cout << "Pulse [ENTER] para continuar\n";
       cin.ignore();
       cin.get();
       system("clear");
+      }
     }
   }
 }
