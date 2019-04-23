@@ -35,7 +35,9 @@ namespace ed
 		public:
 			NodoArbolBinario (const G &info)
 			{
-				_info = info;
+				setInfo(info);
+				setIzquierdo(NULL);
+				setDerecho(NULL);
 				#ifndef NDEBUG
 					assert(getIzquierdo() == NULL);
 					assert(getDerecho() == NULL);
@@ -44,8 +46,12 @@ namespace ed
 
 			NodoArbolBinario (const NodoArbolBinario &n)
 			{
-				*this = n;
+				setInfo(n.getInfo());
+				setDerecho(n.getDerecho());
+				setIzquierdo(n.getIzquierdo());
 				#ifndef NDEBUG
+					assert(getDerecho() == n.getDerecho());
+					assert(getIzquierdo() == n.getIzquierdo());
 					assert(getInfo() == n.getInfo());
 				#endif
 			}
@@ -68,13 +74,13 @@ namespace ed
 
 			bool esHoja() const
 			{
-				if((getIzquierdo() != NULL) || (getDerecho() != NULL)) return true;
-				return false;
+				if((getIzquierdo() != NULL) || (getDerecho() != NULL)) return false;
+				return true;
 			}
 
 			void recorridoPreOrden (OperadorNodo<G> &operador) const
 			{
-				operador.aplicar(this->getInfo());
+				operador.aplicar(getInfo());
 				if(getIzquierdo() != NULL) getIzquierdo()->recorridoPreOrden(operador);
 				if(getDerecho() != NULL) getDerecho()->recorridoPreOrden(operador);				
 
@@ -84,13 +90,13 @@ namespace ed
 			{
 				if(getIzquierdo() != NULL) getIzquierdo()->recorridoPostOrden(operador);
 				if(getDerecho() != NULL) getDerecho()->recorridoPostOrden(operador);
-				operador.aplicar(this->getInfo());	
+				operador.aplicar(getInfo());	
 			}
 
 			void recorridoInOrden (OperadorNodo<G> &operador) const
 			{
 				if(getIzquierdo() != NULL) getIzquierdo()->recorridoInOrden(operador);
-				operador.aplicar(this->getInfo());
+				operador.aplicar(getInfo());
 				if(getDerecho() != NULL) getDerecho()->recorridoInOrden(operador);
 			}
 
@@ -116,11 +122,13 @@ namespace ed
 					assert(getIzquierdo() != n.getIzquierdo());
 					assert(getDerecho() != n.getDerecho());
 				#endif
+				setInfo(n.getInfo());
 				setIzquierdo(n.getIzquierdo());
 				setDerecho(n.getDerecho());
 				#ifndef NDEBUG
 					assert(getIzquierdo() == n.getIzquierdo());
 					assert(getDerecho() == n.getDerecho());
+					assert(getInfo() == n.getInfo());
 				#endif
 			}
 
@@ -306,8 +314,7 @@ namespace ed
 
 		bool estaVacio() const
 		{
-			if(_raiz == NULL) return true;
-			return false;
+			return _raiz == NULL;
 		}
 
 		G raiz() const
@@ -315,7 +322,7 @@ namespace ed
 			#ifndef NDEBUG
 				assert(estaVacio() == false);
 			#endif
-			return getInfo(_raiz);
+			return _raiz->getInfo();
 		}
 
 		bool existeActual() const
@@ -323,8 +330,7 @@ namespace ed
 			#ifndef NDEBUG
 				assert(estaVacio() == false);
 			#endif
-			if(_actual != NULL) return true;
-			return false;
+			return _actual != NULL;
 		}
 
 		G actual() const
@@ -332,7 +338,7 @@ namespace ed
 			#ifndef NDEBUG
 				assert(_actual != NULL);
 			#endif
-			return getInfo(_actual);
+			return _actual->getInfo();
 		}
 
 		/*!@}*/
