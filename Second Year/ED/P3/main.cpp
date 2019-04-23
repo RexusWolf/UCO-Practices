@@ -14,36 +14,44 @@ int main()
   srand(time(0));
   ArbolBinarioOrdenadoEnlazado<Persona> a;
   EscribirNodo<Persona> op;
-  int option;
-  cout<<"Elige una opcion:"<<endl;
-  cin>>option;
+  int i, n, option;
 
-  cout<<"1. Insertar un número de personas en el árbol."<<endl;
+
+  cout<<"Introduce numero de personas a insertar:"<<endl;
+  cin>>n;
+  for(i = 0; i < n; i++){
+    a.insertar(generarDatosPersonales());
+  }
+
+  cout<<"Elige una opcion: "<<endl;
+  cout<<"1. Insertar más personas en el árbol."<<endl;
   cout<<"2. Comprobar existencia de una persona en el árbol."<<endl;
   cout<<"3. Mostrar todos los elementos del árbol."<<endl;
   cout<<"4. Borrar una persona."<<endl;
   cout<<"5. Borrar el árbol completo."<<endl;
 
+  cin>>option;
   switch(option){
+
+    // INSERCIÓN DE PERSONAS EN EL ÁRBOL
     case 1:{
-      int n;
       cout<<"Introduce numero de personas:"<<endl;
       cin>>n;
-      while(n>0){
-        Persona p = generarDatosPersonales();
-        a.insertar(p);
-        n--;
+      for(i = 0; i < n; i++){
+        a.insertar(generarDatosPersonales());
       }
-      break;
-    }
+    }break;
+
+    // BÚSQUEDA DE PERSONA EN EL ÁRBOL
     case 2:{
       Persona persona;
       cout<<"Introduce el dni, apellido y nombre"<<endl;
       cin>>persona;
-      if(a.buscar(persona)) cout<<"Encontrado."<<endl;
-      else cout<<"No encontrado"<<endl;
-      break;
-    } 
+      if(a.buscar(persona)) cout<< a.actual() <<endl;
+      else cout<<"Persona no encontrada"<<endl;
+    }break;
+
+    // MOSTRADO DE ÁRBOL
     case 3:{
       int orden;
       cout<<"Elige el orden a mostrar:"<<endl;
@@ -54,37 +62,39 @@ int main()
       switch(orden){
         case 1: {
           a.recorridoPreOrden(op);
-          break;
-        }
+        }break;
+
         case 2: {
           a.recorridoInOrden(op);
-          break; 
-        }
+        }break;
+
         case 3: {
           a.recorridoPostOrden(op);
-          break;
-        }
+        }break;
+        
         default:
           cout<<"Opción errónea."<<endl;
           break;
       }
-      break;
-    }
+    }break;
+
+    // BORRADO DE UNA PERSONA EN EL ÁRBOL
     case 4:{
       Persona persona;
       cout<<"Introduce el dni, apellido y nombre"<<endl;
       cin>>persona;
       if(a.buscar(persona)){
-        a.borrar();
-        cout<<"Encontrado y borrado."<<endl;
+        if(a.borrar()){
+        cout<<"Borrado satisfactoriamente."<<endl;
+        }
       }
-      else cout<<"No encontrado"<<endl;
-      break;
-    }
+      else cout<<"Fallo al borrar!"<<endl;
+    }break;
+
+    // BORRADO DEL ÁRBOL
     case 5:{
      a.borrarArbol();
-      break;
-    }
+    }break;
     default:{
       cout<<"Opción incorrecta."<<endl;
       break;
