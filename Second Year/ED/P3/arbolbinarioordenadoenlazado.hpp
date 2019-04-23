@@ -74,24 +74,24 @@ namespace ed
 
 			void recorridoPreOrden (OperadorNodo<G> &operador) const
 			{
-				operador.aplicar();
-				if(getIzquierdo() != NULL) getIzquierdo()->recorridoPreOrden(&operador);
-				if(getDerecho() != NULL) getDerecho()->recorridoPreOrden(&operador);				
+				operador.aplicar(this->getInfo());
+				if(getIzquierdo() != NULL) getIzquierdo()->recorridoPreOrden(operador);
+				if(getDerecho() != NULL) getDerecho()->recorridoPreOrden(operador);				
 
 			}
 
 			void recorridoPostOrden (OperadorNodo<G> &operador) const
 			{
-				if(getIzquierdo() != NULL) getIzquierdo()->recorridoPostOrden(&operador);
-				if(getDerecho() != NULL) getDerecho()->recorridoPostOrden(&operador);
-				operador.aplicar();	
+				if(getIzquierdo() != NULL) getIzquierdo()->recorridoPostOrden(operador);
+				if(getDerecho() != NULL) getDerecho()->recorridoPostOrden(operador);
+				operador.aplicar(this->getInfo());	
 			}
 
 			void recorridoInOrden (OperadorNodo<G> &operador) const
 			{
-				if(getIzquierdo() != NULL) getIzquierdo()->recorridoInOrden(&operador);
-				operador.aplicar();
-				if(getDerecho() != NULL) getDerecho()->recorridoInOrden(&operador);
+				if(getIzquierdo() != NULL) getIzquierdo()->recorridoInOrden(operador);
+				operador.aplicar(this->getInfo());
+				if(getDerecho() != NULL) getDerecho()->recorridoInOrden(operador);
 			}
 
 			/*!\brief Modificadores. */
@@ -256,18 +256,18 @@ namespace ed
 
 		void recorridoPreOrden (OperadorNodo<G> &operador) const
 		{
-			_raiz->recorridoPreOrden(&operador);
+			_raiz->recorridoPreOrden(operador);
 		}
 
 		void recorridoPostOrden (OperadorNodo<G> &operador) const
 		{
-			_raiz->recorridoPostOrden(&operador);			
+			_raiz->recorridoPostOrden(operador);			
 			
 		}
 
 		void recorridoInOrden (OperadorNodo<G> &operador) const
 		{
-			_raiz->recorridoInOrden(&operador);
+			_raiz->recorridoInOrden(operador);
 		}
 
 		bool buscar(const G& x)
