@@ -145,7 +145,9 @@ namespace ed
 
 		ArbolBinarioOrdenadoEnlazado (const ArbolBinarioOrdenadoEnlazado<G>& a)
 		{
-			*this = a;
+			_raiz = a._raiz;
+			_actual = a._actual;
+			_padre = a._padre;
 		}
 
 		~ArbolBinarioOrdenadoEnlazado ()
@@ -157,66 +159,149 @@ namespace ed
 
 		ArbolBinarioOrdenadoEnlazado &operator=(const ArbolBinarioOrdenadoEnlazado& a)
 		{
-			// TODO
+			_raiz = a._raiz;
+			_actual = a._actual;
+			_padre = a._padre;
 		}
 
 		bool insertar(const G &x)
 		{
-			// TODO
-			return false;
+			bool inserted = false;
+			// Si el árbol está vacío, se creará un nuevo nodo que será la raíz.
+			if(estaVacio()){
+				_raiz = new NodoArbolBinario(x);
+				inserted = true;
+				_actual = _raiz;
+				_padre = NULL;
+			}
+			// Se crea un árbol binario auxiliar para recorrerlo desde la raíz.
+			NodoArbolBinario *aux = _raiz;
+			while(!inserted){
+				if(x > aux->getInfo()){
+					if(aux->getDerecho() != NULL){
+						aux = aux->getDerecho();
+					}
+					else{
+						aux->setDerecho(new NodoArbolBinario(x));
+						inserted = true;
+					}
+				}
+				else if(x < aux->getInfo()){
+					if(aux->getIzquierdo() != NULL){
+						aux = aux->getIzquierdo();
+					}
+					else{
+						aux->setIzquierdo (new NodoArbolBinario(x));
+						inserted = true;
+					}
+				}
+			}
+			return inserted;
 		}
 
 		void borrarArbol()
 		{
-			// TODO
+			_raiz = NULL;
 		}
 
 		bool borrar()
 		{
-			#ifndef NDEBUG
-				assert(_actual != NULL);
+			#ifndef NDEBUG 
+					assert(!estaVacio());
 			#endif
-			// TODO
-			return false;
+			// En caso de ser una hoja, el borrado será rápido.
+			if(_actual->esHoja()){
+				if(_actual > _padre){
+					_padre->setDerecho(NULL);
+				}
+				else{
+					_padre->setIzquierdo(NULL);
+				}
+				_actual = NULL;
+				_padre = NULL;
+			}
+			else{
+				NodoArbolBinario *fatheraux = _padre;
+				NodoArbolBinario *aux = _actual;
+				// Si el actual tiene hijo derecho, este será el nuevo padre y su hijo el actual.
+				if(aux->getDerecho() != NULL){
+					fatheraux = aux; 
+					aux = aux->getDerecho();
+					while(aux->getIzquierdo() != NULL){
+						fatheraux = aux;
+						aux = aux->getIzquierdo();
+					}
+					if(aux->getInfo() < fatheraux->getInfo())
+						fatheraux->setIzquierdo(NULL);
+					else
+						fatheraux->setDerecho(NULL);
+				}
+				// Si el actual tiene hijo derecho, este será el nuevo padre y su hijo el actual.
+				else{
+					fatheraux = aux;
+					aux = aux->getIzquierdo();
+					while(aux->getDerecho() != NULL){
+						fatheraux = aux;
+						aux = aux->getDerecho();
+					}
+					if(aux->getInfo() < fatheraux->getInfo())
+						fatheraux->setIzquierdo(NULL);
+					else
+						fatheraux->setDerecho(NULL);
+				}
+				_actual->setInfo(aux->getInfo());
+			}
+			return true;
 		}
 
 		void recorridoPreOrden (OperadorNodo<G> &operador) const
 		{
-			operador.aplicar();
-			if(getIzquierdo() != NULL) getIzquierdo()->recorridoPreOrden(&operador);
-			if(getDerecho() != NULL) getDerecho()->recorridoPreOrden(&operador);
-			// REVISAR
+			_raiz->recorridoPreOrden(&operador);
 		}
 
 		void recorridoPostOrden (OperadorNodo<G> &operador) const
 		{
-			if(getIzquierdo() != NULL) getIzquierdo()->recorridoPostOrden(&operador);			
-			if(getDerecho() != NULL) getDerecho()->recorridoPostOrden(&operador);
-			operador.aplicar();
-			// REVISAR
+			_raiz->recorridoPostOrden(&operador);			
+			
 		}
 
 		void recorridoInOrden (OperadorNodo<G> &operador) const
 		{
-			if(getIzquierdo() != NULL) getIzquierdo()->recorridoInOrden(&operador);
-			operador.aplicar();
-			if(getDerecho() != NULL) getDerecho()->recorridoInOrden(&operador);
-			// REVISAR
+			_raiz->recorridoInOrden(&operador);
 		}
 
-		bool buscar(const G& x) const
-		{
-			// Recorreríamos y almacenariamos en un vector todos los nodos del árbol.
-			recorridoInOrden(&AlmacenarNodo);
-			// Comprobaríamos si existe el nodo x en algún nodo del árbol, recorriendo el vector.
+		bool buscar(const G& x)
+		{	
+			// En caso de no encontrar el elemento, necesitamos recuperar los cursor.
+			NodoArbolBinario *fatheraux = _padre;
+			NodoArbolBinario *aux = _actual;
+			// Posicionamos el cursor en la raíz del árbol, que no tiene padre.
+			_actual = _raiz;
+			_padre = NULL;
+			bool found = false; // Inicialización de la variable encontrado.
 		
-			// Si lo encuentra, actualizamos el cursos de _actual y _padre.
-
-			#ifndef NDEBUG
-				assert(_actual == x);
-			#endif
-
-			return false;
+			// Recorreríamos y almacenariamos en un vector todos los nodos del árbol.
+			// Comprobaríamos si existe el nodo x en algún nodo del árbol, recorriendo el vector.
+			// Si lo encuentra, actualizamos el cursor de _actual y _padre.	
+			while((_actual != NULL) && (!found)){
+				if(_actual->getInfo() > x){
+					_padre = _actual;
+					_actual = _actual->getIzquierdo();
+				}
+				else if(_actual->getInfo() < x){
+					_padre = _actual;
+					_actual = _actual->getDerecho();
+				}
+				else{
+					found = true;
+				}
+			}
+			// Si no se encuentra, asignamos NULL a los punteros.
+			if(!found){
+				_actual = aux;
+				_padre = fatheraux;
+			}
+			return found;
 		}
 
 		bool estaVacio() const
