@@ -264,17 +264,26 @@ namespace ed
 
 		void recorridoPreOrden (OperadorNodo<G> &operador) const
 		{
+			#ifndef NDEBUG
+					assert(!estaVacio());
+			#endif
 			_raiz->recorridoPreOrden(operador);
 		}
 
 		void recorridoPostOrden (OperadorNodo<G> &operador) const
 		{
+			#ifndef NDEBUG
+					assert(!estaVacio());
+			#endif
 			_raiz->recorridoPostOrden(operador);			
 			
 		}
 
 		void recorridoInOrden (OperadorNodo<G> &operador) const
 		{
+			#ifndef NDEBUG
+					assert(!estaVacio());
+			#endif
 			_raiz->recorridoInOrden(operador);
 		}
 

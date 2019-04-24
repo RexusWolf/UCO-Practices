@@ -56,6 +56,11 @@ int main()
       // MOSTRADO DE ÁRBOL
       case 3:{
         int orden;
+
+        if(a.estaVacio()){
+          cout<<"ERROR!! El árbol está vacío"<<endl;
+          break;
+        }
         cout<<"Elige el orden a mostrar:"<<endl;
         cout<<"1. PreOrden"<<endl;
         cout<<"2. InOrden"<<endl;
