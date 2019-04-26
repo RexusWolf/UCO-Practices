@@ -209,7 +209,13 @@ namespace ed
 
 		void borrarArbol()
 		{
+			#ifndef NDEBUG
+				assert(! estaVacio());
+			#endif
 			_raiz = NULL;
+			#ifndef NDEBUG
+				assert(estaVacio());
+			#endif
 		}
 
 		bool borrar()
@@ -289,9 +295,18 @@ namespace ed
 
 		bool buscar(const G& x)
 		{	
-			// En caso de no encontrar el elemento, necesitamos recuperar los cursor.
-			NodoArbolBinario *fatheraux = _padre;
-			NodoArbolBinario *aux = _actual;
+			#ifndef NDEBUG
+				assert(!estaVacio());
+			#endif
+
+			// Si el cursor no apuntaba a ningún nodo al buscar, quedará en la raíz al finalizar
+			NodoArbolBinario *olda = _raiz;
+			NodoArbolBinario *oldp = NULL;
+			// En caso de no encontrar el elemento, necesitamos recuperar los cursores.
+			if(existeActual()){
+				olda = _actual;
+				oldp = _padre;
+			}
 			// Posicionamos el cursor en la raíz del árbol, que no tiene padre.
 			_actual = _raiz;
 			_padre = NULL;
@@ -301,10 +316,12 @@ namespace ed
 			// Comprobaríamos si existe el nodo x en algún nodo del árbol, recorriendo el vector.
 			// Si lo encuentra, actualizamos el cursor de _actual y _padre.	
 			while((_actual != NULL) && (!found)){
+				// Si el actual es mayor que el buscado, este estará a la izquierda.
 				if(_actual->getInfo() > x){
 					_padre = _actual;
 					_actual = _actual->getIzquierdo();
 				}
+				// Si el actual es menor, el buscado estará a la derecha
 				else if(_actual->getInfo() < x){
 					_padre = _actual;
 					_actual = _actual->getDerecho();
@@ -313,10 +330,10 @@ namespace ed
 					found = true;
 				}
 			}
-			// Si no se encuentra, asignamos NULL a los punteros.
+			// Si no se encuentra, asignamos los valores guardados a los punteros.
 			if(!found){
-				_actual = aux;
-				_padre = fatheraux;
+				_actual = olda;
+				_padre = oldp;
 			}
 			return found;
 		}
