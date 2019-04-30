@@ -28,10 +28,11 @@ namespace ed
 		}
 		// Crea un nuevo grafo inicializando las estructuras para almacenar n nodos
 		Grafo (int n){
-			for(int i=0; i<n; i++){
-				_nodos[i] = NULL;
-			}
 			_lados = new G_Lado*[n];
+			for(int i=0; i<n; i++){
+				_lados[i] = new G_Lado;
+			}
+			_nodos = nodos[n];
 		}
 		// Crea un nuevo grafo a partir de otro grafo.
 		Grafo (Grafo &g){
