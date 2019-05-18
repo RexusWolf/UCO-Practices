@@ -41,9 +41,12 @@ bool cargarGrafo(Grafo<G_Nodo, G_Lado> * &g)
   int nodoscounter = 0;
   ifstream nodosfile;
   ifstream ladosfile;
+
   ladosfile.open(ficheroMatriz.c_str()); // Abrimos los ficheros en modo escritura.
   nodosfile.open(ficheroEtiquetas.c_str());
   string buffer;
+  vector<G_Nodo> vectorauxnodos;
+
 
   while(getline(nodosfile, buffer)){
     nodoscounter++;
@@ -55,8 +58,9 @@ bool cargarGrafo(Grafo<G_Nodo, G_Lado> * &g)
   // Recorre el fichero nodos y lo almacena en buffer
   // Inserta en el vector nodos todos los nodos del fichero
   while(getline(nodosfile, buffer)){
-    g->getNodos().push_back(buffer.substr(0,buffer.size()-1)); // Quitamos el \n
+    vectorauxnodos.push_back(buffer.substr(0,buffer.size()-1)); // Quitamos el \n
   }
+  g->setNodos(vectorauxnodos);
 
   
   vector<G_Lado> vectorlados; // Un vector de lados para cada elemento de la matriz
@@ -77,7 +81,6 @@ bool cargarGrafo(Grafo<G_Nodo, G_Lado> * &g)
     g->setLados(vectorlados);
     
   }
-
   nodosfile.close();
   ladosfile.close(); 
 

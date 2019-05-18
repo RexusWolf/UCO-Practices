@@ -43,8 +43,6 @@ namespace ed
 		~Grafo(){};
 
 		// observers
-		vector<G_Lado> getLados(){ return _lados;}
-		vector<G_Nodo> getNodos(){ return _nodos;}
 
 		// Borra el grafo liberando la memoria
 		void borrarGrafo(){	// cabecera indicada para que compile
@@ -94,15 +92,14 @@ namespace ed
 		
 		void setNodos(vector<G_Nodo> vectornodos){
 			for(int i = 0; i < _numeronodos; i++){
-				getNodos()[i] = vectornodos[i];
+				_nodos[i] = vectornodos[i];
 			}
 		}
 
 		void setLados(vector<G_Lado> vectorlados){
 			for(int i = 0; i < _numeronodos; i++){
 				for(int j = 0; j < _numeronodos; j++){
-				getLados()[i][j] = vectorlados[i][j];
-				}
+					_lados[i][j] = vectorlados[i];				}
 			}
 		}
 
