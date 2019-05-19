@@ -78,8 +78,8 @@ bool cargarGrafo(Grafo<G_Nodo, G_Lado> * &g)
     g->setLado(fila, g->getNumeroNodos() -1, edge);
   }
   ladosfile.close();
-  g->printMatrix();
-  g->printArray();
+  //g->printMatrix();
+  //g->printArray();
 
   return true;
 }
