@@ -86,7 +86,7 @@ bool cargarGrafo(Grafo<G_Nodo, G_Lado> * &g)
 
 
 template <class G_Nodo, class G_Lado>
-void algoritmoFloyd(Grafo<G_Nodo, G_Lado> &g)
+void algoritmoFloyd(const Grafo<G_Nodo, G_Lado> &g)
 {
   G_Lado **ladosaux;
   ladosaux = new G_Lado*[g.getNumeroNodos()];
