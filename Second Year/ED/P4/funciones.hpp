@@ -86,12 +86,19 @@ bool cargarGrafo(Grafo<G_Nodo, G_Lado> * &g)
 
 
 template <class G_Nodo, class G_Lado>
-void algoritmoFloyd(const Grafo<G_Nodo, G_Lado> &g)
+void algoritmoFloyd(Grafo<G_Nodo, G_Lado> &g)
 {
-  G_Lado **ladosaux = new G_Lado*[g.getNumeroNodos()];
+  G_Lado **ladosaux;
+  ladosaux = new G_Lado*[g.getNumeroNodos()];
+  for(int i=0; i < g.getNumeroNodos(); ++i){
+				ladosaux[i] = new G_Lado[g.getNumeroNodos()];
+	}
 
+  g.setMatrix(ladosaux);
+
+  // Diagonal a 1
   for(int i = 0; i < g.getNumeroNodos(); ++i){
-    ladosaux[i][i] = 0;
+    ladosaux[i][i] = 1;
   }
 
   for(int i = 0; i < g.getNumeroNodos(); ++i){
@@ -103,6 +110,13 @@ void algoritmoFloyd(const Grafo<G_Nodo, G_Lado> &g)
       }
     }
   }
+
+   for(int i = 0; i < g.getNumeroNodos(); ++i){
+     cout<<endl;
+    for (int j = 0; j < g.getNumeroNodos(); ++j){
+      cout<<ladosaux[i][j]<<" ";
+    }
+   }
   
 }
 

@@ -3,6 +3,7 @@
 
 #include <cassert>
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -97,6 +98,7 @@ namespace ed
 
 		// observers & modifiers
 
+		inline G_Lado** getLados() const {return _lados;}
 		
 		inline int getNumeroNodos() const {return *_numeroNodos;}
 
@@ -113,6 +115,7 @@ namespace ed
 			*_numeroNodos = numberNodos;
 		}
 
+		// Función para imprimir matrices
 		void printMatrix() const{
 		for (int i = 0; i < getNumeroNodos(); ++i) {
 			cout << endl;
@@ -121,6 +124,15 @@ namespace ed
 			}
 		}
 		cout << endl;
+		}
+
+		// Función para copia de matrices
+		void setMatrix(G_Lado **matrix) const{
+		for (int i = 0; i < getNumeroNodos(); ++i) {
+			for (int j = 0; j < getNumeroNodos(); ++j) {
+				matrix[i][j] = _lados[i][j];
+			}
+		}
 		}
 
 		void printArray() const{
