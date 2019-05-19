@@ -5,6 +5,7 @@
 #include <cstring>
 #include <cstdlib> //Para usar system
 #include <fstream> //Para trabajar con ficheros
+#include <cmath>
 
 #include "grafo.hpp"
 #include "algoritmosgrafos.hpp"
@@ -88,36 +89,79 @@ bool cargarGrafo(Grafo<G_Nodo, G_Lado> * &g)
 template <class G_Nodo, class G_Lado>
 void algoritmoFloyd(const Grafo<G_Nodo, G_Lado> &g)
 {
-  G_Lado **ladosaux;
-  ladosaux = new G_Lado*[g.getNumeroNodos()];
+  // Matriz de distancias == matrixaux
+  G_Lado **matrixaux;
+  matrixaux = new G_Lado*[g.getNumeroNodos()];
   for(int i=0; i < g.getNumeroNodos(); ++i){
-				ladosaux[i] = new G_Lado[g.getNumeroNodos()];
+				matrixaux[i] = new G_Lado[g.getNumeroNodos()];
 	}
 
-  g.setMatrix(ladosaux);
+  g.setMatrix(matrixaux);
 
   // Diagonal a 1
   for(int i = 0; i < g.getNumeroNodos(); ++i){
-    ladosaux[i][i] = 1;
+    matrixaux[i][i] = 0;
   }
 
   for(int i = 0; i < g.getNumeroNodos(); ++i){
     for (int j = 0; j < g.getNumeroNodos(); ++j){
       for (int k = 0; k < g.getNumeroNodos(); ++k){
-        if (ladosaux[j][i] + ladosaux[i][k] < ladosaux[j][k]){
-          ladosaux[j][k] = ladosaux[j][i] + ladosaux[i][k];
+        if (matrixaux[j][i] + matrixaux[i][k] < matrixaux[j][k]){
+          matrixaux[j][k] = matrixaux[j][i] + matrixaux[i][k];
         }
       }
     }
   }
 
-   for(int i = 0; i < g.getNumeroNodos(); ++i){
+  cout<<"Matriz de distancias:"<<endl;
+  for(int i = 0; i < g.getNumeroNodos(); ++i){
      cout<<endl;
     for (int j = 0; j < g.getNumeroNodos(); ++j){
-      cout<<ladosaux[i][j]<<" ";
+      cout<<matrixaux[i][j]<<" ";
     }
-   }
-  
+  }
+
+  // Matriz de recorridos
+  G_Lado **mrecorridos;
+  mrecorridos = new G_Lado*[g.getNumeroNodos()];
+  for(int i=0; i < g.getNumeroNodos(); ++i){
+				mrecorridos[i] = new G_Lado[g.getNumeroNodos()];
+	}
+
+  // Matriz a -1
+  cout<< g.getNumeroNodos();
+  for(int i = 0; i < g.getNumeroNodos(); ++i){
+    for(int j = 0; j < pow(g.getNumeroNodos(), 2); ++j){
+      mrecorridos[i][j] = -1;
+    }
+  }
+
+  g.setMatrix(matrixaux);
+
+  // Diagonal a 0
+  for(int i = 0; i < g.getNumeroNodos(); ++i){
+    matrixaux[i][i] = 0;
+  }
+
+  for(int i = 0; i < g.getNumeroNodos(); ++i){
+    for (int j = 0; j < g.getNumeroNodos(); ++j){
+      for (int k = 0; k < g.getNumeroNodos(); ++k){
+        if (matrixaux[j][i] + matrixaux[i][k] < matrixaux[j][k]){
+         matrixaux[j][k] = matrixaux[j][i] + matrixaux[i][k];
+         mrecorridos[j][k] = i;
+        }
+      }
+    }
+  }
+
+  cout<<'\n'<<endl;
+  cout<<"Matriz de recorridos:"<<endl;
+  for(int i = 0; i < g.getNumeroNodos(); ++i){
+     cout<<endl;
+    for (int j = 0; j < g.getNumeroNodos(); ++j){
+      cout<<mrecorridos[i][j]<<" ";
+    }
+  }
 }
 
 #endif
