@@ -30,7 +30,15 @@ int menu()
 template <class G_Nodo, class G_Lado>
 bool cargarGrafo(Grafo<G_Nodo, G_Lado> * &g)
 {
-  string ficheroMatriz, ficheroEtiquetas;
+  string ficheroMatriz, ficheroEtiquetas, buffer;
+  ifstream nodosfile;
+  ifstream ladosfile;
+  vector<G_Nodo> vectorauxnodos;
+  int nodoscounter = 0;
+  int index = 0;
+  G_Nodo node;
+  G_Lado edge;
+
 
   cout << "Fichero de la matriz de conexion: ";
   cin >> ficheroMatriz;
@@ -38,54 +46,43 @@ bool cargarGrafo(Grafo<G_Nodo, G_Lado> * &g)
   cout << "Fichero de las etiquetas: ";
   cin >> ficheroEtiquetas;
 
-  int nodoscounter = 0;
-  ifstream nodosfile;
-  ifstream ladosfile;
-
-  ladosfile.open(ficheroMatriz.c_str()); // Abrimos los ficheros en modo escritura.
+  // Necesitamos reservar memoria para el grafo
   nodosfile.open(ficheroEtiquetas.c_str());
-  string buffer;
-  vector<G_Nodo> vectorauxnodos;
-
-
   while(getline(nodosfile, buffer)){
     nodoscounter++;
   }
+  nodosfile.close();
   g->reservaMemoria(nodoscounter);
-  nodosfile.close();
-  nodosfile.open(ficheroEtiquetas.c_str());
-
-  // Recorre el fichero nodos y lo almacena en buffer
-  // Inserta en el vector nodos todos los nodos del fichero
-  while(getline(nodosfile, buffer)){
-    vectorauxnodos.push_back(buffer.substr(0,buffer.size()-1)); // Quitamos el \n
-  }
-  g->setNodos(vectorauxnodos);
-
   
-  vector<G_Lado> vectorlados; // Un vector de lados para cada elemento de la matriz
-  G_Lado valorlado; // El valor de cada elemento del vector creado
-
-  while(getline(ladosfile, buffer)){
-    vectorlados.clear();
-    while(buffer.find(' ') != string::npos){
-      valorlado = atoi(buffer.substr(0, buffer.find(' ')).c_str()); // Transformamos el substring a int.
-      buffer = buffer.substr(buffer.find(' ') + 1, buffer.size()); // Reasignamos el buffer al siguiente elemento.
-      vectorlados.push_back(valorlado); // Introducimos el valor obtenido en el vector lados.
-    }
-
-    valorlado = atoi(buffer.substr(0, buffer.find('\n')).c_str());
-    vectorlados.push_back(valorlado);
-
-    
-    g->setLados(vectorlados);
-    
+  // Vuelvo a abrir el fichero para obtener los nodos del fichero
+  nodosfile.open(ficheroEtiquetas.c_str());
+  // Recorre el fichero nodos y lo almacena en buffer
+  while(getline(nodosfile, buffer)){
+    node = buffer;
+    g->setNodo(index, node);
+    index++;
   }
   nodosfile.close();
-  ladosfile.close(); 
+
+  // Haremos lo mismo con la matriz
+  ladosfile.open(ficheroMatriz.c_str()); // Abrimos los ficheros en modo escritura.  
+  for(int fila = 0; fila < g->getNumeroNodos(); ++fila){
+    for(int columna = 0; columna < g->getNumeroNodos() - 1; ++columna){
+      getline(ladosfile, buffer, ' ');
+      int lado = atoi(buffer.c_str());
+      edge = lado;
+      g->setLado(fila, columna, edge);      
+    }
+    getline(ladosfile, buffer, '\n');
+    int lado = atoi(buffer.c_str());
+    edge = lado;
+    g->setLado(fila, g->getNumeroNodos() -1, edge);
+  }
+  ladosfile.close();
+  g->printMatrix();
+  g->printArray();
 
   return true;
-		
 }
 
 
