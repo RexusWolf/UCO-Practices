@@ -33,7 +33,6 @@ bool cargarGrafo(Grafo<G_Nodo, G_Lado> * &g)
   string ficheroMatriz, ficheroEtiquetas, buffer;
   ifstream nodosfile;
   ifstream ladosfile;
-  vector<G_Nodo> vectorauxnodos;
   int nodoscounter = 0;
   int index = 0;
   G_Nodo node;
@@ -89,7 +88,22 @@ bool cargarGrafo(Grafo<G_Nodo, G_Lado> * &g)
 template <class G_Nodo, class G_Lado>
 void algoritmoFloyd(const Grafo<G_Nodo, G_Lado> &g)
 {
-  // TODO
+  G_Lado **ladosaux = new G_Lado*[g.getNumeroNodos()];
+
+  for(int i = 0; i < g.getNumeroNodos(); ++i){
+    ladosaux[i][i] = 0;
+  }
+
+  for(int i = 0; i < g.getNumeroNodos(); ++i){
+    for (int j = 0; j < g.getNumeroNodos(); ++j){
+      for (int k = 0; k < g.getNumeroNodos(); ++k){
+        if (ladosaux[j][i] + ladosaux[i][k] < ladosaux[j][k]){
+          ladosaux[j][k] = ladosaux[j][i] + ladosaux[i][k];
+        }
+      }
+    }
+  }
+  
 }
 
 #endif

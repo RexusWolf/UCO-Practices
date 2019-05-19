@@ -3,8 +3,6 @@
 
 #include <cassert>
 #include <iostream>
-#include <vector>
-#include <string>
 
 using namespace std;
 
@@ -18,15 +16,15 @@ namespace ed
 
 		G_Lado **_lados;
 		G_Nodo *_nodos;
-		int *_numeronodos;
+		int *_numeroNodos;
 
 	public:
 
 		// constructores
 		//Crea un nuevo grafo vacío
 		Grafo () {
-			_numeronodos = new int;
-			*_numeronodos = 0;
+			_numeroNodos = new int;
+			*_numeroNodos = 0;
 			_lados = new G_Lado*;
 			_nodos = new G_Nodo;
 		};
@@ -50,46 +48,46 @@ namespace ed
 		void borrarGrafo(){	// cabecera indicada para que compile
 			delete [] _nodos;
 			
-			for (int i = 0; i < *_numeronodos; ++i){
+			for (int i = 0; i < *_numeroNodos; ++i){
 				delete [] _lados[i];
 			}
 			delete [] _lados;
-			delete _numeronodos;
-			_numeronodos = NULL;
+			delete _numeroNodos;
+			_numeroNodos = NULL;
 			_nodos = NULL;
 			_lados = NULL;
 		}
 	
-		void reservaMemoria(int nodenumber){
-			_numeronodos = new int;
-			*_numeronodos = nodenumber;
-			_nodos = new G_Nodo[*_numeronodos];
-			_lados = new G_Lado*[*_numeronodos]; // Crea una matriz de lados con N lados.
-			for(int i=0; i < *_numeronodos; ++i){
-				_lados[i] = new G_Lado[*_numeronodos];
+		void reservaMemoria(int nodenumber) {
+			_numeroNodos = new int;
+			*_numeroNodos = nodenumber;
+			_nodos = new G_Nodo[*_numeroNodos];
+			_lados = new G_Lado*[*_numeroNodos]; // Crea una matriz de lados con N lados.
+			for(int i=0; i < *_numeroNodos; ++i){
+				_lados[i] = new G_Lado[*_numeroNodos];
 			}
 		}
 
 		// Operador de asignación. Operador que copia el grafo “g” en el grafo actual
 		Grafo& operator=(const Grafo& g){
 			// Copiamos el número de nodos
-			_numeronodos = new int;
-			*_numeronodos = *g._numeronodos;
+			_numeroNodos = new int;
+			*_numeroNodos = *g._numeroNodos;
 
 			// Reservamos memoria como en el constructor
-			_nodos = new G_Nodo[*_numeronodos];
-			_lados = new G_Lado*[*_numeronodos];
-			for (int i = 0; i < *_numeronodos; ++i){
-				_lados[i] = new G_Lado[*_numeronodos];
+			_nodos = new G_Nodo[*_numeroNodos];
+			_lados = new G_Lado*[*_numeroNodos];
+			for (int i = 0; i < *_numeroNodos; ++i){
+				_lados[i] = new G_Lado[*_numeroNodos];
 			}
 
 			// Copiamos valores de nodos y lados
-			for (int i = 0; i < *_numeronodos; ++i){
+			for (int i = 0; i < *_numeroNodos; ++i){
 				_nodos[i] = g._nodos[i];
 			}
 
-			for (int i = 0; i < *_numeronodos; ++i){
-				for (int j = 0; i < *_numeronodos; ++j){
+			for (int i = 0; i < *_numeroNodos; ++i){
+				for (int j = 0; i < *_numeroNodos; ++j){
 					_lados[i][j] = g._lados[i][j];
 				}
 			}
@@ -100,7 +98,7 @@ namespace ed
 		// observers & modifiers
 
 		
-		inline int getNumeroNodos(){return *_numeronodos;}
+		inline int getNumeroNodos() const {return *_numeroNodos;}
 
 		void setNodo(int index, G_Nodo node){
 			_nodos[index] = node;
@@ -112,10 +110,10 @@ namespace ed
 		}
 		
 		void setNumeroNodos(int numberNodos){
-			*_numeronodos = numberNodos;
+			*_numeroNodos = numberNodos;
 		}
 
-		void printMatrix() {
+		void printMatrix() const{
 		for (int i = 0; i < getNumeroNodos(); ++i) {
 			cout << endl;
 			for (int j = 0; j < getNumeroNodos(); ++j) {
@@ -125,7 +123,7 @@ namespace ed
 		cout << endl;
 		}
 
-		void printArray() {
+		void printArray() const{
 		for (int i = 0; i < getNumeroNodos(); ++i) {
 			cout << _nodos[i] << endl;
 		}
