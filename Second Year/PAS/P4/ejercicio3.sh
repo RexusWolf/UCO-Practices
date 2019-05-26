@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [[ $# -gt 1 ]]; then
+    echo "ERROR: Argumentos incorrectos. ejercicio3.sh [fichero.txt]"
+    exit 1
+fi
+
 echo "==========================================="
 echo "Listado de archivos ocultos del directorio $HOME"
 ls -a $HOME | grep -E "^\..*$"
