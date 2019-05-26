@@ -1,6 +1,11 @@
 #!/bin/bash
 #ARG 1 peliculas.txt
 
+if [[ $# -ne 1 || ! -f $1 ]]; then
+    echo "ERROR: Argumentos incorrectos. ejercicio2.sh <peliculas.txt>"
+    exit 1
+fi
+
 echo "1) Líneas con la duración de las películas"
 grep --color=always -E '[0-9].. [0-9]+min\>' $1
 
@@ -38,4 +43,4 @@ grep -E '^[^ ].*\.\.\.$' $1
 
 echo $'\n'
 echo "10) Utilizando sed, entrecomillar las vocales con tilde:"
-cat $1 | sed 's/á/"á"/' | sed 's/é/"é"/' | sed 's/í/"í"/' | sed 's/ó/"ó"/' | sed 's/ú/"ú"/'
+cat $1 | sed -r 's/([áéíóúÁÉÍÓÚ])/"\1"/g' 
