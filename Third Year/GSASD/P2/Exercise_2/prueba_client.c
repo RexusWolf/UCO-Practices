@@ -13,11 +13,12 @@ calculadora_prog_1(char *host, char *operacion, int operandoA, int operandoB)
 {
 	CLIENT *clnt;
 	int  *result_1;
-	operandos  suma_1_arg;
+	operandos suma_1_arg;
 	int  *result_2;
-	operandos  multiplicacion_1_arg;
-	clock_t startTime, endTime;  
-
+	operandos multiplicacion_1_arg;
+	int  *result_3;
+	operandos division_1_arg;
+	clock_t startTime, endTime;
 #ifndef	DEBUG
 	clnt = clnt_create (host, CALCULADORA_PROG, CALCULADORA_VERS, "udp");
 	if (clnt == NULL) {
@@ -26,9 +27,7 @@ calculadora_prog_1(char *host, char *operacion, int operandoA, int operandoB)
 	}
 #endif	/* DEBUG */
 
-
 	startTime = clock();
-%d
 	for (int i = 0; i < 100000; i++) {
 		if(strcmp ("MULTIPLICACION", operacion) == 0){
 		multiplicacion_1_arg.a = operandoA;
@@ -39,6 +38,11 @@ calculadora_prog_1(char *host, char *operacion, int operandoA, int operandoB)
 			suma_1_arg.a = operandoA;
 			suma_1_arg.b = operandoB;
 			result_1 = suma_1(&suma_1_arg, clnt);
+		}
+		else if(strcmp ("DIVISION", operacion) == 0){
+			division_1_arg.a = operandoA;
+			division_1_arg.b = operandoB;
+			result_1 = division_1(&division_1_arg, clnt);
 		}
 		else{
 			printf("Las operaciones permitidas son SUMA y MULTIPLICACIÓN");
@@ -70,5 +74,5 @@ main (int argc, char *argv[])
 	}
 	host = argv[1];
 	calculadora_prog_1 (host, argv[2] ,atoi(argv[3]), atoi(argv[4]) );
-exit (0);
+	exit (0);
 }
