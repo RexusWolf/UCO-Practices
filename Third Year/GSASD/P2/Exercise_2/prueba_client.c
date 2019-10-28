@@ -40,12 +40,16 @@ calculadora_prog_1(char *host, char *operacion, int operandoA, int operandoB)
 			result_1 = suma_1(&suma_1_arg, clnt);
 		}
 		else if(strcmp ("DIVISION", operacion) == 0){
+			if(operandoB == 0){
+				printf("No puedes dividir entre 0");
+				exit(0);
+			}
 			division_1_arg.a = operandoA;
 			division_1_arg.b = operandoB;
 			result_1 = division_1(&division_1_arg, clnt);
 		}
 		else{
-			printf("Las operaciones permitidas son SUMA y MULTIPLICACIÓN");
+			printf("Las operaciones permitidas son SUMA, MULTIPLICACIÓN y DIVISION");
 			exit(0);
 		}
 		if (result_1 == (int *) NULL) {
