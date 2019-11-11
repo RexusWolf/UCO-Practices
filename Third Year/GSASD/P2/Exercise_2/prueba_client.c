@@ -9,14 +9,12 @@
 
 
 void
-calculadora_prog_1(char *host, char *operacion, int operandoA, int operandoB)
+calculadora_prog_1(char *host, char *operation, int operandoA, int operandoB)
 {
 	CLIENT *clnt;
-	int  *result_1;
+	int  *result_1, operationParsedToInt;
 	operandos suma_1_arg;
-	int  *result_2;
 	operandos multiplicacion_1_arg;
-	int  *result_3;
 	operandos division_1_arg;
 	clock_t startTime, endTime;
 #ifndef	DEBUG
@@ -26,44 +24,64 @@ calculadora_prog_1(char *host, char *operacion, int operandoA, int operandoB)
 		exit (1);
 	}
 #endif	/* DEBUG */
+	
+	if(strcmp ("SUMA", operation) == 0){
+		operationParsedToInt = 1;
+	}
+	else if(strcmp ("MULTIPLICACION", operation) == 0){
+		operationParsedToInt = 0;
+	}
+	else if(strcmp ("DIVISION", operation) == 0){
+		operationParsedToInt = 2;
+	}
+	else{
+		printf("Las operaciones permitidas son SUMA, MULTIPLICACIÓN y DIVISION");
+		exit(0);
+	}
 
 	startTime = clock();
-	for (int i = 0; i < 100000; i++) {
-		if(strcmp ("MULTIPLICACION", operacion) == 0){
+	
+	switch (operationParsedToInt)
+	{
+	case 0:
+		suma_1_arg.a = operandoA;
+		suma_1_arg.b = operandoB;
+		result_1 = suma_1(&suma_1_arg, clnt);
+		break;
+
+	case 1:
 		multiplicacion_1_arg.a = operandoA;
 		multiplicacion_1_arg.b = operandoB;
 		result_1 = multiplicacion_1(&multiplicacion_1_arg, clnt);
-		}
-		else if(strcmp ("SUMA", operacion) == 0){
-			suma_1_arg.a = operandoA;
-			suma_1_arg.b = operandoB;
-			result_1 = suma_1(&suma_1_arg, clnt);
-		}
-		else if(strcmp ("DIVISION", operacion) == 0){
-			if(operandoB == 0){
-				printf("No puedes dividir entre 0");
-				exit(0);
-			}
-			division_1_arg.a = operandoA;
-			division_1_arg.b = operandoB;
-			result_1 = division_1(&division_1_arg, clnt);
-		}
-		else{
-			printf("Las operaciones permitidas son SUMA, MULTIPLICACIÓN y DIVISION");
+		break;
+
+	case 2:
+		if(operandoB == 0){
+			printf("No puedes dividir entre 0");
 			exit(0);
 		}
-		if (result_1 == (int *) NULL) {
-			clnt_perror (clnt, "call failed");
-		}
+		division_1_arg.a = operandoA;
+		division_1_arg.b = operandoB;
+		result_1 = division_1(&division_1_arg, clnt);
+		break;
+	
+	default:
+		break;
 	}
+
+	if (result_1 == (int *) NULL) {
+		clnt_perror (clnt, "call failed");
+	}
+
+	
 	
 	endTime = clock();
 	float totalTime = ((float)(endTime - startTime) / CLOCKS_PER_SEC);   
 	printf("El programa ha tardado %f milisegundos en ejecutarse. resultado = %d", totalTime, *result_1);
-
-#ifndef	DEBUG
-	clnt_destroy (clnt);
-#endif	 /* DEBUG */
+	
+	#ifndef	DEBUG
+		clnt_destroy (clnt);
+	#endif	 /* DEBUG */
 }
 
 
