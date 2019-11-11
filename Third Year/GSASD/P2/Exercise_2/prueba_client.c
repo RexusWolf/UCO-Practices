@@ -39,7 +39,6 @@ calculadora_prog_1(char *host, char *operation, int operandoA, int operandoB)
 		exit(0);
 	}
 
-	startTime = clock();
 	
 	switch (operationParsedToInt)
 	{
@@ -73,12 +72,6 @@ calculadora_prog_1(char *host, char *operation, int operandoA, int operandoB)
 		clnt_perror (clnt, "call failed");
 	}
 
-	
-	
-	endTime = clock();
-	float totalTime = ((float)(endTime - startTime) / CLOCKS_PER_SEC);   
-	printf("El programa ha tardado %f milisegundos en ejecutarse. resultado = %d", totalTime, *result_1);
-	
 	#ifndef	DEBUG
 		clnt_destroy (clnt);
 	#endif	 /* DEBUG */

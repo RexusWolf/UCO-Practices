@@ -3,8 +3,8 @@
 
 # Parameters
 
-CLIENT = prueba_client
-SERVER = prueba_server
+CLIENT = prueba_client.out
+SERVER = prueba_server.out
 
 SOURCES_CLNT.c = 
 SOURCES_CLNT.h = 
